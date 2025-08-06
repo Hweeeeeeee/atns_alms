@@ -62,11 +62,10 @@ st.markdown("""
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        /* HIGHLIGHT START: 위젯 공통 스타일 - 그림자 및 내용 정렬 */
-        /* st.container(border=True)는 기본적으로 흰색 배경, 테두리를 가집니다. */
-        /* 여기서는 그림자만 추가하고, 내부 콘텐츠 정렬을 위한 flex 속성을 유지합니다. */
-        div[data-testid="stVerticalBlock"] > div.st-emotion-cache-ocqkzj { /* st.container의 상위 div 클래스 */
-            box-shadow: 0 3px 6px rgba(0,0,0,0.05) !important; /* 그림자 강제 */
+        /* HIGHLIGHT START: 위젯 공통 스타일 - 그림자 적용 */
+        /* st.container(border=True)가 생성하는 div에 그림자 적용 */
+        div[data-testid="stVerticalBlock"] > div.st-emotion-cache-ocqkzj { /* 이 클래스명은 Streamlit 버전업에 따라 변경될 수 있습니다. */
+            box-shadow: 0 3px 6px rgba(0,0,0,0.05) !important; /* 그림자 강제 적용 */
         }
         .section-title {
             font-size: 24px;
@@ -234,7 +233,7 @@ with cols_overview_row1[0]:
             <div class="stat-block">
                 <div><div class="stat-label">Active Licenses</div><div class="stat-value">292</div></div>
                 <div><div class="stat-label">Total License</div><div class="stat-value">500</div></div>
-                <div><div class="stat-label">Transaction Based</div><div class="stat-value">271</div></div>
+                <div><div class="stat-value">Transaction Based</div><div class="stat-value">271</div></div>
             </div>
             <hr style="margin: 1rem 0;">
         """, unsafe_allow_html=True)
@@ -397,31 +396,30 @@ with col_left_widgets:
             st.markdown('<div class="widget-title">User License Type</div>', unsafe_allow_html=True)
             
             # HIGHLIGHT START: User License Type 그래프를 License Utilization Rate와 동일한 형태로 변경
-            # 데이터는 기존 User License Type 데이터를 사용
             labels = ['Advance', 'Core', 'Self Service', 'Not Classified']
             values = [189, 84, 371, 42]
-            
-            # 각 라벨별 비율 계산 (총 사용자 수 902명 기준)
             total_users = sum(values)
-            percentages = [(v / total_users) * 100 for v in values]
 
-            # 가장 높은 비율을 가진 라벨을 기준으로 막대 그래프 생성
-            # License Utilization Rate와 동일한 시각적 효과를 위해 단일 막대 사용
-            # 여기서는 'Self Service'가 가장 높은 비율이므로 이를 대표로 사용
-            # 실제로는 각 라벨별로 막대를 그려야 하지만, 요청에 따라 단일 막대 형태로 변경
-            
-            # 가장 높은 비율과 해당 라벨 찾기
-            max_percentage = max(percentages)
-            max_label_index = percentages.index(max_percentage)
-            max_label = labels[max_label_index]
+            # 각 등급별로 작은 막대 그래프와 텍스트를 표시
+            for i in range(len(labels)):
+                label = labels[i]
+                value = values[i]
+                percentage = (value / total_users) * 100
 
-            fig, ax = plt.subplots(figsize=(4, 0.5)) # License Utilization Rate와 동일한 figsize
-            ax.barh(0, max_percentage, color='#007BFF', height=0.4)
-            ax.text(max_percentage/2, 0, f'{max_percentage:.0f}%', va='center', ha='center', color='white', fontsize=16, fontweight='bold')
-            ax.set_xlim(0, 100)
-            ax.axis('off')
-            st.pyplot(fig, use_container_width=True)
-            st.markdown(f'<div style="font-size: 14px; color: #666; text-align: center; margin-top: 5px;">({max_label} 기준)</div>', unsafe_allow_html=True)
+                # 라벨과 그래프를 위한 컬럼 분할
+                label_col, bar_col = st.columns([1, 3]) # 라벨과 바의 비율 조정
+
+                with label_col:
+                    st.markdown(f'<div style="font-size: 14px; margin-top: 8px;"><strong>{label}</strong></div>', unsafe_allow_html=True)
+
+                with bar_col:
+                    # 매우 작은 높이로 figsize 조정
+                    fig, ax = plt.subplots(figsize=(4, 0.15)) # 높이를 더 줄임
+                    ax.barh(0, percentage, color='#007BFF', height=0.4)
+                    ax.text(percentage/2, 0, f'{percentage:.0f}%', va='center', ha='center', color='white', fontsize=10, fontweight='bold') # 폰트 크기 조정
+                    ax.set_xlim(0, 100)
+                    ax.axis('off')
+                    st.pyplot(fig, use_container_width=True)
             # HIGHLIGHT END
 
 with col_right_recent_activity:
