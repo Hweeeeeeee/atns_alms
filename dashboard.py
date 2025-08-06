@@ -192,26 +192,14 @@ with col1:
             <hr style="margin: 1rem 0;">
         """, unsafe_allow_html=True)
 
-        # 파이 차트들을 가로로 배치하기 위한 컬럼 추가
         # HIGHLIGHT START
-        chart_col1, chart_col2 = st.columns(2)
+        # Figma 디자인에 맞춰 두 개의 파이 차트 대신 하나의 파이 차트로 변경
+        active_pct = 292 / 500 * 100
+        fig1, ax1 = plt.subplots(figsize=(4, 4)) # 차트 크기 조정
+        ax1.pie([active_pct, 100 - active_pct], labels=[f'Active ({active_pct:.1f}%)', 'Remaining'], autopct='%1.1f%%', startangle=90)
+        ax1.set_aspect('equal') # 원형 유지
+        st.pyplot(fig1, use_container_width=True) # 컨테이너 너비에 맞춤
         # HIGHLIGHT END
-
-        with chart_col1:
-            # 파이 차트 1: Active Licenses
-            active_pct = 292 / 500 * 100
-            fig1, ax1 = plt.subplots(figsize=(2.5, 2.5)) # 차트 크기 조정
-            ax1.pie([active_pct, 100 - active_pct], labels=[f'Active ({active_pct:.1f}%)', 'Remaining'], autopct='%1.1f%%', startangle=90)
-            ax1.set_aspect('equal') # 원형 유지
-            st.pyplot(fig1, use_container_width=True) # 컨테이너 너비에 맞춤
-
-        with chart_col2:
-            # 파이 차트 2: Transaction Based
-            trans_pct = 271 / 500 * 100
-            fig2, ax2 = plt.subplots(figsize=(2.5, 2.5)) # 차트 크기 조정
-            ax2.pie([trans_pct, 100 - trans_pct], labels=[f'Transaction ({trans_pct:.1f}%)', 'Remaining'], autopct='%1.1f%%', startangle=90)
-            ax2.set_aspect('equal') # 원형 유지
-            st.pyplot(fig2, use_container_width=True) # 컨테이너 너비에 맞춤
 
 
 # --- 위젯 2: FUE Active License Variance ---
@@ -354,6 +342,7 @@ with col6_fue:
         sizes = [76, 10, 8, 6]
         labels = ['A', 'B', 'C', 'D']
         # HIGHLIGHT START
+        # Figma 디자인 및 요청에 맞춰 차트 크기 조정
         fig2, ax2 = plt.subplots(figsize=(2, 2)) # 차트 크기 조정
         # HIGHLIGHT END
         ax2.pie(sizes, labels=labels, autopct='%1.0f%%', startangle=90)
