@@ -394,20 +394,7 @@ with col6_fue:
                 </style>
                 """, unsafe_allow_html=True
             )
-            # HIGHLIGHT END
-
-# Widget 7: 부서별 현황
-with col7_fue:
-    with st.container(height=300, border=True): # 높이 조정
-        st.markdown('<div class="widget-title">부서별 현황</div>', unsafe_allow_html=True)
-        st.markdown('<div class="icon">🏢</div>', unsafe_allow_html=True)
-
-# Widget 8: 직무별 현황
-with col8_fue:
-    with st.container(height=300, border=True): # 높이 조정
-        st.markdown('<div class="widget-title">직무별 현황</div>', unsafe_allow_html=True)
-        st.markdown('<div class="icon">🛠️</div>', unsafe_allow_html=True)
-
+           # HIGHLIGHT END
 
 # Widget 7: 부서별 현황
 with col7_fue:
