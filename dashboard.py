@@ -112,111 +112,82 @@ st.markdown(menu_html, unsafe_allow_html=True)
 st.markdown("<h3>Overview</h3>", unsafe_allow_html=True)
 col1, col2 = st.columns([2, 2])
 with col1:
-    st.markdown("""
-        <div class="widget-box">
-            <div class="widget-title">FUE License Status</div>
-            <div class="stat-block">
-                <div>
-                    <div class="stat-label">Active Licenses</div>
-                    <div class="stat-value">292</div>
+    with st.container():
+        st.markdown("""
+            <div class="widget-box">
+                <div class="widget-title">FUE License Status</div>
+                <div class="stat-block">
+                    <div><div class="stat-label">Active Licenses</div><div class="stat-value">292</div></div>
+                    <div><div class="stat-label">Total License</div><div class="stat-value">500</div></div>
+                    <div><div class="stat-label">Transaction Based</div><div class="stat-value">271</div></div>
                 </div>
-                <div>
-                    <div class="stat-label">Total License</div>
-                    <div class="stat-value">500</div>
-                </div>
-                <div>
-                    <div class="stat-label">Transaction Based</div>
-                    <div class="stat-value">271</div>
-                </div>
-            </div>
-            <div> 
-                <div> 
-                    # 파이 차트 1: Active Licenses
-                    active_pct = 292 / 500 * 100
-                    fig1, ax1 = plt.subplots()
-                    ax1.pie([active_pct, 100 - active_pct], labels=[f'Active ({active_pct:.1f}%)', 'Remaining'], autopct='%1.1f%%')
-                    st.pyplot(fig1)
-                </div>
-                <div>      
-                    # 파이 차트 2: Transaction Based
-                    trans_pct = 271 / 500 * 100
-                    fig2, ax2 = plt.subplots()
-                    ax2.pie([trans_pct, 100 - trans_pct], labels=[f'Transaction ({trans_pct:.1f}%)', 'Remaining'], autopct='%1.1f%%')
-                    st.pyplot(fig2)
-                </div>
-            </div>
-            <hr style="margin: 1rem 0;">
-        </div>
-    """, unsafe_allow_html=True)
+                <hr style="margin: 1rem 0;">
+        """, unsafe_allow_html=True)
+
+        col_pie1, col_pie2 = st.columns(2)
+        with col_pie1:
+            fig1, ax1 = plt.subplots()
+            ax1.pie([292, 208], labels=['Active', 'Remaining'], autopct='%1.1f%%', startangle=90)
+            ax1.axis('equal')
+            st.pyplot(fig1)
+
+        with col_pie2:
+            fig2, ax2 = plt.subplots()
+            ax2.pie([271, 229], labels=['Transaction Based', 'Other'], autopct='%1.1f%%', startangle=90)
+            ax2.axis('equal')
+            st.pyplot(fig2)
+
+        st.markdown("</div>", unsafe_allow_html=True)
 
 with col2:
     st.markdown("""
         <div class="widget-box">
             <div class="widget-title">My Account</div>
             <div class="stat-block" style="grid-template-columns: 1fr 1fr;">
-                <div>
-                    <div class="stat-label">License Type</div>
-                    <div class="stat-value">FUE</div>
-                </div>
-                <div>
-                    <div class="stat-label">License</div>
-                    <div class="stat-value">500</div>
-                </div>
-                <div>
-                    <div class="stat-label">ATNS ALMS</div>
-                    <div class="stat-value">Expiration</div>
-                </div>
-                <div>
-                    <div class="stat-value">2027.12.31</div>
-                </div>
+                <div><div class="stat-label">License Type</div><div class="stat-value">FUE</div></div>
+                <div><div class="stat-label">License</div><div class="stat-value">500</div></div>
+                <div><div class="stat-label">ATNS ALMS</div><div class="stat-value">Expiration</div></div>
+                <div><div class="stat-value">2027.12.31</div></div>
             </div>
         </div>
     """, unsafe_allow_html=True)
 
-# ---------------- FUE License Section ----------------
-st.markdown("<h3>FUE License</h3>", unsafe_allow_html=True)
-fue1, fue2, fue3, fue4, fue5 = st.columns(5)
-with fue1:
-    st.markdown("<div class='widget-box'><div class='widget-title'>Total</div><div class='stat-value'>500</div></div>", unsafe_allow_html=True)
-with fue2:
-    st.markdown("<div class='widget-box'><div class='widget-title'>Active License</div><div class='stat-value'>292</div></div>", unsafe_allow_html=True)
-with fue3:
-    st.markdown("<div class='widget-box'><div class='widget-title'>Remaining Licenses</div><div class='stat-value'>208</div></div>", unsafe_allow_html=True)
-with fue4:
-    st.markdown("<div class='widget-box'><div class='widget-title'>Utilization Rate</div><div class='stat-value'>58%</div><div style='background:#eee; height:10px; border-radius:5px;'><div style='width:58%; background:#1673ff; height:10px; border-radius:5px;'></div></div></div>", unsafe_allow_html=True)
-with fue5:
-    st.markdown("<div class='widget-box'><div class='widget-title'>License Variance</div><div class='stat-value'>12 ▲</div></div>", unsafe_allow_html=True)
+# ---------------- FUE Active License Variance ----------------
+st.markdown("<h3>FUE Active License Variance</h3>", unsafe_allow_html=True)
+with st.container():
+    st.markdown("<div class='widget-box'><div class='widget-title'>Active License (최근 4개월)</div>", unsafe_allow_html=True)
+    months = ['May', 'June', 'July', 'August']
+    values = [345, 310, 278, 292]
+    fig_line, ax_line = plt.subplots()
+    ax_line.plot(months, values, marker='o', color='#1673ff')
+    ax_line.set_title("Active License Variance")
+    ax_line.grid(True)
+    st.pyplot(fig_line)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-# ---------------- User Section ----------------
-st.markdown("<h3>User</h3>", unsafe_allow_html=True)
-user1, user2, user3, user4, user5 = st.columns([1, 1, 1, 2, 2])
-with user1:
-    st.markdown("<div class='widget-box'><div class='widget-title'>Total</div><div class='stat-value'>902</div></div>", unsafe_allow_html=True)
-with user2:
-    st.markdown("<div class='widget-box'><div class='widget-title'>User Variance</div><div class='stat-value'>7 ▲</div></div>", unsafe_allow_html=True)
-with user3:
-    st.markdown("<div class='widget-box'><div class='widget-title'>Inactive Users</div><div class='stat-value'>19</div></div>", unsafe_allow_html=True)
-with user4:
-    st.markdown("""
-        <div class='widget-box'>
-            <div class='widget-title'>Recent User Activity</div>
-            <div class='user-box'><div class='user-info'>Kim Hyeon<br>GB Advanced use | Expires 9999.12.30</div><div class='user-icon'>Active</div></div>
-            <div class='user-box'><div class='user-info'>Lee Min<br>GB Basic use | Expires 2026.01.15</div><div class='user-icon'>Active</div></div>
-        </div>
-    """, unsafe_allow_html=True)
-with user5:
-    st.markdown("""
-        <div class='widget-box'>
-            <div class='widget-title'>User License Type</div>
-            <div class='stat-block' style='grid-template-columns: 1fr;'>
-                <div class='stat-label'>Advance</div>
-                <div style='background:#eee; height:10px;'><div style='width:21%; background:#1673ff; height:10px;'></div></div>
-                <div class='stat-label'>Core</div>
-                <div style='background:#eee; height:10px;'><div style='width:9%; background:#1673ff; height:10px;'></div></div>
-                <div class='stat-label'>Self Service</div>
-                <div style='background:#eee; height:10px;'><div style='width:42%; background:#1673ff; height:10px;'></div></div>
-                <div class='stat-label'>Not Classified</div>
-                <div style='background:#eee; height:10px;'><div style='width:5%; background:#1673ff; height:10px;'></div></div>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
+# ---------------- User License Type ----------------
+st.markdown("<h3>User License Type</h3>", unsafe_allow_html=True)
+with st.container():
+    st.markdown("<div class='widget-box'><div class='widget-title'>User License Type</div>", unsafe_allow_html=True)
+    license_types = ['Advance', 'Core', 'Self Service', 'Not Classified']
+    values = [189, 84, 371, 42]
+    colors = ['#1673ff', '#69aaf5', '#aecdfc', '#d0e0fa']
+    fig_bar, ax_bar = plt.subplots()
+    ax_bar.barh(license_types, values, color=colors)
+    ax_bar.set_xlim([0, max(values) * 1.1])
+    ax_bar.invert_yaxis()
+    ax_bar.set_xlabel("Users")
+    st.pyplot(fig_bar)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+# ---------------- Composition Pie ----------------
+st.markdown("<h3>Composition</h3>", unsafe_allow_html=True)
+with st.container():
+    st.markdown("<div class='widget-box'><div class='widget-title'>Composition</div>", unsafe_allow_html=True)
+    comp_labels = ['Type A', 'Type B', 'Type C', 'Type D']
+    comp_sizes = [76, 12, 7, 5]
+    fig_comp, ax_comp = plt.subplots()
+    ax_comp.pie(comp_sizes, labels=comp_labels, autopct='%1.1f%%', startangle=140)
+    ax_comp.axis('equal')
+    st.pyplot(fig_comp)
+    st.markdown("</div>", unsafe_allow_html=True)
