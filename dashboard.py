@@ -301,7 +301,7 @@ with col5_fue:
         st.markdown('<div class="big-number">12 ▲</div>', unsafe_allow_html=True)
 
 # -------- Row 2: 3개의 위젯 --------
-col6_fue, col7_fue, col8_fue = st.columns([2, 2, 1]) # 비율 조정
+col6_fue, col7_fue, col8_fue = st.columns([2, 1, 1]) # 비율 조정
 
 # Widget 6: Composition (2 by 1)
 with col6_fue:
