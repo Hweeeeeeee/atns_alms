@@ -15,7 +15,9 @@ st.markdown("""
         /* 컨텐츠 영역 배경색 변경 */
         .stApp {
             padding-top: 0px;
-            background-color: #f8f8f8; /* 컨텐츠 영역 배경색 지정 */
+            /* HIGHLIGHT START: 컨텐츠 영역 배경색을 흰색으로 변경 */
+            background-color: #FFFFFF; /* 컨텐츠 영역 배경색 흰색으로 지정 */
+            /* HIGHLIGHT END */
         }
         .header {
             background-color: white;
@@ -62,7 +64,7 @@ st.markdown("""
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        /* HIGHLIGHT START: 위젯 공통 스타일 (st.container(border=True)의 기본 스타일 활용) */
+        /* 위젯 공통 스타일 (st.container(border=True)의 기본 스타일 활용) */
         /* st.container(border=True)는 기본적으로 흰색 배경, 테두리, 그림자를 가집니다. */
         /* 이 CSS는 Streamlit의 기본 컨테이너 스타일과 충돌하지 않도록 일반적인 스타일만 정의합니다. */
         .section-title {
