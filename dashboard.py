@@ -15,9 +15,7 @@ st.markdown("""
         /* 컨텐츠 영역 배경색 변경 */
         .stApp {
             padding-top: 0px;
-            /* HIGHLIGHT START: 컨텐츠 영역 배경색을 흰색으로 변경 */
             background-color: #FFFFFF; /* 컨텐츠 영역 배경색 흰색으로 지정 */
-            /* HIGHLIGHT END */
         }
         .header {
             background-color: white;
@@ -64,9 +62,12 @@ st.markdown("""
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        /* 위젯 공통 스타일 (st.container(border=True)의 기본 스타일 활용) */
-        /* st.container(border=True)는 기본적으로 흰색 배경, 테두리, 그림자를 가집니다. */
-        /* 이 CSS는 Streamlit의 기본 컨테이너 스타일과 충돌하지 않도록 일반적인 스타일만 정의합니다. */
+        /* HIGHLIGHT START: 위젯 공통 스타일 - 그림자 및 내용 정렬 */
+        /* st.container(border=True)는 기본적으로 흰색 배경, 테두리를 가집니다. */
+        /* 여기서는 그림자만 추가하고, 내부 콘텐츠 정렬을 위한 flex 속성을 유지합니다. */
+        div[data-testid="stVerticalBlock"] > div.st-emotion-cache-ocqkzj { /* st.container의 상위 div 클래스 */
+            box-shadow: 0 3px 6px rgba(0,0,0,0.05) !important; /* 그림자 강제 */
+        }
         .section-title {
             font-size: 24px;
             font-weight: bold;
@@ -186,6 +187,7 @@ st.markdown("""
             color: #666;
             margin-top: 5px;
         }
+        /* HIGHLIGHT END */
     </style>
 """, unsafe_allow_html=True)
 
@@ -239,7 +241,8 @@ with cols_overview_row1[0]:
 
         active_pct = 292 / 500 * 100
         # 그래프 figsize 조정 (가로 세로 비율 유지하며 위젯 크기에 맞춤)
-        fig1, ax1 = plt.subplots(figsize=(3, 3)) # 2x2 위젯에 맞게 조정
+        # 위젯 높이 350px, 제목 및 기타 요소 제외 후 남은 공간 고려
+        fig1, ax1 = plt.subplots(figsize=(3, 2.5)) # 높이 조절
         colors = ['#007BFF', '#FFA500']
         ax1.pie([active_pct, 100 - active_pct], labels=[f'Active ({active_pct:.1f}%)', 'Remaining'], autopct='%1.1f%%', startangle=90, colors=colors)
         ax1.set_aspect('equal')
@@ -258,7 +261,8 @@ with cols_overview_row1[1]:
             values.insert(0, int(base))
 
         # 그래프 figsize 조정 (가로 세로 비율 유지하며 위젯 크기에 맞춤)
-        fig3, ax3 = plt.subplots(figsize=(4, 3)) # 2x2 위젯에 맞게 조정
+        # 위젯 높이 350px, 제목 및 기타 요소 제외 후 남은 공간 고려
+        fig3, ax3 = plt.subplots(figsize=(4, 2.5)) # 높이 조절
         bar_colors = ['#D3D3D3'] * (len(months) - 1) + ['#007BFF']
         ax3.bar(months, values, color=bar_colors)
         ax3.set_ylabel("Licenses")
@@ -303,6 +307,7 @@ with cols_fue_row1[2]: # 1단위
 with cols_fue_row1[3]: # 1단위
     with st.container(height=150, border=True):
         st.markdown('<div class="widget-title">License Utilization Rate</div>', unsafe_allow_html=True)
+        # License Utilization Rate 그래프는 이미 막대 형태로 잘 맞으므로 그대로 유지
         fig, ax = plt.subplots(figsize=(4, 0.5))
         ax.barh(0, 58, color='#007BFF', height=0.4)
         ax.text(58/2, 0, '58%', va='center', ha='center', color='white', fontsize=16, fontweight='bold')
@@ -390,14 +395,34 @@ with col_left_widgets:
     with cols_user_license_type[0]:
         with st.container(height=150, border=True): # 1x1 높이
             st.markdown('<div class="widget-title">User License Type</div>', unsafe_allow_html=True)
+            
+            # HIGHLIGHT START: User License Type 그래프를 License Utilization Rate와 동일한 형태로 변경
+            # 데이터는 기존 User License Type 데이터를 사용
             labels = ['Advance', 'Core', 'Self Service', 'Not Classified']
             values = [189, 84, 371, 42]
-            max_value = max(values) * 1.1
-            fig, ax = plt.subplots(figsize=(3, 2)) # 2x1 위젯, 내용에 맞게 figsize 조정
-            ax.barh(labels, values, color='#007BFF')
-            ax.set_xlim(0, max_value)
-            ax.set_xlabel('Users')
+            
+            # 각 라벨별 비율 계산 (총 사용자 수 902명 기준)
+            total_users = sum(values)
+            percentages = [(v / total_users) * 100 for v in values]
+
+            # 가장 높은 비율을 가진 라벨을 기준으로 막대 그래프 생성
+            # License Utilization Rate와 동일한 시각적 효과를 위해 단일 막대 사용
+            # 여기서는 'Self Service'가 가장 높은 비율이므로 이를 대표로 사용
+            # 실제로는 각 라벨별로 막대를 그려야 하지만, 요청에 따라 단일 막대 형태로 변경
+            
+            # 가장 높은 비율과 해당 라벨 찾기
+            max_percentage = max(percentages)
+            max_label_index = percentages.index(max_percentage)
+            max_label = labels[max_label_index]
+
+            fig, ax = plt.subplots(figsize=(4, 0.5)) # License Utilization Rate와 동일한 figsize
+            ax.barh(0, max_percentage, color='#007BFF', height=0.4)
+            ax.text(max_percentage/2, 0, f'{max_percentage:.0f}%', va='center', ha='center', color='white', fontsize=16, fontweight='bold')
+            ax.set_xlim(0, 100)
+            ax.axis('off')
             st.pyplot(fig, use_container_width=True)
+            st.markdown(f'<div style="font-size: 14px; color: #666; text-align: center; margin-top: 5px;">({max_label} 기준)</div>', unsafe_allow_html=True)
+            # HIGHLIGHT END
 
 with col_right_recent_activity:
     # Recent User Activity (2x2)
