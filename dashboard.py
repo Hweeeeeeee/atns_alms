@@ -129,6 +129,22 @@ with col1:
                     <div class="stat-value">271</div>
                 </div>
             </div>
+            <div> 
+                <div> 
+                    # 파이 차트 1: Active Licenses
+                    active_pct = 292 / 500 * 100
+                    fig1, ax1 = plt.subplots()
+                    ax1.pie([active_pct, 100 - active_pct], labels=[f'Active ({active_pct:.1f}%)', 'Remaining'], autopct='%1.1f%%')
+                    st.pyplot(fig1)
+                </div>
+                <div>      
+                    # 파이 차트 2: Transaction Based
+                    trans_pct = 271 / 500 * 100
+                    fig2, ax2 = plt.subplots()
+                    ax2.pie([trans_pct, 100 - trans_pct], labels=[f'Transaction ({trans_pct:.1f}%)', 'Remaining'], autopct='%1.1f%%')
+                    st.pyplot(fig2)
+                </div>
+            </div>
             <hr style="margin: 1rem 0;">
         </div>
     """, unsafe_allow_html=True)
