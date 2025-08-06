@@ -379,7 +379,7 @@ with col6_fue:
             colors_composition = ['#007BFF', '#ADD8E6', '#87CEEB', '#B0E0E6'] # 파란색 계열로 변경
             ax2.pie(sizes, labels=labels, autopct='%1.0f%%', startangle=90, colors=colors_composition,
                     wedgeprops={'linewidth': 0, 'edgecolor': 'white'},
-                    textprops={'fontsize': 8}) # HIGHLIGHT: 텍스트 크기 조정
+                    textprops={'fontsize': 6}) # HIGHLIGHT: 텍스트 크기 조정
             ax2.axis('equal')
             st.pyplot(fig2, use_container_width=True, bbox_inches='tight') # HIGHLIGHT: `bbox_inches='tight'` 추가
         # HIGHLIGHT END
