@@ -264,7 +264,7 @@ with col3_fue:
         st.markdown('<div class="big-number">208</div>', unsafe_allow_html=True)
 
 with col4_fue:
-    with st.container(height=150, border=True):
+    with st.container(height=300, border=True):
         st.markdown('<div class="widget-title">License Utilization Rate</div>', unsafe_allow_html=True)
         fig, ax = plt.subplots(figsize=(4, 0.5))
         ax.barh(0, 58, color='blue', height=0.4)
@@ -306,7 +306,7 @@ with col8_fue:
         st.markdown('<div class="icon">🛠️</div>', unsafe_allow_html=True)
 
 
-# 세세 번째 줄
+# 세 번째 줄
 # User 위젯을 위한 새로운 컬럼 정의 (전체 너비 사용)
 st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True)
 col_user_total, col_user_variance, col_inactive_users = st.columns(3)
