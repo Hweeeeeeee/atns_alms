@@ -324,8 +324,23 @@ with col6_fue:
                     <div class="percentage">76%</div>
                     <div class="description">GB Advanced use</div>
                 </div>
-                <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
+                <div id="composition-chart-placeholder" style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
+                </div>
+            </div>
         """, unsafe_allow_html=True)
+        # HIGHLIGHT END
+
+        sizes = [76, 10, 8, 6]
+        labels = ['A', 'B', 'C', 'D']
+        fig2, ax2 = plt.subplots(figsize=(2, 2)) # 차트 크기 조정
+        # HIGHLIGHT START: 파이 차트 색상 변경 (Figma와 유사하게)
+        colors_composition = ['#007BFF', '#ADD8E6', '#87CEEB', '#B0E0E6'] # 파란색 계열로 변경
+        ax2.pie(sizes, labels=labels, autopct='%1.0f%%', startangle=90, colors=colors_composition,
+                wedgeprops={'linewidth': 0, 'edgecolor': 'white'}) # 테두리 제거
+        # HIGHLIGHT END
+        ax2.axis('equal')
+        # HIGHLIGHT START: st.pyplot을 placeholder 아래에 직접 호출
+        st.pyplot(fig2, use_container_width=True)
         # HIGHLIGHT END
 
 # Widget 7: 부서별 현황
