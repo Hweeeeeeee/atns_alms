@@ -308,9 +308,9 @@ with col6_fue:
     with st.container(height=150, border=True): # 높이 조정
         st.markdown('<div class="widget-title">Composition</div>', unsafe_allow_html=True)
         st.markdown('<div style="text-align: left; font-size: 20px; font-weight: bold; margin-top: 30px;">76%</div>', unsafe_allow_html=True)
-        sizes = [76, 10, 8, 6]
+        sizes = [50, 10, 8, 6]
         labels = ['A', 'B', 'C', 'D']
-        fig2, ax2 = plt.subplots(figsize=(1, 1)) # 차트 크기 조정
+        fig2, ax2 = plt.subplots(figsize=(5, 5)) # 차트 크기 조정
         # HIGHLIGHT START: 파이 차트 색상 변경 (Figma와 유사하게)
         colors_composition = ['#007BFF', '#FFA500', '#28A745', '#6C757D'] # Blue, Orange, Green, Grey
         ax2.pie(sizes, labels=labels, autopct='%1.0f%%', startangle=90, colors=colors_composition)
