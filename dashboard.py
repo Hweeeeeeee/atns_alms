@@ -49,8 +49,10 @@ st.markdown("""
             color: #666;
         }
         .menu-item.active {
-            color: #1673ff;
-            border-bottom: 2px solid #1673ff;
+            /* HIGHLIGHT START: 메뉴 활성 색상 변경 */
+            color: #007BFF; /* SAP Blue 계열 */
+            border-bottom: 2px solid #007BFF;
+            /* HIGHLIGHT END */
         }
         .search-box {
             padding: 4px 8px;
@@ -123,13 +125,26 @@ st.markdown("""
             font-size: 13px;
         }
         .user-icon {
-            border: 1px solid #007BFF;
-            background-color: rgba(0,123,255,0.1);
-            color: #007BFF;
+            /* HIGHLIGHT START: 사용자 상태 아이콘 색상 변경 */
+            border: 1px solid;
+            background-color: rgba(0,0,0,0.05); /* 투명한 배경 */
             padding: 0.25rem 0.5rem;
             border-radius: 4px;
             font-size: 12px;
             text-align: center;
+        }
+        .user-icon.Active {
+            color: #007BFF; /* SAP Blue */
+            border-color: #007BFF;
+        }
+        .user-icon.Expiring {
+            color: #FFA500; /* Orange */
+            border-color: #FFA500;
+        }
+        .user-icon.Inactive {
+            color: #808080; /* Grey */
+            border-color: #808080;
+            /* HIGHLIGHT END */
         }
         /* Matplotlib 차트 컨테이너 스타일 */
         .chart-container {
@@ -192,14 +207,15 @@ with col1:
             <hr style="margin: 1rem 0;">
         """, unsafe_allow_html=True)
 
-        # HIGHLIGHT START
         # Figma 디자인에 맞춰 두 개의 파이 차트 대신 하나의 파이 차트로 변경
         active_pct = 292 / 500 * 100
         fig1, ax1 = plt.subplots(figsize=(4, 4)) # 차트 크기 조정
-        ax1.pie([active_pct, 100 - active_pct], labels=[f'Active ({active_pct:.1f}%)', 'Remaining'], autopct='%1.1f%%', startangle=90)
+        # HIGHLIGHT START: 파이 차트 색상 변경
+        colors = ['#007BFF', '#FFA500'] # SAP Blue, Orange
+        ax1.pie([active_pct, 100 - active_pct], labels=[f'Active ({active_pct:.1f}%)', 'Remaining'], autopct='%1.1f%%', startangle=90, colors=colors)
+        # HIGHLIGHT END
         ax1.set_aspect('equal') # 원형 유지
         st.pyplot(fig1, use_container_width=True) # 컨테이너 너비에 맞춤
-        # HIGHLIGHT END
 
 
 # --- 위젯 2: FUE Active License Variance ---
@@ -217,7 +233,10 @@ with col2:
 
         # 막대그래프
         fig3, ax3 = plt.subplots(figsize=(5, 3)) # 차트 크기 조정
-        ax3.bar(months, values, color=['gray', 'gray', 'gray', 'blue'])
+        # HIGHLIGHT START: 막대 그래프 색상 변경
+        bar_colors = ['#D3D3D3'] * (len(months) - 1) + ['#007BFF'] # 마지막 막대만 SAP Blue
+        ax3.bar(months, values, color=bar_colors)
+        # HIGHLIGHT END
         ax3.set_ylabel("Licenses")
         ax3.set_title("최근 4개월 Active License 수")
         st.pyplot(fig3, use_container_width=True) # 컨테이너 너비에 맞춤
@@ -234,7 +253,83 @@ with col3:
             </table>
         """, unsafe_allow_html=True)
 
-# 두 번째 줄: 위젯 4만 표시
+# 두 번째 섹션
+
+# FUE License 섹션
+st.markdown('<div class="section-title">FUE License</div>', unsafe_allow_html=True)
+
+# -------- Row 1: 5개의 위젯 --------
+col1_fue, col2_fue, col3_fue, col4_fue, col5_fue = st.columns(5)
+
+with col1_fue:
+    with st.container(height=150, border=True):
+        st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
+        st.markdown('<div class="big-number">500</div>', unsafe_allow_html=True)
+
+with col2_fue:
+    with st.container(height=150, border=True):
+        st.markdown('<div class="widget-title">Active License</div>', unsafe_allow_html=True)
+        st.markdown('<div class="big-number">292</div>', unsafe_allow_html=True)
+
+with col3_fue:
+    with st.container(height=150, border=True):
+        st.markdown('<div class="widget-title">Remaining Licenses</div>', unsafe_allow_html=True)
+        st.markdown('<div class="big-number">208</div>', unsafe_allow_html=True)
+
+with col4_fue:
+    with st.container(height=150, border=True):
+        st.markdown('<div class="widget-title">License Utilization Rate</div>', unsafe_allow_html=True)
+        fig, ax = plt.subplots(figsize=(4, 0.5))
+        # HIGHLIGHT START: 막대 그래프 색상 변경
+        ax.barh(0, 58, color='#007BFF', height=0.4) # SAP Blue
+        # HIGHLIGHT END
+        ax.set_xlim(0, 100)
+        ax.axis('off')
+        st.pyplot(fig, use_container_width=True)
+        st.markdown('<div class="big-number">58%</div>', unsafe_allow_html=True)
+
+with col5_fue:
+    with st.container(height=150, border=True):
+        st.markdown('<div class="widget-title">License Variance</div>', unsafe_allow_html=True)
+        st.markdown('<div class="big-number">12 ▲</div>', unsafe_allow_html=True)
+
+# -------- Row 2: 3개의 위젯 --------
+col6_fue, col7_fue, col8_fue = st.columns([2, 1, 1]) # 비율 조정
+
+# Widget 6: Composition (2 by 1)
+with col6_fue:
+    with st.container(height=300, border=True): # 높이 조정
+        st.markdown('<div class="widget-title">Composition</div>', unsafe_allow_html=True)
+        st.markdown('<div style="text-align: left; font-size: 20px; font-weight: bold; margin-top: 30px;">76%</div>', unsafe_allow_html=True)
+        sizes = [76, 10, 8, 6]
+        labels = ['A', 'B', 'C', 'D']
+        fig2, ax2 = plt.subplots(figsize=(2, 2)) # 차트 크기 조정
+        # HIGHLIGHT START: 파이 차트 색상 변경 (Figma와 유사하게)
+        colors_composition = ['#007BFF', '#FFA500', '#28A745', '#6C757D'] # Blue, Orange, Green, Grey
+        ax2.pie(sizes, labels=labels, autopct='%1.0f%%', startangle=90, colors=colors_composition)
+        # HIGHLIGHT END
+        ax2.axis('equal')
+        st.pyplot(fig2, use_container_width=True)
+
+# Widget 7: 부서별 현황
+with col7_fue:
+    with st.container(height=300, border=True): # 높이 조정
+        st.markdown('<div class="widget-title">부서별 현황</div>', unsafe_allow_html=True)
+        st.markdown('<div class="icon">🏢</div>', unsafe_allow_html=True)
+
+# Widget 8: 직무별 현황
+with col8_fue:
+    with st.container(height=300, border=True): # 높이 조정
+        st.markdown('<div class="widget-title">직무별 현황</div>', unsafe_allow_html=True)
+        st.markdown('<div class="icon">🛠️</div>', unsafe_allow_html=True)
+
+
+
+
+
+
+
+# 세 번째 섹션
 # User 위젯을 위한 새로운 컬럼 정의 (전체 너비 사용)
 st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True)
 col_user_total, col_user_variance, col_inactive_users = st.columns(3)
@@ -269,15 +364,17 @@ with col4:
             ("Yoon Tae", "GB Advanced User", "Expires 9999.12.30", "Active")
         ]
         for name, grade, expiry, status in users:
+            # HIGHLIGHT START: 사용자 상태에 따라 user-icon 클래스 동적 적용
             st.markdown(f"""
                 <div class="user-box">
                     <div class="user-info">
                         <strong>{name}</strong><br>
                         {grade} | {expiry}
                     </div>
-                    <div class="user-icon">{status}</div>
+                    <div class="user-icon {status}">{status}</div>
                 </div>
             """, unsafe_allow_html=True)
+            # HIGHLIGHT END
 
 # 위젯 5: User License Type (막대그래프)
 with col5:
@@ -289,74 +386,10 @@ with col5:
         max_value = max(values) * 1.1
 
         fig, ax = plt.subplots(figsize=(6, 3)) # 차트 크기 조정
-        ax.barh(labels, values, color='skyblue')
+        # HIGHLIGHT START: 막대 그래프 색상 변경
+        ax.barh(labels, values, color='#007BFF') # 모든 막대를 SAP Blue로
+        # HIGHLIGHT END
         ax.set_xlim(0, max_value)
         ax.set_xlabel('Users')
         st.pyplot(fig, use_container_width=True) # 컨테이너 너비에 맞춤
 
-
-# FUE License 섹션
-st.markdown('<div class="section-title">FUE License</div>', unsafe_allow_html=True)
-
-# -------- Row 1: 5개의 위젯 --------
-col1_fue, col2_fue, col3_fue, col4_fue, col5_fue = st.columns(5)
-
-with col1_fue:
-    with st.container(height=150, border=True):
-        st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
-        st.markdown('<div class="big-number">500</div>', unsafe_allow_html=True)
-
-with col2_fue:
-    with st.container(height=150, border=True):
-        st.markdown('<div class="widget-title">Active License</div>', unsafe_allow_html=True)
-        st.markdown('<div class="big-number">292</div>', unsafe_allow_html=True)
-
-with col3_fue:
-    with st.container(height=150, border=True):
-        st.markdown('<div class="widget-title">Remaining Licenses</div>', unsafe_allow_html=True)
-        st.markdown('<div class="big-number">208</div>', unsafe_allow_html=True)
-
-with col4_fue:
-    with st.container(height=150, border=True):
-        st.markdown('<div class="widget-title">License Utilization Rate</div>', unsafe_allow_html=True)
-        fig, ax = plt.subplots(figsize=(4, 0.5))
-        ax.barh(0, 58, color='blue', height=0.4)
-        ax.set_xlim(0, 100)
-        ax.axis('off')
-        st.pyplot(fig, use_container_width=True)
-        st.markdown('<div class="big-number">58%</div>', unsafe_allow_html=True)
-
-with col5_fue:
-    with st.container(height=150, border=True):
-        st.markdown('<div class="widget-title">License Variance</div>', unsafe_allow_html=True)
-        st.markdown('<div class="big-number">12 ▲</div>', unsafe_allow_html=True)
-
-# -------- Row 2: 3개의 위젯 --------
-col6_fue, col7_fue, col8_fue = st.columns([2, 1, 1]) # 비율 조정
-
-# Widget 6: Composition (2 by 1)
-with col6_fue:
-    with st.container(height=300, border=True): # 높이 조정
-        st.markdown('<div class="widget-title">Composition</div>', unsafe_allow_html=True)
-        st.markdown('<div style="text-align: left; font-size: 20px; font-weight: bold; margin-top: 30px;">76%</div>', unsafe_allow_html=True)
-        sizes = [76, 10, 8, 6]
-        labels = ['A', 'B', 'C', 'D']
-        # HIGHLIGHT START
-        # Figma 디자인 및 요청에 맞춰 차트 크기 조정
-        fig2, ax2 = plt.subplots(figsize=(2, 2)) # 차트 크기 조정
-        # HIGHLIGHT END
-        ax2.pie(sizes, labels=labels, autopct='%1.0f%%', startangle=90)
-        ax2.axis('equal')
-        st.pyplot(fig2, use_container_width=True)
-
-# Widget 7: 부서별 현황
-with col7_fue:
-    with st.container(height=300, border=True): # 높이 조정
-        st.markdown('<div class="widget-title">부서별 현황</div>', unsafe_allow_html=True)
-        st.markdown('<div class="icon">🏢</div>', unsafe_allow_html=True)
-
-# Widget 8: 직무별 현황
-with col8_fue:
-    with st.container(height=300, border=True): # 높이 조정
-        st.markdown('<div class="widget-title">직무별 현황</div>', unsafe_allow_html=True)
-        st.markdown('<div class="icon">🛠️</div>', unsafe_allow_html=True)
