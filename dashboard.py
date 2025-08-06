@@ -308,7 +308,7 @@ col6_fue, col7_fue, col8_fue = st.columns([2, 1, 1]) # 비율 조정
 
 # Widget 6: Composition (2 by 1)
 with col6_fue:
-    with st.container(height=300, border=True): # 높이 조정
+    with st.container(height=150, border=True): # 높이 조정
         st.markdown('<div class="widget-title">Composition</div>', unsafe_allow_html=True)
         st.markdown('<div style="text-align: left; font-size: 20px; font-weight: bold; margin-top: 30px;">76%</div>', unsafe_allow_html=True)
         sizes = [38, 10, 8, 6]
@@ -323,13 +323,13 @@ with col6_fue:
 
 # Widget 7: 부서별 현황
 with col7_fue:
-    with st.container(height=300, border=True): # 높이 조정
+    with st.container(height=150, border=True): # 높이 조정
         st.markdown('<div class="widget-title">부서별 현황</div>', unsafe_allow_html=True)
         st.markdown('<div class="icon">🏢</div>', unsafe_allow_html=True)
 
 # Widget 8: 직무별 현황
 with col8_fue:
-    with st.container(height=300, border=True): # 높이 조정
+    with st.container(height=150, border=True): # 높이 조정
         st.markdown('<div class="widget-title">직무별 현황</div>', unsafe_allow_html=True)
         st.markdown('<div class="icon">🛠️</div>', unsafe_allow_html=True)
 
