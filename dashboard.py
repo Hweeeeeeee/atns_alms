@@ -49,10 +49,8 @@ st.markdown("""
             color: #666;
         }
         .menu-item.active {
-            /* HIGHLIGHT START: 메뉴 활성 색상 변경 */
             color: #007BFF; /* SAP Blue 계열 */
             border-bottom: 2px solid #007BFF;
-            /* HIGHLIGHT END */
         }
         .search-box {
             padding: 4px 8px;
@@ -125,7 +123,6 @@ st.markdown("""
             font-size: 13px;
         }
         .user-icon {
-            /* HIGHLIGHT START: 사용자 상태 아이콘 색상 변경 */
             border: 1px solid;
             background-color: rgba(0,0,0,0.05); /* 투명한 배경 */
             padding: 0.25rem 0.5rem;
@@ -144,7 +141,6 @@ st.markdown("""
         .user-icon.Inactive {
             color: #808080; /* Grey */
             border-color: #808080;
-            /* HIGHLIGHT END */
         }
         /* Matplotlib 차트 컨테이너 스타일 */
         .chart-container {
@@ -158,7 +154,7 @@ st.markdown("""
         .stApp {
             padding-top: 0px;
         }
-        /* HIGHLIGHT START: 막대 그래프 위에 텍스트를 위한 스타일 추가 */
+        /* 막대 그래프 위에 텍스트를 위한 스타일 추가 */
         .bar-container {
             position: relative;
             width: 100%;
@@ -175,11 +171,10 @@ st.markdown("""
             font-size: 16px; /* 텍스트 크기 조절 */
             z-index: 1; /* 막대 그래프 위에 오도록 설정 */
         }
-        /* HIGHLIGHT END */
-        /* HIGHLIGHT START: Composition 위젯을 위한 새로운 CSS */
+        /* Composition 위젯의 텍스트와 차트 정렬을 위한 CSS 수정 (롤백) */
         .composition-content {
             display: flex;
-            align-items: center;
+            align-items: center; /* HIGHLIGHT: 중앙 정렬로 롤백 */
             justify-content: space-between; /* 텍스트와 차트 사이 공간 분배 */
             flex-grow: 1; /* 남은 공간을 채우도록 설정 */
             padding-top: 10px; /* 상단 여백 추가 */
@@ -199,7 +194,6 @@ st.markdown("""
             color: #666;
             margin-top: 5px;
         }
-        /* HIGHLIGHT END */
     </style>
 """, unsafe_allow_html=True)
 
@@ -240,7 +234,20 @@ st.markdown('<div class="section-title">Overview</div>', unsafe_allow_html=True)
 
 
 
-# 첫 번째 줄 : Overview
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 첫 번째 섹션 : Overview
 # 첫 줄: 3개 위젯 (2x2, 2x2, 2x1)
 col1, col2, col3 = st.columns([2, 2, 2])
 
@@ -260,10 +267,8 @@ with col1:
         # Figma 디자인에 맞춰 두 개의 파이 차트 대신 하나의 파이 차트로 변경
         active_pct = 292 / 500 * 100
         fig1, ax1 = plt.subplots(figsize=(4, 4)) # 차트 크기 조정
-        # HIGHLIGHT START: 파이 차트 색상 변경
         colors = ['#007BFF', '#FFA500'] # SAP Blue, Orange
         ax1.pie([active_pct, 100 - active_pct], labels=[f'Active ({active_pct:.1f}%)', 'Remaining'], autopct='%1.1f%%', startangle=90, colors=colors)
-        # HIGHLIGHT END
         ax1.set_aspect('equal') # 원형 유지
         st.pyplot(fig1, use_container_width=True) # 컨테이너 너비에 맞춤
 
@@ -283,10 +288,8 @@ with col2:
 
         # 막대그래프
         fig3, ax3 = plt.subplots(figsize=(5, 3)) # 차트 크기 조정
-        # HIGHLIGHT START: 막대 그래프 색상 변경
         bar_colors = ['#D3D3D3'] * (len(months) - 1) + ['#007BFF'] # 마지막 막대만 SAP Blue
         ax3.bar(months, values, color=bar_colors)
-        # HIGHLIGHT END
         ax3.set_ylabel("Licenses")
         ax3.set_title("최근 4개월 Active License 수")
         st.pyplot(fig3, use_container_width=True) # 컨테이너 너비에 맞춤
@@ -311,7 +314,14 @@ with col3:
 
 
 
-# 두 번째 줄: 위젯 4만 표시
+
+
+
+
+
+
+
+# 두 번째 섹션 : FUE License
 # FUE License 섹션
 st.markdown('<div class="section-title">FUE License</div>', unsafe_allow_html=True)
 
@@ -358,8 +368,8 @@ with col6_fue:
     with st.container(height=300, border=True): # 높이 조정
         st.markdown('<div class="widget-title">Composition ratio</div>', unsafe_allow_html=True)
         
-        # HIGHLIGHT START: `st.columns`의 비율 조정 및 차트의 `bbox_inches` 설정
-        text_col, chart_col = st.columns([3, 2]) # 텍스트:차트 비율을 3:2로 조정
+        # HIGHLIGHT START: 텍스트와 차트 배치를 위한 HTML 구조 변경 (롤백)
+        text_col, chart_col = st.columns([2, 1]) # 텍스트:차트 비율을 2:1로 롤백
 
         with text_col:
             st.markdown("""
@@ -372,39 +382,26 @@ with col6_fue:
         with chart_col:
             sizes = [76, 10, 8, 6]
             labels = ['A', 'B', 'C', 'D']
-            fig2, ax2 = plt.subplots(figsize=(1.5, 1.5)) # 차트 크기 조정 (유지)
+            fig2, ax2 = plt.subplots(figsize=(2, 2)) # HIGHLIGHT: 차트 크기 (figsize)를 (2, 2)로 롤백
             colors_composition = ['#007BFF', '#ADD8E6', '#87CEEB', '#B0E0E6'] # 파란색 계열로 변경
             ax2.pie(sizes, labels=labels, autopct='%1.0f%%', startangle=90, colors=colors_composition,
-                    wedgeprops={'linewidth': 0, 'edgecolor': 'white'},
-                    textprops={'fontsize': 8}) # 텍스트 크기 조정
+                    wedgeprops={'linewidth': 0, 'edgecolor': 'white'}) # HIGHLIGHT: 텍스트 크기 조정 (textprops) 제거
             ax2.axis('equal')
-            st.pyplot(fig2, use_container_width=True, bbox_inches='tight') # `bbox_inches='tight'` 추가
+            st.pyplot(fig2, use_container_width=True) # HIGHLIGHT: bbox_inches='tight' 제거
         # HIGHLIGHT END
-            # HIGHLIGHT START: 차트의 y축 위치를 조정하기 위한 코드 추가
-            # Matplotlib 차트의 여백을 직접 조절하여 위치를 올립니다.
-            # 이 부분은 st.pyplot 호출 후에 적용되므로, Matplotlib의 Figure 객체에 직접 접근하여 조정합니다.
-            # 하지만 Streamlit에서는 st.pyplot이 이미 렌더링된 이미지를 반환하므로, 직접적인 조작은 어렵습니다.
-            # 대신, `chart_col`의 내부 요소에 CSS를 적용하여 상단으로 밀어 올리는 방식을 사용합니다.
-            st.markdown(
-                """
-                <style>
-                .stPlotlyChart {
-                    margin-top: -30px; /* HIGHLIGHT: 차트를 위로 올리기 위한 음수 마진 */
-                }
-                </style>
-                """, unsafe_allow_html=True
-            )
-           # HIGHLIGHT END
+            # HIGHLIGHT START: 차트의 y축 위치를 조정하기 위한 CSS 코드 제거
+            # .stPlotlyChart { margin-top: -30px; } 스타일 제거
+            # HIGHLIGHT END
 
 # Widget 7: 부서별 현황
 with col7_fue:
-    with st.container(height=150, border=True): # 높이 조정
+    with st.container(height=300, border=True): # 높이 조정
         st.markdown('<div class="widget-title">부서별 현황</div>', unsafe_allow_html=True)
         st.markdown('<div class="icon">🏢</div>', unsafe_allow_html=True)
 
 # Widget 8: 직무별 현황
 with col8_fue:
-    with st.container(height=150, border=True): # 높이 조정
+    with st.container(height=300, border=True): # 높이 조정
         st.markdown('<div class="widget-title">직무별 현황</div>', unsafe_allow_html=True)
         st.markdown('<div class="icon">🛠️</div>', unsafe_allow_html=True)
 
@@ -426,7 +423,8 @@ with col8_fue:
 
 
 
-# 세 번째 줄 : User
+
+# 세 번쩨 섹션 : User
 # User 위젯을 위한 새로운 컬럼 정의 (전체 너비 사용)
 st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True)
 col_user_total, col_user_variance, col_inactive_users = st.columns(3)
@@ -461,7 +459,7 @@ with col4:
             ("Yoon Tae", "GB Advanced User", "Expires 9999.12.30", "Active")
         ]
         for name, grade, expiry, status in users:
-            # HIGHLIGHT START: 사용자 상태에 따라 user-icon 클래스 동적 적용
+            # 사용자 상태에 따라 user-icon 클래스 동적 적용
             st.markdown(f"""
                 <div class="user-box">
                     <div class="user-info">
@@ -471,7 +469,6 @@ with col4:
                     <div class="user-icon {status}">{status}</div>
                 </div>
             """, unsafe_allow_html=True)
-            # HIGHLIGHT END
 
 # 위젯 5: User License Type (막대그래프)
 with col5:
@@ -483,11 +480,7 @@ with col5:
         max_value = max(values) * 1.1
 
         fig, ax = plt.subplots(figsize=(6, 3)) # 차트 크기 조정
-        # HIGHLIGHT START: 막대 그래프 색상 변경
         ax.barh(labels, values, color='#007BFF') # 모든 막대를 SAP Blue로
-        # HIGHLIGHT END
         ax.set_xlim(0, max_value)
         ax.set_xlabel('Users')
         st.pyplot(fig, use_container_width=True) # 컨테이너 너비에 맞춤
-
-
