@@ -64,9 +64,8 @@ st.markdown("""
         }
         /* HIGHLIGHT START: 위젯 공통 스타일 - 그림자 적용 및 스크롤 방지 */
         /* st.container(border=True)가 생성하는 div에 그림자 및 overflow 적용 */
-        /* Streamlit 버전업에 따라 클래스명이 변경될 수 있으므로 주의가 필요합니다. */
         div[data-testid="stVerticalBlock"] > div.st-emotion-cache-ocqkzj {
-            box-shadow: 0 6px 12px rgba(0,0,0,0.25) !important; /* 그림자를 더 진하게 적용 */
+            box-shadow: 0 8px 16px rgba(0,0,0,0.35) !important; /* 그림자를 더 진하게 적용 */
             overflow: hidden !important; /* 내부 스크롤 방지 */
         }
         .section-title {
@@ -78,13 +77,16 @@ st.markdown("""
             font-weight: bold;
             font-size: 18px;
             color: black;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1.5rem; /* HIGHLIGHT: 타이틀 하단 여백 증가 */
         }
         .stat-block {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            text-align: center;
+            text-align: left; /* HIGHLIGHT: stat-block 내부 텍스트 좌측 정렬 */
             margin-bottom: 1rem;
+        }
+        .stat-block > div { /* HIGHLIGHT: stat-block 내부 div 정렬 */
+            text-align: left;
         }
         .stat-label {
             font-size: 14px;
@@ -104,11 +106,13 @@ st.markdown("""
         .big-number {
             font-size: 32px;
             font-weight: bold;
-            text-align: center;
+            text-align: left; /* HIGHLIGHT: big-number 좌측 정렬 */
+            margin-top: 0.5rem; /* HIGHLIGHT: big-number 상단 여백 추가 */
         }
         .icon {
             font-size: 36px;
-            text-align: center;
+            text-align: left; /* HIGHLIGHT: 아이콘 좌측 정렬 */
+            margin-top: 0.5rem; /* HIGHLIGHT: 아이콘 상단 여백 추가 */
         }
         .user-box {
             border: 1px solid #d9d9d9;
