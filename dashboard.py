@@ -288,7 +288,7 @@ with col6_fue:
         st.markdown('<div style="text-align: left; font-size: 20px; font-weight: bold; margin-top: 30px;">76%</div>', unsafe_allow_html=True)
         sizes = [76, 10, 8, 6]
         labels = ['A', 'B', 'C', 'D']
-        fig2, ax2 = plt.subplots(figsize=(4, 4)) # 차트 크기 조정
+        fig2, ax2 = plt.subplots(figsize=(2, 2)) # 차트 크기 조정
         ax2.pie(sizes, labels=labels, autopct='%1.0f%%', startangle=90)
         ax2.axis('equal')
         st.pyplot(fig2, use_container_width=True)
