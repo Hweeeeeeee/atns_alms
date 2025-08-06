@@ -358,46 +358,53 @@ col6_fue, col7_fue, col8_fue = st.columns([2, 1, 1]) # 비율 조정
 
 # Widget 6: Composition (2 by 1)
 with col6_fue:
-    with st.container(height=300, border=True): # 높이 조정
+    with st.container(height=150, border=True): # 높이 조정
         st.markdown('<div class="widget-title">Composition ratio</div>', unsafe_allow_html=True)
         # HIGHLIGHT START: 텍스트와 차트 배치를 위한 HTML 구조 변경 및 차트 크기/위치 조정
-        st.markdown("""
-            <div class="composition-content">
+        # st.markdown("""
+        #     <div class="composition-content">
+        #         <div class="composition-text">
+        #             <div class="percentage">76%</div>
+        #             <div class="description">GB Advanced use</div>
+        #         </div>
+        #         <div style="width: 150px; height: 150px; flex-shrink: 0; display: flex; justify-content: flex-end; align-items: center; overflow: hidden;">
+        #             <div id="composition-chart-placeholder" style="width: 100%; height: 100%;"></div>
+        #         </div>
+        #     </div>
+        # """, unsafe_allow_html=True)
+        # HIGHLIGHT END
+
+        # HIGHLIGHT START: Streamlit columns를 사용하여 텍스트와 차트를 분리
+        text_col, chart_col = st.columns([2, 1]) # 텍스트:차트 비율을 2:1로 설정
+
+        with text_col:
+            st.markdown("""
                 <div class="composition-text">
                     <div class="percentage">76%</div>
                     <div class="description">GB Advanced use</div>
                 </div>
-                <div style="width: 150px; height: 150px; flex-shrink: 0; display: flex; justify-content: flex-end; align-items: center; overflow: hidden;">
-                    <div id="composition-chart-placeholder" style="width: 100%; height: 100%;"></div>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-        # HIGHLIGHT END
+            """, unsafe_allow_html=True)
 
-        sizes = [76, 10, 8, 6]
-        labels = ['A', 'B', 'C', 'D']
-        # HIGHLIGHT START: 차트 크기 조정 (더 작게)
-        fig2, ax2 = plt.subplots(figsize=(1.5, 1.5)) # 차트 크기 조정
-        # HIGHLIGHT END
-        # HIGHLIGHT START: 파이 차트 색상 변경 (Figma와 유사하게)
-        colors_composition = ['#007BFF', '#ADD8E6', '#87CEEB', '#B0E0E6'] # 파란색 계열로 변경
-        ax2.pie(sizes, labels=labels, autopct='%1.0f%%', startangle=90, colors=colors_composition,
-                wedgeprops={'linewidth': 0, 'edgecolor': 'white'}) # 테두리 제거
-        # HIGHLIGHT END
-        ax2.axis('equal')
-        # HIGHLIGHT START: st.pyplot을 placeholder 아래에 직접 호출
-        st.pyplot(fig2, use_container_width=True)
+        with chart_col:
+            sizes = [76, 10, 8, 6]
+            labels = ['A', 'B', 'C', 'D']
+            fig2, ax2 = plt.subplots(figsize=(1.5, 1.5)) # 차트 크기 조정
+            colors_composition = ['#007BFF', '#ADD8E6', '#87CEEB', '#B0E0E6'] # 파란색 계열로 변경
+            ax2.pie(sizes, labels=labels, autopct='%1.0f%%', startangle=90, colors=colors_composition,
+                    wedgeprops={'linewidth': 0, 'edgecolor': 'white'}) # 테두리 제거
+            ax2.axis('equal')
+            st.pyplot(fig2, use_container_width=True) # 컨테이너 너비에 맞춤
         # HIGHLIGHT END
 
 # Widget 7: 부서별 현황
 with col7_fue:
-    with st.container(height=300, border=True): # 높이 조정
+    with st.container(height=150, border=True): # 높이 조정
         st.markdown('<div class="widget-title">부서별 현황</div>', unsafe_allow_html=True)
         st.markdown('<div class="icon">🏢</div>', unsafe_allow_html=True)
 
 # Widget 8: 직무별 현황
 with col8_fue:
-    with st.container(height=300, border=True): # 높이 조정
+    with st.container(height=150, border=True): # 높이 조정
         st.markdown('<div class="widget-title">직무별 현황</div>', unsafe_allow_html=True)
         st.markdown('<div class="icon">🛠️</div>', unsafe_allow_html=True)
 
