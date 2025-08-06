@@ -192,7 +192,7 @@ st.markdown(menu_html, unsafe_allow_html=True)
 st.markdown('<div class="section-title">Overview</div>', unsafe_allow_html=True)
 
 # 첫 줄: 3개 위젯 (2x2, 2x2, 2x1)
-col1, col2, col3 = st.columns([2, 1, 1])
+col1, col2, col3 = st.columns([2, 2, 2])
 
 # --- 위젯 1: FUE License Status ---
 with col1:
@@ -208,7 +208,7 @@ with col1:
         """, unsafe_allow_html=True)
 
         # Figma 디자인에 맞춰 두 개의 파이 차트 대신 하나의 파이 차트로 변경
-        active_pct = 292 / 100 * 100
+        active_pct = 292 / 500 * 100
         fig1, ax1 = plt.subplots(figsize=(4, 4)) # 차트 크기 조정
         # HIGHLIGHT START: 파이 차트 색상 변경
         colors = ['#007BFF', '#FFA500'] # SAP Blue, Orange
@@ -253,15 +253,7 @@ with col3:
             </table>
         """, unsafe_allow_html=True)
 
-
-
-
-# 두 번째 섹션
-
-
-
-
-
+# 두 번째 섹션 : FUE License
 # FUE License 섹션
 st.markdown('<div class="section-title">FUE License</div>', unsafe_allow_html=True)
 
@@ -305,12 +297,12 @@ col6_fue, col7_fue, col8_fue = st.columns([2, 1, 1]) # 비율 조정
 
 # Widget 6: Composition (2 by 1)
 with col6_fue:
-    with st.container(height=150, border=True): # 높이 조정
+    with st.container(height=300, border=True): # 높이 조정
         st.markdown('<div class="widget-title">Composition</div>', unsafe_allow_html=True)
         st.markdown('<div style="text-align: left; font-size: 20px; font-weight: bold; margin-top: 30px;">76%</div>', unsafe_allow_html=True)
-        sizes = [40, 10, 8, 6]
+        sizes = [76, 10, 8, 6]
         labels = ['A', 'B', 'C', 'D']
-        fig2, ax2 = plt.subplots(figsize=(5, 5)) # 차트 크기 조정
+        fig2, ax2 = plt.subplots(figsize=(2, 2)) # 차트 크기 조정
         # HIGHLIGHT START: 파이 차트 색상 변경 (Figma와 유사하게)
         colors_composition = ['#007BFF', '#FFA500', '#28A745', '#6C757D'] # Blue, Orange, Green, Grey
         ax2.pie(sizes, labels=labels, autopct='%1.0f%%', startangle=90, colors=colors_composition)
@@ -320,13 +312,13 @@ with col6_fue:
 
 # Widget 7: 부서별 현황
 with col7_fue:
-    with st.container(height=150, border=True): # 높이 조정
+    with st.container(height=300, border=True): # 높이 조정
         st.markdown('<div class="widget-title">부서별 현황</div>', unsafe_allow_html=True)
         st.markdown('<div class="icon">🏢</div>', unsafe_allow_html=True)
 
 # Widget 8: 직무별 현황
 with col8_fue:
-    with st.container(height=150, border=True): # 높이 조정
+    with st.container(height=300, border=True): # 높이 조정
         st.markdown('<div class="widget-title">직무별 현황</div>', unsafe_allow_html=True)
         st.markdown('<div class="icon">🛠️</div>', unsafe_allow_html=True)
 
@@ -336,7 +328,10 @@ with col8_fue:
 
 
 
-# 세 번째 섹션
+
+
+
+# 세 번재 섹션 : User
 # User 위젯을 위한 새로운 컬럼 정의 (전체 너비 사용)
 st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True)
 col_user_total, col_user_variance, col_inactive_users = st.columns(3)
@@ -399,4 +394,3 @@ with col5:
         ax.set_xlim(0, max_value)
         ax.set_xlabel('Users')
         st.pyplot(fig, use_container_width=True) # 컨테이너 너비에 맞춤
-
