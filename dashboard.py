@@ -192,21 +192,26 @@ with col1:
             <hr style="margin: 1rem 0;">
         """, unsafe_allow_html=True)
 
-        # 파이 차트 1: Active Licenses
-        active_pct = 292 / 500 * 100
-        # fig1, ax1 = plt.subplots(figsize=(3, 3)) # 차트 크기 조정
-        fig1, ax1 = plt.subplots(figsize=(2.5, 2.5)) # 차트 크기 조정
-        ax1.pie([active_pct, 100 - active_pct], labels=[f'Active ({active_pct:.1f}%)', 'Remaining'], autopct='%1.1f%%', startangle=90)
-        ax1.set_aspect('equal') # 원형 유지
-        st.pyplot(fig1, use_container_width=True) # 컨테이너 너비에 맞춤
+        # 파이 차트들을 가로로 배치하기 위한 컬럼 추가
+        # HIGHLIGHT START
+        chart_col1, chart_col2 = st.columns(2)
+        # HIGHLIGHT END
 
-        # 파이 차트 2: Transaction Based
-        trans_pct = 271 / 500 * 100
-        # fig2, ax2 = plt.subplots(figsize=(3, 3)) # 차트 크기 조정
-        fig2, ax2 = plt.subplots(figsize=(2.5, 2.5)) # 차트 크기 조정
-        ax2.pie([trans_pct, 100 - trans_pct], labels=[f'Transaction ({trans_pct:.1f}%)', 'Remaining'], autopct='%1.1f%%', startangle=90)
-        ax2.set_aspect('equal') # 원형 유지
-        st.pyplot(fig2, use_container_width=True) # 컨테이너 너비에 맞춤
+        with chart_col1:
+            # 파이 차트 1: Active Licenses
+            active_pct = 292 / 500 * 100
+            fig1, ax1 = plt.subplots(figsize=(2.5, 2.5)) # 차트 크기 조정
+            ax1.pie([active_pct, 100 - active_pct], labels=[f'Active ({active_pct:.1f}%)', 'Remaining'], autopct='%1.1f%%', startangle=90)
+            ax1.set_aspect('equal') # 원형 유지
+            st.pyplot(fig1, use_container_width=True) # 컨테이너 너비에 맞춤
+
+        with chart_col2:
+            # 파이 차트 2: Transaction Based
+            trans_pct = 271 / 500 * 100
+            fig2, ax2 = plt.subplots(figsize=(2.5, 2.5)) # 차트 크기 조정
+            ax2.pie([trans_pct, 100 - trans_pct], labels=[f'Transaction ({trans_pct:.1f}%)', 'Remaining'], autopct='%1.1f%%', startangle=90)
+            ax2.set_aspect('equal') # 원형 유지
+            st.pyplot(fig2, use_container_width=True) # 컨테이너 너비에 맞춤
 
 
 # --- 위젯 2: FUE Active License Variance ---
@@ -241,72 +246,7 @@ with col3:
             </table>
         """, unsafe_allow_html=True)
 
-# 두 번째 줄
-# FUE License 섹션
-st.markdown('<div class="section-title">FUE License</div>', unsafe_allow_html=True)
-
-# -------- Row 1: 5개의 위젯 --------
-col1_fue, col2_fue, col3_fue, col4_fue, col5_fue = st.columns(5)
-
-with col1_fue:
-    with st.container(height=150, border=True):
-        st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
-        st.markdown('<div class="big-number">500</div>', unsafe_allow_html=True)
-
-with col2_fue:
-    with st.container(height=150, border=True):
-        st.markdown('<div class="widget-title">Active License</div>', unsafe_allow_html=True)
-        st.markdown('<div class="big-number">292</div>', unsafe_allow_html=True)
-
-with col3_fue:
-    with st.container(height=150, border=True):
-        st.markdown('<div class="widget-title">Remaining Licenses</div>', unsafe_allow_html=True)
-        st.markdown('<div class="big-number">208</div>', unsafe_allow_html=True)
-
-with col4_fue:
-    with st.container(height=150, border=True):
-        st.markdown('<div class="widget-title">License Utilization Rate</div>', unsafe_allow_html=True)
-        fig, ax = plt.subplots(figsize=(4, 0.5))
-        ax.barh(0, 58, color='blue', height=0.4)
-        ax.set_xlim(0, 100)
-        ax.axis('off')
-        st.pyplot(fig, use_container_width=True)
-        st.markdown('<div class="big-number">58%</div>', unsafe_allow_html=True)
-
-with col5_fue:
-    with st.container(height=150, border=True):
-        st.markdown('<div class="widget-title">License Variance</div>', unsafe_allow_html=True)
-        st.markdown('<div class="big-number">12 ▲</div>', unsafe_allow_html=True)
-
-# -------- Row 2: 3개의 위젯 --------
-col6_fue, col7_fue, col8_fue = st.columns([2, 1, 1]) # 비율 조정
-
-# Widget 6: Composition (2 by 1)
-with col6_fue:
-    with st.container(height=350, border=True): # 높이 조정
-        st.markdown('<div class="widget-title">Composition</div>', unsafe_allow_html=True)
-        st.markdown('<div style="text-align: left; font-size: 20px; font-weight: bold; margin-top: 30px;">76%</div>', unsafe_allow_html=True)
-        sizes = [76, 10, 8, 6]
-        labels = ['A', 'B', 'C', 'D']
-        fig2, ax2 = plt.subplots(figsize=(2, 2)) # 차트 크기 조정
-        ax2.pie(sizes, labels=labels, autopct='%1.0f%%', startangle=90)
-        ax2.axis('equal')
-        st.pyplot(fig2, use_container_width=True)
-
-# Widget 7: 부서별 현황
-with col7_fue:
-    with st.container(height=150, border=True): # 높이 조정
-        st.markdown('<div class="widget-title">부서별 현황</div>', unsafe_allow_html=True)
-        st.markdown('<div class="icon">🏢</div>', unsafe_allow_html=True)
-
-# Widget 8: 직무별 현황
-with col8_fue:
-    with st.container(height=150, border=True): # 높이 조정
-        st.markdown('<div class="widget-title">직무별 현황</div>', unsafe_allow_html=True)
-        st.markdown('<div class="icon">🛠️</div>', unsafe_allow_html=True)
-
-
-# 세 번째 줄
+# 두 번째 줄: 위젯 4만 표시
 # User 위젯을 위한 새로운 컬럼 정의 (전체 너비 사용)
 st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True)
 col_user_total, col_user_variance, col_inactive_users = st.columns(3)
@@ -365,3 +305,69 @@ with col5:
         ax.set_xlim(0, max_value)
         ax.set_xlabel('Users')
         st.pyplot(fig, use_container_width=True) # 컨테이너 너비에 맞춤
+
+
+# FUE License 섹션
+st.markdown('<div class="section-title">FUE License</div>', unsafe_allow_html=True)
+
+# -------- Row 1: 5개의 위젯 --------
+col1_fue, col2_fue, col3_fue, col4_fue, col5_fue = st.columns(5)
+
+with col1_fue:
+    with st.container(height=150, border=True):
+        st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
+        st.markdown('<div class="big-number">500</div>', unsafe_allow_html=True)
+
+with col2_fue:
+    with st.container(height=150, border=True):
+        st.markdown('<div class="widget-title">Active License</div>', unsafe_allow_html=True)
+        st.markdown('<div class="big-number">292</div>', unsafe_allow_html=True)
+
+with col3_fue:
+    with st.container(height=150, border=True):
+        st.markdown('<div class="widget-title">Remaining Licenses</div>', unsafe_allow_html=True)
+        st.markdown('<div class="big-number">208</div>', unsafe_allow_html=True)
+
+with col4_fue:
+    with st.container(height=150, border=True):
+        st.markdown('<div class="widget-title">License Utilization Rate</div>', unsafe_allow_html=True)
+        fig, ax = plt.subplots(figsize=(4, 0.5))
+        ax.barh(0, 58, color='blue', height=0.4)
+        ax.set_xlim(0, 100)
+        ax.axis('off')
+        st.pyplot(fig, use_container_width=True)
+        st.markdown('<div class="big-number">58%</div>', unsafe_allow_html=True)
+
+with col5_fue:
+    with st.container(height=150, border=True):
+        st.markdown('<div class="widget-title">License Variance</div>', unsafe_allow_html=True)
+        st.markdown('<div class="big-number">12 ▲</div>', unsafe_allow_html=True)
+
+# -------- Row 2: 3개의 위젯 --------
+col6_fue, col7_fue, col8_fue = st.columns([2, 1, 1]) # 비율 조정
+
+# Widget 6: Composition (2 by 1)
+with col6_fue:
+    with st.container(height=300, border=True): # 높이 조정
+        st.markdown('<div class="widget-title">Composition</div>', unsafe_allow_html=True)
+        st.markdown('<div style="text-align: left; font-size: 20px; font-weight: bold; margin-top: 30px;">76%</div>', unsafe_allow_html=True)
+        sizes = [76, 10, 8, 6]
+        labels = ['A', 'B', 'C', 'D']
+        # HIGHLIGHT START
+        fig2, ax2 = plt.subplots(figsize=(2, 2)) # 차트 크기 조정
+        # HIGHLIGHT END
+        ax2.pie(sizes, labels=labels, autopct='%1.0f%%', startangle=90)
+        ax2.axis('equal')
+        st.pyplot(fig2, use_container_width=True)
+
+# Widget 7: 부서별 현황
+with col7_fue:
+    with st.container(height=300, border=True): # 높이 조정
+        st.markdown('<div class="widget-title">부서별 현황</div>', unsafe_allow_html=True)
+        st.markdown('<div class="icon">🏢</div>', unsafe_allow_html=True)
+
+# Widget 8: 직무별 현황
+with col8_fue:
+    with st.container(height=300, border=True): # 높이 조정
+        st.markdown('<div class="widget-title">직무별 현황</div>', unsafe_allow_html=True)
+        st.markdown('<div class="icon">🛠️</div>', unsafe_allow_html=True)
