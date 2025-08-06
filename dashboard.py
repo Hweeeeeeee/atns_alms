@@ -301,14 +301,14 @@ with col5_fue:
         st.markdown('<div class="big-number">12 ▲</div>', unsafe_allow_html=True)
 
 # -------- Row 2: 3개의 위젯 --------
-col6_fue, col7_fue, col8_fue = st.columns([2, 1, 1]) # 비율 조정
+col6_fue, col7_fue, col8_fue = st.columns([2, 2, 2]) # 비율 조정
 
 # Widget 6: Composition (2 by 1)
 with col6_fue:
     with st.container(height=150, border=True): # 높이 조정
         st.markdown('<div class="widget-title">Composition</div>', unsafe_allow_html=True)
         st.markdown('<div style="text-align: left; font-size: 20px; font-weight: bold; margin-top: 30px;">76%</div>', unsafe_allow_html=True)
-        sizes = [50, 10, 8, 6]
+        sizes = [40, 10, 8, 6]
         labels = ['A', 'B', 'C', 'D']
         fig2, ax2 = plt.subplots(figsize=(5, 5)) # 차트 크기 조정
         # HIGHLIGHT START: 파이 차트 색상 변경 (Figma와 유사하게)
