@@ -379,10 +379,26 @@ with col6_fue:
             colors_composition = ['#007BFF', '#ADD8E6', '#87CEEB', '#B0E0E6'] # 파란색 계열로 변경
             ax2.pie(sizes, labels=labels, autopct='%1.0f%%', startangle=90, colors=colors_composition,
                     wedgeprops={'linewidth': 0, 'edgecolor': 'white'},
-                    textprops={'fontsize': 6}) # HIGHLIGHT: 텍스트 크기 조정
+                    textprops={'fontsize': 8}) # 텍스트 크기 조정
             ax2.axis('equal')
-            st.pyplot(fig2, use_container_width=True, bbox_inches='tight') # HIGHLIGHT: `bbox_inches='tight'` 추가
+            st.pyplot(fig2, use_container_width=True, bbox_inches='tight') # `bbox_inches='tight'` 추가
         # HIGHLIGHT END
+            # HIGHLIGHT START: 차트의 y축 위치를 조정하기 위한 코드 추가
+            # Matplotlib 차트의 여백을 직접 조절하여 위치를 올립니다.
+            # 이 부분은 st.pyplot 호출 후에 적용되므로, Matplotlib의 Figure 객체에 직접 접근하여 조정합니다.
+            # 하지만 Streamlit에서는 st.pyplot이 이미 렌더링된 이미지를 반환하므로, 직접적인 조작은 어렵습니다.
+            # 대신, `chart_col`의 내부 요소에 CSS를 적용하여 상단으로 밀어 올리는 방식을 사용합니다.
+            st.markdown(
+                """
+                <style>
+                .stPlotlyChart {
+                    margin-top: -30px; /* HIGHLIGHT: 차트를 위로 올리기 위한 음수 마진 */
+                }
+                </style>
+                """, unsafe_allow_html=True
+            )
+            # HIGHLIGHT END
+
 
 # Widget 7: 부서별 현황
 with col7_fue:
