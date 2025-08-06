@@ -337,16 +337,13 @@ with col4_fue:
     with st.container(height=150, border=True):
         st.markdown('<div class="widget-title">License Utilization Rate</div>', unsafe_allow_html=True)
         fig, ax = plt.subplots(figsize=(4, 0.5))
-        # HIGHLIGHT START: 막대 그래프 색상 변경 및 텍스트 추가
+        # 막대 그래프 색상 변경 및 텍스트 추가
         ax.barh(0, 58, color='#007BFF', height=0.4) # SAP Blue
         ax.text(58/2, 0, '58%', va='center', ha='center', color='white', fontsize=16, fontweight='bold') # 막대 중앙에 텍스트 추가
-        # HIGHLIGHT END
         ax.set_xlim(0, 100)
         ax.axis('off')
         st.pyplot(fig, use_container_width=True)
-        # HIGHLIGHT START: 기존 텍스트 제거
-        # st.markdown('<div class="big-number">58%</div>', unsafe_allow_html=True)
-        # HIGHLIGHT END
+        # 기존 텍스트 제거
 
 with col5_fue:
     with st.container(height=150, border=True):
@@ -362,7 +359,7 @@ with col6_fue:
         st.markdown('<div class="widget-title">Composition ratio</div>', unsafe_allow_html=True)
         
         # HIGHLIGHT START: `st.columns`의 비율 조정 및 차트의 `bbox_inches` 설정
-        text_col, chart_col = st.columns([2, 1]) # 텍스트:차트 비율을 3:2로 조정
+        text_col, chart_col = st.columns([3, 2]) # 텍스트:차트 비율을 3:2로 조정
 
         with text_col:
             st.markdown("""
@@ -392,12 +389,24 @@ with col6_fue:
                 """
                 <style>
                 .stPlotlyChart {
-                    margin-top: -100px; /* HIGHLIGHT: 차트를 위로 올리기 위한 음수 마진 */
+                    margin-top: -30px; /* HIGHLIGHT: 차트를 위로 올리기 위한 음수 마진 */
                 }
                 </style>
                 """, unsafe_allow_html=True
             )
             # HIGHLIGHT END
+
+# Widget 7: 부서별 현황
+with col7_fue:
+    with st.container(height=300, border=True): # 높이 조정
+        st.markdown('<div class="widget-title">부서별 현황</div>', unsafe_allow_html=True)
+        st.markdown('<div class="icon">🏢</div>', unsafe_allow_html=True)
+
+# Widget 8: 직무별 현황
+with col8_fue:
+    with st.container(height=300, border=True): # 높이 조정
+        st.markdown('<div class="widget-title">직무별 현황</div>', unsafe_allow_html=True)
+        st.markdown('<div class="icon">🛠️</div>', unsafe_allow_html=True)
 
 
 # Widget 7: 부서별 현황
