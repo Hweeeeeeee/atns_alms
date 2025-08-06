@@ -1,6 +1,8 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
+
+
 import streamlit as st
 
 # 페이지 설정
@@ -141,6 +143,7 @@ st.markdown('<div class="section-title">Overview</div>', unsafe_allow_html=True)
 # 첫 줄: 3개 위젯 (2x2, 2x2, 2x1)
 col1, col2, col3 = st.columns([2, 2, 2])
 
+# --- 위젯 1: FUE License Status ---
 with col1:
     st.markdown('<div class="widget-box">', unsafe_allow_html=True)
     st.markdown('<div class="widget-title">FUE License Status</div>', unsafe_allow_html=True)
@@ -169,29 +172,24 @@ with col1:
 
 # --- 위젯 2: FUE Active License Variance ---
 with col2:
-    with st.container():
-        st.markdown("""
-            <div class="widget-box">
-                <div class="widget-title">FUE Active License Variance</div>
-                <div class="stat-block">
-                    <div> 
-                        # 최근 4개월 값 생성
-                        base = 292
-                        months = ['4월', '5월', '6월', '7월']
-                        values = [base]
-                        for _ in range(3):
-                            base *= np.random.uniform(0.85, 0.95)
-                            values.insert(0, int(base))
-                    
-                        # 막대그래프
-                        fig3, ax3 = plt.subplots()
-                        ax3.bar(months, values, color=['gray', 'gray', 'gray', 'blue'])
-                        ax3.set_ylabel("Licenses")
-                        ax3.set_title("최근 4개월 Active License 수")
-                        st.pyplot(fig3)
-                    </div>
-                </div>
-            </div>
+    st.markdown('<div class="widget-box">', unsafe_allow_html=True)
+    st.markdown('<div class="widget-title">FUE Active License Variance</div>', unsafe_allow_html=True)
+
+    # 최근 4개월 값 생성
+    base = 292
+    months = ['4월', '5월', '6월', '7월']
+    values = [base]
+    for _ in range(3):
+        base *= np.random.uniform(0.85, 0.95)
+        values.insert(0, int(base))
+
+    # 막대그래프
+    fig3, ax3 = plt.subplots()
+    ax3.bar(months, values, color=['gray', 'gray', 'gray', 'blue'])
+    ax3.set_ylabel("Licenses")
+    ax3.set_title("최근 4개월 Active License 수")
+    st.pyplot(fig3)
+
     st.markdown('</div>', unsafe_allow_html=True)
 
 # --- 위젯 3: My Account ---
