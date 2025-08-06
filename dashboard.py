@@ -1,6 +1,90 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
+import streamlit as st
+
+# 페이지 설정
+st.set_page_config(layout="wide")
+
+# 헤더 및 메뉴바 스타일 정의
+st.markdown("""
+    <style>
+        .header {
+            background-color: white;
+            border-bottom: 1px solid #d9d9d9;
+            box-shadow: 0 3px 3px -3px rgba(0, 0, 0, 0.1);
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .menu-bar {
+            display: flex;
+            gap: 2rem;
+            padding: 0.5rem 2rem;
+            background-color: white;
+            border-bottom: 1px solid #d9d9d9;
+            box-shadow: 0px 3px 3px -3px rgba(0,0,0,0.1);
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .menu-item {
+            padding-bottom: 0.25rem;
+            cursor: pointer;
+            color: #666;
+        }
+        .menu-item.active {
+            color: #1673ff;
+            border-bottom: 2px solid #1673ff;
+        }
+        .search-box {
+            padding: 4px 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+# ---------- HEADER ----------
+st.markdown("""
+<div class="header">
+    <div class="header-left">
+        <img src="https://www.sap.com/dam/application/shared/logos/sap-logo-svg.svg" alt="SAP" width="60">
+        FUE License Management
+    </div>
+    <div class="header-right">
+        <input class="search-box" type="text" placeholder="Search...">
+        🔔
+        ⋯
+        <img src="https://www.w3schools.com/howto/img_avatar.png" width="32" height="32" style="border-radius:50%;">
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+# ---------- MENU BAR ----------
+menu_items = ["Home", "FUE License", "User", "My Account"]
+active = "Home"  # 현재 선택된 메뉴
+
+menu_html = '<div class="menu-bar">'
+for item in menu_items:
+    class_name = "menu-item active" if item == active else "menu-item"
+    menu_html += f'<div class="{class_name}">{item}</div>'
+menu_html += '</div>'
+st.markdown(menu_html, unsafe_allow_html=True)
+
+
 
 # 페이지 설정
 st.set_page_config(layout="wide")
