@@ -191,6 +191,10 @@ st.markdown(menu_html, unsafe_allow_html=True)
 # 섹션 타이틀
 st.markdown('<div class="section-title">Overview</div>', unsafe_allow_html=True)
 
+
+
+
+# 첫 번째 섹션 : Overview
 # 첫 줄: 3개 위젯 (2x2, 2x2, 2x1)
 col1, col2, col3 = st.columns([2, 2, 2])
 
@@ -290,13 +294,16 @@ with col4_fue:
     with st.container(height=150, border=True):
         st.markdown('<div class="widget-title">License Utilization Rate</div>', unsafe_allow_html=True)
         fig, ax = plt.subplots(figsize=(4, 0.5))
-        # HIGHLIGHT START: 막대 그래프 색상 변경
+        # HIGHLIGHT START: 막대 그래프 색상 변경 및 텍스트 추가
         ax.barh(0, 58, color='#007BFF', height=0.4) # SAP Blue
+        ax.text(58/2, 0, '58%', va='center', ha='center', color='white', fontsize=16, fontweight='bold') # 막대 중앙에 텍스트 추가
         # HIGHLIGHT END
         ax.set_xlim(0, 100)
         ax.axis('off')
         st.pyplot(fig, use_container_width=True)
-        st.markdown('<div class="big-number">58%</div>', unsafe_allow_html=True)
+        # HIGHLIGHT START: 기존 텍스트 제거
+        # st.markdown('<div class="big-number">58%</div>', unsafe_allow_html=True)
+        # HIGHLIGHT END
 
 with col5_fue:
     with st.container(height=150, border=True):
