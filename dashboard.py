@@ -77,15 +77,26 @@ st.markdown("""
             font-weight: bold;
             font-size: 18px;
             color: black;
-            margin-bottom: 1.5rem; /* HIGHLIGHT: 타이틀 하단 여백 증가 */
+            margin-bottom: 1.5rem; /* 타이틀 하단 여백 증가 */
         }
+        /* HIGHLIGHT START: 위젯 내부 콘텐츠를 감싸는 div 스타일 */
+        .widget-content {
+            flex-grow: 1; /* 남은 공간을 모두 차지 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* 수직 중앙 정렬 */
+            align-items: flex-start; /* 좌측 정렬 */
+            padding-bottom: 1.5rem; /* 하단 여백 추가 */
+        }
+        /* HIGHLIGHT END */
         .stat-block {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            text-align: left; /* HIGHLIGHT: stat-block 내부 텍스트 좌측 정렬 */
+            text-align: left;
             margin-bottom: 1rem;
+            width: 100%; /* stat-block이 전체 너비를 사용하도록 */
         }
-        .stat-block > div { /* HIGHLIGHT: stat-block 내부 div 정렬 */
+        .stat-block > div {
             text-align: left;
         }
         .stat-label {
@@ -106,13 +117,13 @@ st.markdown("""
         .big-number {
             font-size: 32px;
             font-weight: bold;
-            text-align: left; /* HIGHLIGHT: big-number 좌측 정렬 */
-            margin-top: 0.5rem; /* HIGHLIGHT: big-number 상단 여백 추가 */
+            text-align: left;
+            margin-top: 0; /* HIGHLIGHT: Flexbox가 정렬하므로 마진 초기화 */
         }
         .icon {
             font-size: 36px;
-            text-align: left; /* HIGHLIGHT: 아이콘 좌측 정렬 */
-            margin-top: 0.5rem; /* HIGHLIGHT: 아이콘 상단 여백 추가 */
+            text-align: left;
+            margin-top: 0; /* HIGHLIGHT: Flexbox가 정렬하므로 마진 초기화 */
         }
         .user-box {
             border: 1px solid #d9d9d9;
@@ -235,6 +246,7 @@ cols_overview_row1 = st.columns([2, 2, 2])
 with cols_overview_row1[0]:
     with st.container(height=360, border=True): # 2x2 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">FUE License Status</div>', unsafe_allow_html=True)
+        st.markdown('<div class="widget-content">', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 시작
         st.markdown("""
             <div class="stat-block">
                 <div><div class="stat-label">Active Licenses</div><div class="stat-value">292</div></div>
@@ -251,11 +263,13 @@ with cols_overview_row1[0]:
         ax1.pie([active_pct, 100 - active_pct], labels=[f'Active ({active_pct:.1f}%)', 'Remaining'], autopct='%1.1f%%', startangle=90, colors=colors)
         ax1.set_aspect('equal')
         st.pyplot(fig1, use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 끝
 
 # 위젯 2: FUE Active License Variance (2x2 크기)
 with cols_overview_row1[1]:
     with st.container(height=360, border=True): # 2x2 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">FUE Active License Variance</div>', unsafe_allow_html=True)
+        st.markdown('<div class="widget-content">', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 시작
 
         base = 292
         months = ['4월', '5월', '6월', '7월']
@@ -271,11 +285,13 @@ with cols_overview_row1[1]:
         ax3.set_ylabel("Licenses")
         ax3.set_title("최근 4개월 Active License 수")
         st.pyplot(fig3, use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 끝
 
 # 위젯 3: My Account (2x1 크기) - 첫 번째 줄에 배치
 with cols_overview_row1[2]:
     with st.container(height=180, border=True): # 2x1 비율 (가로:세로 = 2:1)
         st.markdown('<div class="widget-title">My Account</div>', unsafe_allow_html=True)
+        st.markdown('<div class="widget-content">', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 시작
         st.markdown("""
             <table class="my-table">
                 <tr><td><strong>License Type</strong></td><td>ATNS ALMS License</td></tr>
@@ -283,6 +299,7 @@ with cols_overview_row1[2]:
                 <tr><td><strong>Expiration</strong></td><td>2027.12.31</td></tr>
             </table>
         """, unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 끝
 # HIGHLIGHT END
 
 
@@ -295,21 +312,28 @@ cols_fue_row1 = st.columns([1, 1, 1, 1, 1, 1]) # 1+1+1+1+1+1 = 6단위. 마지�
 with cols_fue_row1[0]: # 1단위
     with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
+        st.markdown('<div class="widget-content">', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 시작
         st.markdown('<div class="big-number">500</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 끝
 
 with cols_fue_row1[1]: # 1단위
     with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">Active License</div>', unsafe_allow_html=True)
+        st.markdown('<div class="widget-content">', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 시작
         st.markdown('<div class="big-number">292</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 끝
 
 with cols_fue_row1[2]: # 1단위
     with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">Remaining Licenses</div>', unsafe_allow_html=True)
+        st.markdown('<div class="widget-content">', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 시작
         st.markdown('<div class="big-number">208</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 끝
 
 with cols_fue_row1[3]: # 1단위
     with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">License Utilization Rate</div>', unsafe_allow_html=True)
+        st.markdown('<div class="widget-content">', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 시작
         # License Utilization Rate 그래프는 이미 막대 형태로 잘 맞으므로 그대로 유지
         fig, ax = plt.subplots(figsize=(4, 0.5)) # 위젯 높이에 맞게 조정
         ax.barh(0, 58, color='#007BFF', height=0.4)
@@ -317,11 +341,14 @@ with cols_fue_row1[3]: # 1단위
         ax.set_xlim(0, 100)
         ax.axis('off')
         st.pyplot(fig, use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 끝
 
 with cols_fue_row1[4]: # 1단위
     with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">License Variance</div>', unsafe_allow_html=True)
+        st.markdown('<div class="widget-content">', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 시작
         st.markdown('<div class="big-number">12 ▲</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 끝
 
 # 두 번째 줄: Composition Ratio (2x1), 부서별 현황 (1x1), 직무별 현황 (1x1)
 # 총 4단위 (2+1+1) + 2단위 여백
@@ -331,6 +358,7 @@ cols_fue_row2 = st.columns([2, 1, 1, 2]) # 2(위젯) + 1(위젯) + 1(위젯) + 2
 with cols_fue_row2[0]:
     with st.container(height=180, border=True): # 2x1 비율 (가로:세로 = 2:1)
         st.markdown('<div class="widget-title">Composition ratio</div>', unsafe_allow_html=True)
+        st.markdown('<div class="widget-content">', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 시작
         
         text_col, chart_col = st.columns([2, 1])
 
@@ -352,18 +380,23 @@ with cols_fue_row2[0]:
                     wedgeprops={'linewidth': 0, 'edgecolor': 'white'})
             ax2.axis('equal')
             st.pyplot(fig2, use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 끝
 
 # Widget 7: 부서별 현황 (1x1 크기)
 with cols_fue_row2[1]: # 두 번째 컬럼
     with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">부서별 현황</div>', unsafe_allow_html=True)
+        st.markdown('<div class="widget-content">', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 시작
         st.markdown('<div class="icon">🏢</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 끝
 
 # Widget 8: 직무별 현황 (1x1 크기)
 with cols_fue_row2[2]: # 세 번째 컬럼
     with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">직무별 현황</div>', unsafe_allow_html=True)
+        st.markdown('<div class="widget-content">', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 시작
         st.markdown('<div class="icon">🛠️</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 끝
 # HIGHLIGHT END
 
 # HIGHLIGHT START: User 섹션 (순서 변경 및 크기/위치 조정)
@@ -380,17 +413,23 @@ with col_left_widgets:
     with cols_1x1_user[0]:
         with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
             st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
+            st.markdown('<div class="widget-content">', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 시작
             st.markdown('<div class="big-number">902 <span style="color: green; font-size: 20px;">(+7)</span></div>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 끝
 
     with cols_1x1_user[1]:
         with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
             st.markdown('<div class="widget-title">User Variance</div>', unsafe_allow_html=True)
+            st.markdown('<div class="widget-content">', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 시작
             st.markdown('<div class="big-number">7 ▲</div>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 끝
 
     with cols_1x1_user[2]:
         with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
             st.markdown('<div class="widget-title">Inactive Users</div>', unsafe_allow_html=True)
+            st.markdown('<div class="widget-content">', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 시작
             st.markdown('<div class="big-number">19</div>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 끝
 
     # User License Type (2x1) below the 1x1s.
     # col_left_widgets 내부에서 2단위 위젯 + 1단위 여백
@@ -398,6 +437,7 @@ with col_left_widgets:
     with cols_user_license_type[0]:
         with st.container(height=180, border=True): # 2x1 비율 (가로:세로 = 2:1)
             st.markdown('<div class="widget-title">User License Type</div>', unsafe_allow_html=True)
+            st.markdown('<div class="widget-content">', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 시작
             
             labels = ['Advance', 'Core', 'Self Service', 'Not Classified']
             values = [189, 84, 371, 42]
@@ -422,11 +462,13 @@ with col_left_widgets:
                     ax.set_xlim(0, max_value) # x축 범위 조정
                     ax.axis('off')
                     st.pyplot(fig, use_container_width=True)
+            st.markdown('</div>', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 끝
 
 with col_right_recent_activity:
     # Recent User Activity (2x2)
     with st.container(height=360, border=True): # 2x2 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">Recent User Activity</div>', unsafe_allow_html=True)
+        st.markdown('<div class="widget-content">', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 시작
         users = [
             ("Kim Hwi-young", "GB Advanced User", "Expires 9999.12.30", "Active"),
             ("Lee Min", "GB Advanced User", "Expires 9999.12.30", "Active"),
@@ -444,4 +486,5 @@ with col_right_recent_activity:
                     <div class="user-icon {status}">{status}</div>
                 </div>
             """, unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True) # HIGHLIGHT: 새로운 wrapper div 끝
 # HIGHLIGHT END
