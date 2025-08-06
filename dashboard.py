@@ -12,7 +12,7 @@ st.markdown("""
         body {
             font-family: 'Inter', sans-serif;
         }
-        /* 컨텐츠 영역 배경색 변경 */
+        /* HIGHLIGHT START: 컨텐츠 영역 배경색 및 위젯 배경색/그림자 재정의 */
         .stApp {
             padding-top: 0px;
             background-color: #f8f8f8; /* 컨텐츠 영역 배경색 지정 */
@@ -63,7 +63,7 @@ st.markdown("""
             border-radius: 4px;
         }
         /* 위젯 공통 스타일 */
-        .widget-box {
+        .custom-widget-box { /* HIGHLIGHT: 새로운 클래스 이름 정의 */
             background-color: #FFFFFF; /* 위젯 내부 배경색 흰색으로 지정 */
             border: 1px solid #d9d9d9;
             border-radius: 8px;
@@ -192,6 +192,7 @@ st.markdown("""
             color: #666;
             margin-top: 5px;
         }
+        /* HIGHLIGHT END */
     </style>
 """, unsafe_allow_html=True)
 
@@ -225,12 +226,13 @@ st.markdown(menu_html, unsafe_allow_html=True)
 # 섹션 타이틀
 st.markdown('<div class="section-title">Overview</div>', unsafe_allow_html=True)
 
-# Overview 섹션 위젯 배치 (6단위 그리드 시스템에 맞춤)
+# HIGHLIGHT START: Overview 섹션 위젯 배치 및 크기 조정
 # 1줄에 최대 6개의 1단위 위젯이 들어갈 수 있도록 컬럼 비율을 6으로 나눔
-cols_overview = st.columns(6)
+# 2x2 크기 위젯 2개 (총 4단위) + 2단위 여백
+cols_overview_row1 = st.columns([2, 2, 2]) # 2+2+2 = 6단위. My Account는 다음 줄에 배치
 
 # 위젯 1: FUE License Status (2x2 크기)
-with cols_overview[0]: # 첫 번째 컬럼 (0-1 인덱스 사용)
+with cols_overview_row1[0]:
     with st.container(height=350, border=True): # 2단위 높이
         st.markdown('<div class="widget-title">FUE License Status</div>', unsafe_allow_html=True)
         st.markdown("""
@@ -250,7 +252,7 @@ with cols_overview[0]: # 첫 번째 컬럼 (0-1 인덱스 사용)
         st.pyplot(fig1, use_container_width=True)
 
 # 위젯 2: FUE Active License Variance (2x2 크기)
-with cols_overview[2]: # 세 번째 컬럼 (2-3 인덱스 사용)
+with cols_overview_row1[1]:
     with st.container(height=350, border=True): # 2단위 높이
         st.markdown('<div class="widget-title">FUE Active License Variance</div>', unsafe_allow_html=True)
 
@@ -268,8 +270,10 @@ with cols_overview[2]: # 세 번째 컬럼 (2-3 인덱스 사용)
         ax3.set_title("최근 4개월 Active License 수")
         st.pyplot(fig3, use_container_width=True)
 
-# 위젯 3: My Account (2x1 크기)
-with cols_overview[4]: # 다섯 번째 컬럼 (4-5 인덱스 사용)
+# My Account는 다음 줄에 배치 (2x1 크기)
+cols_overview_row2 = st.columns([2, 4]) # 2단위 위젯 + 4단위 여백
+
+with cols_overview_row2[0]:
     with st.container(height=150, border=True): # 1단위 높이
         st.markdown('<div class="widget-title">My Account</div>', unsafe_allow_html=True)
         st.markdown("""
@@ -279,11 +283,13 @@ with cols_overview[4]: # 다섯 번째 컬럼 (4-5 인덱스 사용)
                 <tr><td><strong>Expiration</strong></td><td>2027.12.31</td></tr>
             </table>
         """, unsafe_allow_html=True)
+# HIGHLIGHT END
 
-# HIGHLIGHT START: FUE License 섹션 (순서 변경)
+# HIGHLIGHT START: FUE License 섹션 (순서 변경 및 크기/위치 조정)
 st.markdown('<div class="section-title">FUE License</div>', unsafe_allow_html=True)
 
-cols_fue_row1 = st.columns(6)
+# 1줄에 1x1 위젯 5개 (총 5단위) + 1단위 여백
+cols_fue_row1 = st.columns([1, 1, 1, 1, 1, 1]) # 1+1+1+1+1+1 = 6단위. 마지막은 여백
 
 with cols_fue_row1[0]: # 1단위
     with st.container(height=150, border=True):
@@ -315,10 +321,12 @@ with cols_fue_row1[4]: # 1단위
         st.markdown('<div class="widget-title">License Variance</div>', unsafe_allow_html=True)
         st.markdown('<div class="big-number">12 ▲</div>', unsafe_allow_html=True)
 
-cols_fue_row2 = st.columns(6)
+# Composition Ratio (2x1), 부서별 현황 (1x1), 직무별 현황 (1x1)
+# 총 4단위 (2+1+1) + 2단위 여백
+cols_fue_row2 = st.columns([2, 1, 1, 2]) # 2+1+1+2 = 6단위
 
 # Widget 6: Composition (2x1 크기)
-with cols_fue_row2[0]: # 첫 번째 컬럼 (0-1 인덱스 사용)
+with cols_fue_row2[0]:
     with st.container(height=150, border=True): # 1단위 높이
         st.markdown('<div class="widget-title">Composition ratio</div>', unsafe_allow_html=True)
         
@@ -343,40 +351,42 @@ with cols_fue_row2[0]: # 첫 번째 컬럼 (0-1 인덱스 사용)
             st.pyplot(fig2, use_container_width=True)
 
 # Widget 7: 부서별 현황 (1x1 크기)
-with cols_fue_row2[2]: # 세 번째 컬럼 (2 인덱스 사용)
+with cols_fue_row2[1]: # 두 번째 컬럼
     with st.container(height=150, border=True): # 1단위 높이
         st.markdown('<div class="widget-title">부서별 현황</div>', unsafe_allow_html=True)
         st.markdown('<div class="icon">🏢</div>', unsafe_allow_html=True)
 
 # Widget 8: 직무별 현황 (1x1 크기)
-with cols_fue_row2[3]: # 네 번째 컬럼 (3 인덱스 사용)
+with cols_fue_row2[2]: # 세 번째 컬럼
     with st.container(height=150, border=True): # 1단위 높이
         st.markdown('<div class="widget-title">직무별 현황</div>', unsafe_allow_html=True)
         st.markdown('<div class="icon">🛠️</div>', unsafe_allow_html=True)
 # HIGHLIGHT END
 
-# HIGHLIGHT START: User 섹션 (순서 변경)
+# HIGHLIGHT START: User 섹션 (순서 변경 및 크기/위치 조정)
 st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True)
 
-cols_user_row1 = st.columns(6)
+# Total, User Variance, Inactive Users (각 1x1) + Recent User Activity (2x2)
+# 총 5단위 (1+1+1+2) + 1단위 여백
+cols_user_row1 = st.columns([1, 1, 1, 2, 1]) # 1+1+1+2+1 = 6단위
 
-with cols_user_row1[0]: # 첫 번째 컬럼 (1단위)
+with cols_user_row1[0]:
     with st.container(height=150, border=True): # 1단위 높이
         st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
         st.markdown('<div class="big-number">902 <span style="color: green; font-size: 20px;">(+7)</span></div>', unsafe_allow_html=True)
 
-with cols_user_row1[1]: # 두 번째 컬럼 (1단위)
+with cols_user_row1[1]:
     with st.container(height=150, border=True): # 1단위 높이
         st.markdown('<div class="widget-title">User Variance</div>', unsafe_allow_html=True)
         st.markdown('<div class="big-number">7 ▲</div>', unsafe_allow_html=True)
 
-with cols_user_row1[2]: # 세 번째 컬럼 (1단위)
+with cols_user_row1[2]:
     with st.container(height=150, border=True): # 1단위 높이
         st.markdown('<div class="widget-title">Inactive Users</div>', unsafe_allow_html=True)
         st.markdown('<div class="big-number">19</div>', unsafe_allow_html=True)
 
 # Recent User Activity (2x2 크기, 1번째 줄 4번째에 배치)
-with cols_user_row1[3]: # 네 번째 컬럼 (3-4 인덱스 사용)
+with cols_user_row1[3]:
     with st.container(height=350, border=True): # 2단위 높이
         st.markdown('<div class="widget-title">Recent User Activity</div>', unsafe_allow_html=True)
         users = [
@@ -397,10 +407,10 @@ with cols_user_row1[3]: # 네 번째 컬럼 (3-4 인덱스 사용)
                 </div>
             """, unsafe_allow_html=True)
 
-cols_user_row2 = st.columns(6) # User 섹션의 두 번째 줄
-
 # User License Type (2x1 크기, 2번째 줄에 배치)
-with cols_user_row2[0]: # 첫 번째 컬럼 (0-1 인덱스 사용)
+cols_user_row2 = st.columns([2, 4]) # 2단위 위젯 + 4단위 여백
+
+with cols_user_row2[0]:
     with st.container(height=150, border=True): # 1단위 높이
         st.markdown('<div class="widget-title">User License Type</div>', unsafe_allow_html=True)
 
