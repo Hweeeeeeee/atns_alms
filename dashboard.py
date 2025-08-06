@@ -315,18 +315,18 @@ col6_fue, col7_fue, col8_fue = st.columns([2, 1, 1]) # 비율 조정
 
 # Widget 6: Composition (2 by 1)
 with col6_fue:
-    with st.container(height=150, border=True): # 높이 조정
-        st.markdown('<div class="widget-title">Composition</div>', unsafe_allow_html=True)
-        st.markdown('<div style="text-align: left; font-size: 20px; font-weight: bold; margin-top: 30px;">76%</div>', unsafe_allow_html=True)
-        sizes = [38, 10, 8, 6]
-        labels = ['A', 'B', 'C', 'D']
-        fig2, ax2 = plt.subplots(figsize=(2, 2)) # 차트 크기 조정
-        # HIGHLIGHT START: 파이 차트 색상 변경 (Figma와 유사하게)
-        colors_composition = ['#007BFF', '#FFA500', '#28A745', '#6C757D'] # Blue, Orange, Green, Grey
-        ax2.pie(sizes, labels=labels, autopct='%1.0f%%', startangle=90, colors=colors_composition)
+    with st.container(height=300, border=True): # 높이 조정
+        st.markdown('<div class="widget-title">Composition ratio</div>', unsafe_allow_html=True) # HIGHLIGHT: 위젯 타이틀 변경
+        # HIGHLIGHT START: 텍스트와 차트 배치를 위한 HTML 구조 변경
+        st.markdown("""
+            <div class="composition-content">
+                <div class="composition-text">
+                    <div class="percentage">76%</div>
+                    <div class="description">GB Advanced use</div>
+                </div>
+                <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
+        """, unsafe_allow_html=True)
         # HIGHLIGHT END
-        ax2.axis('equal')
-        st.pyplot(fig2, use_container_width=True)
 
 # Widget 7: 부서별 현황
 with col7_fue:
