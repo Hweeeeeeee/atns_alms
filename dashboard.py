@@ -62,11 +62,10 @@ st.markdown("""
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        /* HIGHLIGHT START: 모든 위젯에 적용될 공통 스타일 클래스 */
-        /* st.container(border=True)는 기본적으로 흰색 배경과 그림자를 가짐. */
-        /* 만약 회색으로 보인다면 Streamlit 테마 설정 문제일 수 있음. */
-        /* 여기서는 명시적으로 스타일을 정의하여 오버라이드 시도 */
-        .st-emotion-cache-1r4qj8w.e1f1d6gn1 { /* st.container의 내부 div에 접근 */
+        /* HIGHLIGHT START: 모든 위젯에 적용될 공통 스타일 클래스 - Streamlit 컨테이너 오버라이드 */
+        /* 이 클래스명은 Streamlit 버전업에 따라 변경될 수 있으므로 주의 */
+        /* 현재 버전에서 st.container(border=True)가 생성하는 외부 div의 클래스를 타겟팅 */
+        div[data-testid="stVerticalBlock"] > div.st-emotion-cache-imkf3j.e1f1d6gn0 {
             background-color: #FFFFFF !important; /* 흰색 배경 강제 */
             box-shadow: 0 3px 6px rgba(0,0,0,0.05) !important; /* 그림자 강제 */
             border: 1px solid #d9d9d9 !important; /* 테두리 강제 */
@@ -226,19 +225,13 @@ st.markdown(menu_html, unsafe_allow_html=True)
 st.markdown('<div class="section-title">Overview</div>', unsafe_allow_html=True)
 
 # HIGHLIGHT START: Overview 섹션 위젯 배치 및 크기 조정
-# 1줄에 최대 6개의 1단위 위젯이 들어갈 수 있도록 컬럼 비율을 6으로 나눔
 # FUE License Status (2x2), FUE Active License Variance (2x2), My Account (2x1)
-# 2x2 위젯은 2단위 너비, 2단위 높이 (height=350)
-# 2x1 위젯은 2단위 너비, 1단위 높이 (height=150)
-
 # 모든 위젯을 한 줄에 배치 (총 2+2+2 = 6단위)
 cols_overview_row1 = st.columns([2, 2, 2]) 
 
 # 위젯 1: FUE License Status (2x2 크기)
 with cols_overview_row1[0]:
-    # HIGHLIGHT: st.container에 직접 스타일을 적용하기 위해 클래스 추가
-    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True) # Streamlit 내부 클래스명 사용
-    with st.container(height=350, border=False): # border=False로 하고 위 CSS로 border 적용
+    with st.container(height=350, border=True): # 2단위 높이
         st.markdown('<div class="widget-title">FUE License Status</div>', unsafe_allow_html=True)
         st.markdown("""
             <div class="stat-block">
@@ -250,18 +243,16 @@ with cols_overview_row1[0]:
         """, unsafe_allow_html=True)
 
         active_pct = 292 / 500 * 100
-        # HIGHLIGHT: 그래프 figsize 조정 (가로 세로 비율 유지하며 위젯 크기에 맞춤)
+        # 그래프 figsize 조정 (가로 세로 비율 유지하며 위젯 크기에 맞춤)
         fig1, ax1 = plt.subplots(figsize=(3, 3)) # 2x2 위젯에 맞게 조정
         colors = ['#007BFF', '#FFA500']
         ax1.pie([active_pct, 100 - active_pct], labels=[f'Active ({active_pct:.1f}%)', 'Remaining'], autopct='%1.1f%%', startangle=90, colors=colors)
         ax1.set_aspect('equal')
         st.pyplot(fig1, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True) # 닫는 div 태그
 
 # 위젯 2: FUE Active License Variance (2x2 크기)
 with cols_overview_row1[1]:
-    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
-    with st.container(height=350, border=False):
+    with st.container(height=350, border=True):
         st.markdown('<div class="widget-title">FUE Active License Variance</div>', unsafe_allow_html=True)
 
         base = 292
@@ -271,19 +262,17 @@ with cols_overview_row1[1]:
             base *= np.random.uniform(0.85, 0.95)
             values.insert(0, int(base))
 
-        # HIGHLIGHT: 그래프 figsize 조정 (가로 세로 비율 유지하며 위젯 크기에 맞춤)
+        # 그래프 figsize 조정 (가로 세로 비율 유지하며 위젯 크기에 맞춤)
         fig3, ax3 = plt.subplots(figsize=(4, 3)) # 2x2 위젯에 맞게 조정
         bar_colors = ['#D3D3D3'] * (len(months) - 1) + ['#007BFF']
         ax3.bar(months, values, color=bar_colors)
         ax3.set_ylabel("Licenses")
         ax3.set_title("최근 4개월 Active License 수")
         st.pyplot(fig3, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
 # 위젯 3: My Account (2x1 크기) - 첫 번째 줄에 배치
 with cols_overview_row1[2]:
-    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
-    with st.container(height=150, border=False): # 1단위 높이
+    with st.container(height=150, border=True): # 1단위 높이
         st.markdown('<div class="widget-title">My Account</div>', unsafe_allow_html=True)
         st.markdown("""
             <table class="my-table">
@@ -292,7 +281,6 @@ with cols_overview_row1[2]:
                 <tr><td><strong>Expiration</strong></td><td>2027.12.31</td></tr>
             </table>
         """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 # HIGHLIGHT END
 
 
@@ -303,29 +291,22 @@ st.markdown('<div class="section-title">FUE License</div>', unsafe_allow_html=Tr
 cols_fue_row1 = st.columns([1, 1, 1, 1, 1, 1]) # 1+1+1+1+1+1 = 6단위. 마지막은 여백
 
 with cols_fue_row1[0]: # 1단위
-    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
-    with st.container(height=150, border=False):
+    with st.container(height=150, border=True):
         st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
         st.markdown('<div class="big-number">500</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
 with cols_fue_row1[1]: # 1단위
-    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
-    with st.container(height=150, border=False):
+    with st.container(height=150, border=True):
         st.markdown('<div class="widget-title">Active License</div>', unsafe_allow_html=True)
         st.markdown('<div class="big-number">292</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
 with cols_fue_row1[2]: # 1단위
-    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
-    with st.container(height=150, border=False):
+    with st.container(height=150, border=True):
         st.markdown('<div class="widget-title">Remaining Licenses</div>', unsafe_allow_html=True)
         st.markdown('<div class="big-number">208</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
 with cols_fue_row1[3]: # 1단위
-    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
-    with st.container(height=150, border=False):
+    with st.container(height=150, border=True):
         st.markdown('<div class="widget-title">License Utilization Rate</div>', unsafe_allow_html=True)
         fig, ax = plt.subplots(figsize=(4, 0.5))
         ax.barh(0, 58, color='#007BFF', height=0.4)
@@ -333,14 +314,11 @@ with cols_fue_row1[3]: # 1단위
         ax.set_xlim(0, 100)
         ax.axis('off')
         st.pyplot(fig, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
 with cols_fue_row1[4]: # 1단위
-    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
-    with st.container(height=150, border=False):
+    with st.container(height=150, border=True):
         st.markdown('<div class="widget-title">License Variance</div>', unsafe_allow_html=True)
         st.markdown('<div class="big-number">12 ▲</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
 # 두 번째 줄: Composition Ratio (2x1), 부서별 현황 (1x1), 직무별 현황 (1x1)
 # 총 4단위 (2+1+1) + 2단위 여백
@@ -348,8 +326,7 @@ cols_fue_row2 = st.columns([2, 1, 1, 2]) # 2(위젯) + 1(위젯) + 1(위젯) + 2
 
 # Widget 6: Composition (2x1 크기)
 with cols_fue_row2[0]:
-    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
-    with st.container(height=150, border=False): # 1단위 높이
+    with st.container(height=150, border=True): # 1단위 높이
         st.markdown('<div class="widget-title">Composition ratio</div>', unsafe_allow_html=True)
         
         text_col, chart_col = st.columns([2, 1])
@@ -365,64 +342,71 @@ with cols_fue_row2[0]:
         with chart_col:
             sizes = [76, 10, 8, 6]
             labels = ['A', 'B', 'C', 'D']
-            # HIGHLIGHT: 그래프 figsize 조정 (2x1 위젯에 맞게 조정)
+            # 그래프 figsize 조정 (2x1 위젯에 맞게 조정)
             fig2, ax2 = plt.subplots(figsize=(1.5, 1.5)) # 2x1 위젯에 맞게 조정
             colors_composition = ['#007BFF', '#ADD8E6', '#87CEEB', '#B0E0E6']
             ax2.pie(sizes, labels=labels, autopct='%1.0f%%', startangle=90, colors=colors_composition,
                     wedgeprops={'linewidth': 0, 'edgecolor': 'white'})
             ax2.axis('equal')
             st.pyplot(fig2, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
 # Widget 7: 부서별 현황 (1x1 크기)
 with cols_fue_row2[1]: # 두 번째 컬럼
-    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
-    with st.container(height=150, border=False): # 1단위 높이
+    with st.container(height=150, border=True): # 1단위 높이
         st.markdown('<div class="widget-title">부서별 현황</div>', unsafe_allow_html=True)
         st.markdown('<div class="icon">🏢</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
 # Widget 8: 직무별 현황 (1x1 크기)
 with cols_fue_row2[2]: # 세 번째 컬럼
-    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
-    with st.container(height=150, border=False): # 1단위 높이
+    with st.container(height=150, border=True): # 1단위 높이
         st.markdown('<div class="widget-title">직무별 현황</div>', unsafe_allow_html=True)
         st.markdown('<div class="icon">🛠️</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 # HIGHLIGHT END
 
 # HIGHLIGHT START: User 섹션 (순서 변경 및 크기/위치 조정)
 st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True)
 
-# 첫 번째 줄: Total (1x1), User Variance (1x1), Inactive Users (1x1), Recent User Activity (2x2)
-# 총 5단위 (1+1+1+2) + 1단위 여백
-cols_user_row1 = st.columns([1, 1, 1, 2, 1]) # 1+1+1+2+1 = 6단위
+# Main columns for User section: col_left_widgets (for 1x1s and 2x1), col_right_recent_activity (for 2x2)
+# 총 6단위 그리드를 사용. col_left_widgets는 3단위, col_right_recent_activity는 2단위, 마지막 1단위는 여백
+col_left_widgets, col_right_recent_activity, _ = st.columns([3, 2, 1])
 
-with cols_user_row1[0]:
-    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
-    with st.container(height=150, border=False): # 1단위 높이
-        st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
-        st.markdown('<div class="big-number">902 <span style="color: green; font-size: 20px;">(+7)</span></div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+with col_left_widgets:
+    # Row for Total, User Variance, Inactive Users (1x1 each)
+    cols_1x1_user = st.columns(3) # col_left_widgets의 3단위를 3등분 (각 1단위)
+    
+    with cols_1x1_user[0]:
+        with st.container(height=150, border=True): # 1x1 높이
+            st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
+            st.markdown('<div class="big-number">902 <span style="color: green; font-size: 20px;">(+7)</span></div>', unsafe_allow_html=True)
 
-with cols_user_row1[1]:
-    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
-    with st.container(height=150, border=False): # 1단위 높이
-        st.markdown('<div class="widget-title">User Variance</div>', unsafe_allow_html=True)
-        st.markdown('<div class="big-number">7 ▲</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    with cols_1x1_user[1]:
+        with st.container(height=150, border=True): # 1x1 높이
+            st.markdown('<div class="widget-title">User Variance</div>', unsafe_allow_html=True)
+            st.markdown('<div class="big-number">7 ▲</div>', unsafe_allow_html=True)
 
-with cols_user_row1[2]:
-    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
-    with st.container(height=150, border=False): # 1단위 높이
-        st.markdown('<div class="widget-title">Inactive Users</div>', unsafe_allow_html=True)
-        st.markdown('<div class="big-number">19</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    with cols_1x1_user[2]:
+        with st.container(height=150, border=True): # 1x1 높이
+            st.markdown('<div class="widget-title">Inactive Users</div>', unsafe_allow_html=True)
+            st.markdown('<div class="big-number">19</div>', unsafe_allow_html=True)
 
-# Recent User Activity (2x2 크기, 1번째 줄 4번째에 배치)
-with cols_user_row1[3]:
-    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
-    with st.container(height=350, border=False): # 2단위 높이
+    # User License Type (2x1) below the 1x1s.
+    # col_left_widgets 내부에서 2단위 위젯 + 1단위 여백
+    cols_user_license_type = st.columns([2, 1]) 
+    with cols_user_license_type[0]:
+        with st.container(height=150, border=True): # 1x1 높이
+            st.markdown('<div class="widget-title">User License Type</div>', unsafe_allow_html=True)
+            labels = ['Advance', 'Core', 'Self Service', 'Not Classified']
+            values = [189, 84, 371, 42]
+            max_value = max(values) * 1.1
+            fig, ax = plt.subplots(figsize=(3, 2)) # 2x1 위젯, 내용에 맞게 figsize 조정
+            ax.barh(labels, values, color='#007BFF')
+            ax.set_xlim(0, max_value)
+            ax.set_xlabel('Users')
+            st.pyplot(fig, use_container_width=True)
+
+with col_right_recent_activity:
+    # Recent User Activity (2x2)
+    with st.container(height=350, border=True): # 2x2 높이
         st.markdown('<div class="widget-title">Recent User Activity</div>', unsafe_allow_html=True)
         users = [
             ("Kim Hwi-young", "GB Advanced User", "Expires 9999.12.30", "Active"),
@@ -441,26 +425,4 @@ with cols_user_row1[3]:
                     <div class="user-icon {status}">{status}</div>
                 </div>
             """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# User License Type (2x1 크기, 2번째 줄에 배치)
-# HIGHLIGHT: User License Type이 Recent User Activity와 같은 높이에 오도록 컬럼 조정
-cols_user_row2 = st.columns([2, 4]) # 2(위젯) + 4(여백) = 6단위
-
-with cols_user_row2[0]:
-    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
-    with st.container(height=150, border=False): # 1단위 높이
-        st.markdown('<div class="widget-title">User License Type</div>', unsafe_allow_html=True)
-
-        labels = ['Advance', 'Core', 'Self Service', 'Not Classified']
-        values = [189, 84, 371, 42]
-        max_value = max(values) * 1.1
-
-        # HIGHLIGHT: 그래프 figsize 조정 (2x1 위젯에 맞게 조정)
-        fig, ax = plt.subplots(figsize=(3, 2)) # 2x1 위젯에 맞게 조정
-        ax.barh(labels, values, color='#007BFF')
-        ax.set_xlim(0, max_value)
-        ax.set_xlabel('Users')
-        st.pyplot(fig, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 # HIGHLIGHT END
