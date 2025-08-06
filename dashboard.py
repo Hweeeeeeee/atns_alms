@@ -192,7 +192,7 @@ st.markdown(menu_html, unsafe_allow_html=True)
 st.markdown('<div class="section-title">Overview</div>', unsafe_allow_html=True)
 
 # 첫 줄: 3개 위젯 (2x2, 2x2, 2x1)
-col1, col2, col3 = st.columns([2, 2, 2])
+col1, col2, col3 = st.columns([2, 1, 1])
 
 # --- 위젯 1: FUE License Status ---
 with col1:
@@ -208,7 +208,7 @@ with col1:
         """, unsafe_allow_html=True)
 
         # Figma 디자인에 맞춰 두 개의 파이 차트 대신 하나의 파이 차트로 변경
-        active_pct = 292 / 500 * 100
+        active_pct = 292 / 100 * 100
         fig1, ax1 = plt.subplots(figsize=(4, 4)) # 차트 크기 조정
         # HIGHLIGHT START: 파이 차트 색상 변경
         colors = ['#007BFF', '#FFA500'] # SAP Blue, Orange
