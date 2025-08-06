@@ -12,7 +12,7 @@ st.markdown("""
         body {
             font-family: 'Inter', sans-serif;
         }
-        /* HIGHLIGHT START: 컨텐츠 영역 배경색 및 위젯 배경색/그림자 재정의 */
+        /* 컨텐츠 영역 배경색 변경 */
         .stApp {
             padding-top: 0px;
             background-color: #f8f8f8; /* 컨텐츠 영역 배경색 지정 */
@@ -62,8 +62,8 @@ st.markdown("""
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        /* 위젯 공통 스타일 */
-        .custom-widget-box { /* HIGHLIGHT: 새로운 클래스 이름 정의 */
+        /* HIGHLIGHT START: 모든 위젯에 적용될 공통 스타일 클래스 */
+        .widget-common-style {
             background-color: #FFFFFF; /* 위젯 내부 배경색 흰색으로 지정 */
             border: 1px solid #d9d9d9;
             border-radius: 8px;
@@ -73,6 +73,7 @@ st.markdown("""
             display: flex; /* 내부 요소 정렬을 위해 flexbox 사용 */
             flex-direction: column; /* 세로 방향으로 정렬 */
         }
+        /* HIGHLIGHT END */
         .section-title {
             font-size: 24px;
             font-weight: bold;
@@ -192,7 +193,6 @@ st.markdown("""
             color: #666;
             margin-top: 5px;
         }
-        /* HIGHLIGHT END */
     </style>
 """, unsafe_allow_html=True)
 
@@ -228,8 +228,13 @@ st.markdown('<div class="section-title">Overview</div>', unsafe_allow_html=True)
 
 # HIGHLIGHT START: Overview 섹션 위젯 배치 및 크기 조정
 # 1줄에 최대 6개의 1단위 위젯이 들어갈 수 있도록 컬럼 비율을 6으로 나눔
-# 2x2 크기 위젯 2개 (총 4단위) + 2단위 여백
-cols_overview_row1 = st.columns([2, 2, 2]) # 2+2+2 = 6단위. My Account는 다음 줄에 배치
+# FUE License Status (2x2), FUE Active License Variance (2x2), My Account (2x1)
+# 2x2 위젯은 2단위 너비, 2단위 높이 (height=350)
+# 2x1 위젯은 2단위 너비, 1단위 높이 (height=150)
+
+# 첫 번째 줄: FUE License Status (2x2), FUE Active License Variance (2x2)
+# 총 4단위 사용 + 2단위 여백
+cols_overview_row1 = st.columns([2, 2, 2]) # 2(위젯1) + 2(위젯2) + 2(여백) = 6단위
 
 # 위젯 1: FUE License Status (2x2 크기)
 with cols_overview_row1[0]:
@@ -245,7 +250,8 @@ with cols_overview_row1[0]:
         """, unsafe_allow_html=True)
 
         active_pct = 292 / 500 * 100
-        fig1, ax1 = plt.subplots(figsize=(4, 4))
+        # HIGHLIGHT: 그래프 figsize 조정 (가로 세로 비율 유지하며 위젯 크기에 맞춤)
+        fig1, ax1 = plt.subplots(figsize=(3, 3)) # 2x2 위젯에 맞게 조정
         colors = ['#007BFF', '#FFA500']
         ax1.pie([active_pct, 100 - active_pct], labels=[f'Active ({active_pct:.1f}%)', 'Remaining'], autopct='%1.1f%%', startangle=90, colors=colors)
         ax1.set_aspect('equal')
@@ -263,17 +269,17 @@ with cols_overview_row1[1]:
             base *= np.random.uniform(0.85, 0.95)
             values.insert(0, int(base))
 
-        fig3, ax3 = plt.subplots(figsize=(5, 3))
+        # HIGHLIGHT: 그래프 figsize 조정 (가로 세로 비율 유지하며 위젯 크기에 맞춤)
+        fig3, ax3 = plt.subplots(figsize=(4, 3)) # 2x2 위젯에 맞게 조정
         bar_colors = ['#D3D3D3'] * (len(months) - 1) + ['#007BFF']
         ax3.bar(months, values, color=bar_colors)
         ax3.set_ylabel("Licenses")
         ax3.set_title("최근 4개월 Active License 수")
         st.pyplot(fig3, use_container_width=True)
 
-# My Account는 다음 줄에 배치 (2x1 크기)
-cols_overview_row2 = st.columns([2, 4]) # 2단위 위젯 + 4단위 여백
-
-with cols_overview_row2[0]:
+# 위젯 3: My Account (2x1 크기) - 첫 번째 줄에 배치
+# 총 6단위 중 남은 2단위에 배치.
+with cols_overview_row1[2]: # 세 번째 컬럼 (4-5 인덱스 사용)
     with st.container(height=150, border=True): # 1단위 높이
         st.markdown('<div class="widget-title">My Account</div>', unsafe_allow_html=True)
         st.markdown("""
@@ -285,10 +291,11 @@ with cols_overview_row2[0]:
         """, unsafe_allow_html=True)
 # HIGHLIGHT END
 
+
 # HIGHLIGHT START: FUE License 섹션 (순서 변경 및 크기/위치 조정)
 st.markdown('<div class="section-title">FUE License</div>', unsafe_allow_html=True)
 
-# 1줄에 1x1 위젯 5개 (총 5단위) + 1단위 여백
+# 첫 번째 줄: 1x1 위젯 5개 (총 5단위) + 1단위 여백
 cols_fue_row1 = st.columns([1, 1, 1, 1, 1, 1]) # 1+1+1+1+1+1 = 6단위. 마지막은 여백
 
 with cols_fue_row1[0]: # 1단위
@@ -321,15 +328,16 @@ with cols_fue_row1[4]: # 1단위
         st.markdown('<div class="widget-title">License Variance</div>', unsafe_allow_html=True)
         st.markdown('<div class="big-number">12 ▲</div>', unsafe_allow_html=True)
 
-# Composition Ratio (2x1), 부서별 현황 (1x1), 직무별 현황 (1x1)
+# 두 번째 줄: Composition Ratio (2x1), 부서별 현황 (1x1), 직무별 현황 (1x1)
 # 총 4단위 (2+1+1) + 2단위 여백
-cols_fue_row2 = st.columns([2, 1, 1, 2]) # 2+1+1+2 = 6단위
+cols_fue_row2 = st.columns([2, 1, 1, 2]) # 2(위젯) + 1(위젯) + 1(위젯) + 2(여백) = 6단위
 
 # Widget 6: Composition (2x1 크기)
 with cols_fue_row2[0]:
     with st.container(height=150, border=True): # 1단위 높이
         st.markdown('<div class="widget-title">Composition ratio</div>', unsafe_allow_html=True)
         
+        # 텍스트와 차트 배치를 위한 Streamlit columns 사용
         text_col, chart_col = st.columns([2, 1])
 
         with text_col:
@@ -343,7 +351,8 @@ with cols_fue_row2[0]:
         with chart_col:
             sizes = [76, 10, 8, 6]
             labels = ['A', 'B', 'C', 'D']
-            fig2, ax2 = plt.subplots(figsize=(2, 2))
+            # HIGHLIGHT: 그래프 figsize 조정 (2x1 위젯에 맞게 조정)
+            fig2, ax2 = plt.subplots(figsize=(1.5, 1.5)) # 2x1 위젯에 맞게 조정
             colors_composition = ['#007BFF', '#ADD8E6', '#87CEEB', '#B0E0E6']
             ax2.pie(sizes, labels=labels, autopct='%1.0f%%', startangle=90, colors=colors_composition,
                     wedgeprops={'linewidth': 0, 'edgecolor': 'white'})
@@ -366,7 +375,7 @@ with cols_fue_row2[2]: # 세 번째 컬럼
 # HIGHLIGHT START: User 섹션 (순서 변경 및 크기/위치 조정)
 st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True)
 
-# Total, User Variance, Inactive Users (각 1x1) + Recent User Activity (2x2)
+# 첫 번째 줄: Total (1x1), User Variance (1x1), Inactive Users (1x1), Recent User Activity (2x2)
 # 총 5단위 (1+1+1+2) + 1단위 여백
 cols_user_row1 = st.columns([1, 1, 1, 2, 1]) # 1+1+1+2+1 = 6단위
 
@@ -408,7 +417,8 @@ with cols_user_row1[3]:
             """, unsafe_allow_html=True)
 
 # User License Type (2x1 크기, 2번째 줄에 배치)
-cols_user_row2 = st.columns([2, 4]) # 2단위 위젯 + 4단위 여백
+# HIGHLIGHT: User License Type이 Recent User Activity와 같은 높이에 오도록 컬럼 조정
+cols_user_row2 = st.columns([2, 4]) # 2(위젯) + 4(여백) = 6단위
 
 with cols_user_row2[0]:
     with st.container(height=150, border=True): # 1단위 높이
@@ -418,7 +428,8 @@ with cols_user_row2[0]:
         values = [189, 84, 371, 42]
         max_value = max(values) * 1.1
 
-        fig, ax = plt.subplots(figsize=(6, 3))
+        # HIGHLIGHT: 그래프 figsize 조정 (2x1 위젯에 맞게 조정)
+        fig, ax = plt.subplots(figsize=(3, 2)) # 2x1 위젯에 맞게 조정
         ax.barh(labels, values, color='#007BFF')
         ax.set_xlim(0, max_value)
         ax.set_xlabel('Users')
