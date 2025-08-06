@@ -362,7 +362,7 @@ with col6_fue:
         st.markdown('<div class="widget-title">Composition ratio</div>', unsafe_allow_html=True)
         
         # HIGHLIGHT START: `st.columns`의 비율 조정 및 차트의 `bbox_inches` 설정
-        text_col, chart_col = st.columns([3, 2]) # 텍스트:차트 비율을 3:2로 조정
+        text_col, chart_col = st.columns([2, 1]) # 텍스트:차트 비율을 3:2로 조정
 
         with text_col:
             st.markdown("""
