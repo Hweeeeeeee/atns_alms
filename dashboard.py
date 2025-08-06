@@ -241,67 +241,7 @@ with col3:
             </table>
         """, unsafe_allow_html=True)
 
-# 두 번째 줄: 위젯 4만 표시
-# User 위젯을 위한 새로운 컬럼 정의 (전체 너비 사용)
-st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True)
-col_user_total, col_user_variance, col_inactive_users = st.columns(3)
-
-with col_user_total:
-    with st.container(height=150, border=True):
-        st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
-        st.markdown('<div class="big-number">902 <span style="color: green; font-size: 20px;">(+7)</span></div>', unsafe_allow_html=True)
-
-with col_user_variance:
-    with st.container(height=150, border=True):
-        st.markdown('<div class="widget-title">User Variance</div>', unsafe_allow_html=True)
-        st.markdown('<div class="big-number">7 ▲</div>', unsafe_allow_html=True)
-
-with col_inactive_users:
-    with st.container(height=150, border=True):
-        st.markdown('<div class="widget-title">Inactive Users</div>', unsafe_allow_html=True)
-        st.markdown('<div class="big-number">19</div>', unsafe_allow_html=True)
-
-# -------- Row 2: Recent Activity (2x2) + License Type (2x1) --------
-col4, col5 = st.columns([2, 2]) # 비율을 2:2로 조정하여 두 위젯이 균등하게 배치되도록 함
-
-# 위젯 4: Recent User Activity
-with col4:
-    with st.container(height=300, border=True): # 높이 조정
-        st.markdown('<div class="widget-title">Recent User Activity</div>', unsafe_allow_html=True)
-        users = [
-            ("Kim Hwi-young", "GB Advanced User", "Expires 9999.12.30", "Active"),
-            ("Lee Min", "GB Advanced User", "Expires 9999.12.30", "Active"),
-            ("Jung Ha-na", "GB Core User", "Expires 2026.11.03", "Expiring"),
-            ("Park Soo-bin", "GB Self Service", "Expires 2024.08.10", "Inactive"),
-            ("Yoon Tae", "GB Advanced User", "Expires 9999.12.30", "Active")
-        ]
-        for name, grade, expiry, status in users:
-            st.markdown(f"""
-                <div class="user-box">
-                    <div class="user-info">
-                        <strong>{name}</strong><br>
-                        {grade} | {expiry}
-                    </div>
-                    <div class="user-icon">{status}</div>
-                </div>
-            """, unsafe_allow_html=True)
-
-# 위젯 5: User License Type (막대그래프)
-with col5:
-    with st.container(height=300, border=True): # 높이 조정
-        st.markdown('<div class="widget-title">User License Type</div>', unsafe_allow_html=True)
-
-        labels = ['Advance', 'Core', 'Self Service', 'Not Classified']
-        values = [189, 84, 371, 42]
-        max_value = max(values) * 1.1
-
-        fig, ax = plt.subplots(figsize=(6, 3)) # 차트 크기 조정
-        ax.barh(labels, values, color='skyblue')
-        ax.set_xlim(0, max_value)
-        ax.set_xlabel('Users')
-        st.pyplot(fig, use_container_width=True) # 컨테이너 너비에 맞춤
-
-
+# 두 번째 줄
 # FUE License 섹션
 st.markdown('<div class="section-title">FUE License</div>', unsafe_allow_html=True)
 
@@ -364,3 +304,64 @@ with col8_fue:
     with st.container(height=300, border=True): # 높이 조정
         st.markdown('<div class="widget-title">직무별 현황</div>', unsafe_allow_html=True)
         st.markdown('<div class="icon">🛠️</div>', unsafe_allow_html=True)
+
+
+# 세세 번째 줄
+# User 위젯을 위한 새로운 컬럼 정의 (전체 너비 사용)
+st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True)
+col_user_total, col_user_variance, col_inactive_users = st.columns(3)
+
+with col_user_total:
+    with st.container(height=150, border=True):
+        st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
+        st.markdown('<div class="big-number">902 <span style="color: green; font-size: 20px;">(+7)</span></div>', unsafe_allow_html=True)
+
+with col_user_variance:
+    with st.container(height=150, border=True):
+        st.markdown('<div class="widget-title">User Variance</div>', unsafe_allow_html=True)
+        st.markdown('<div class="big-number">7 ▲</div>', unsafe_allow_html=True)
+
+with col_inactive_users:
+    with st.container(height=150, border=True):
+        st.markdown('<div class="widget-title">Inactive Users</div>', unsafe_allow_html=True)
+        st.markdown('<div class="big-number">19</div>', unsafe_allow_html=True)
+
+# -------- Row 2: Recent Activity (2x2) + License Type (2x1) --------
+col4, col5 = st.columns([2, 2]) # 비율을 2:2로 조정하여 두 위젯이 균등하게 배치되도록 함
+
+# 위젯 4: Recent User Activity
+with col4:
+    with st.container(height=300, border=True): # 높이 조정
+        st.markdown('<div class="widget-title">Recent User Activity</div>', unsafe_allow_html=True)
+        users = [
+            ("Kim Hwi-young", "GB Advanced User", "Expires 9999.12.30", "Active"),
+            ("Lee Min", "GB Advanced User", "Expires 9999.12.30", "Active"),
+            ("Jung Ha-na", "GB Core User", "Expires 2026.11.03", "Expiring"),
+            ("Park Soo-bin", "GB Self Service", "Expires 2024.08.10", "Inactive"),
+            ("Yoon Tae", "GB Advanced User", "Expires 9999.12.30", "Active")
+        ]
+        for name, grade, expiry, status in users:
+            st.markdown(f"""
+                <div class="user-box">
+                    <div class="user-info">
+                        <strong>{name}</strong><br>
+                        {grade} | {expiry}
+                    </div>
+                    <div class="user-icon">{status}</div>
+                </div>
+            """, unsafe_allow_html=True)
+
+# 위젯 5: User License Type (막대그래프)
+with col5:
+    with st.container(height=300, border=True): # 높이 조정
+        st.markdown('<div class="widget-title">User License Type</div>', unsafe_allow_html=True)
+
+        labels = ['Advance', 'Core', 'Self Service', 'Not Classified']
+        values = [189, 84, 371, 42]
+        max_value = max(values) * 1.1
+
+        fig, ax = plt.subplots(figsize=(6, 3)) # 차트 크기 조정
+        ax.barh(labels, values, color='skyblue')
+        ax.set_xlim(0, max_value)
+        ax.set_xlabel('Users')
+        st.pyplot(fig, use_container_width=True) # 컨테이너 너비에 맞춤
