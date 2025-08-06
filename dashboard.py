@@ -386,7 +386,7 @@ with col6_fue:
             """, unsafe_allow_html=True)
 
         with chart_col:
-            sizes = [76, 10, 8, 6]
+            sizes = [10, 10, 8, 6]
             labels = ['A', 'B', 'C', 'D']
             fig2, ax2 = plt.subplots(figsize=(1.5, 1.5)) # 차트 크기 조정
             colors_composition = ['#007BFF', '#ADD8E6', '#87CEEB', '#B0E0E6'] # 파란색 계열로 변경
