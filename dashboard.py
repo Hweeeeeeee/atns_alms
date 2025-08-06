@@ -229,7 +229,7 @@ cols_overview_row1 = st.columns([2, 2, 2])
 
 # 위젯 1: FUE License Status (2x2 크기)
 with cols_overview_row1[0]:
-    with st.container(height=350, border=True): # 2단위 높이
+    with st.container(height=360, border=True): # 2x2 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">FUE License Status</div>', unsafe_allow_html=True)
         st.markdown("""
             <div class="stat-block">
@@ -241,9 +241,8 @@ with cols_overview_row1[0]:
         """, unsafe_allow_html=True)
 
         active_pct = 292 / 500 * 100
-        # 그래프 figsize 조정 (가로 세로 비율 유지하며 위젯 크기에 맞춤)
-        # 위젯 높이 350px, 제목 및 기타 요소 제외 후 남은 공간 고려
-        fig1, ax1 = plt.subplots(figsize=(3, 2.5)) # 높이 조절
+        # 그래프 figsize 조정
+        fig1, ax1 = plt.subplots(figsize=(3, 3)) # 1:1 비율 유지
         colors = ['#007BFF', '#FFA500']
         ax1.pie([active_pct, 100 - active_pct], labels=[f'Active ({active_pct:.1f}%)', 'Remaining'], autopct='%1.1f%%', startangle=90, colors=colors)
         ax1.set_aspect('equal')
@@ -251,7 +250,7 @@ with cols_overview_row1[0]:
 
 # 위젯 2: FUE Active License Variance (2x2 크기)
 with cols_overview_row1[1]:
-    with st.container(height=350, border=True):
+    with st.container(height=360, border=True): # 2x2 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">FUE Active License Variance</div>', unsafe_allow_html=True)
 
         base = 292
@@ -261,9 +260,8 @@ with cols_overview_row1[1]:
             base *= np.random.uniform(0.85, 0.95)
             values.insert(0, int(base))
 
-        # 그래프 figsize 조정 (가로 세로 비율 유지하며 위젯 크기에 맞춤)
-        # 위젯 높이 350px, 제목 및 기타 요소 제외 후 남은 공간 고려
-        fig3, ax3 = plt.subplots(figsize=(4, 2.5)) # 높이 조절
+        # 그래프 figsize 조정
+        fig3, ax3 = plt.subplots(figsize=(4, 3)) # 1:1 비율에 가깝게 조정
         bar_colors = ['#D3D3D3'] * (len(months) - 1) + ['#007BFF']
         ax3.bar(months, values, color=bar_colors)
         ax3.set_ylabel("Licenses")
@@ -272,7 +270,7 @@ with cols_overview_row1[1]:
 
 # 위젯 3: My Account (2x1 크기) - 첫 번째 줄에 배치
 with cols_overview_row1[2]:
-    with st.container(height=150, border=True): # 1단위 높이
+    with st.container(height=180, border=True): # 2x1 비율 (가로:세로 = 2:1)
         st.markdown('<div class="widget-title">My Account</div>', unsafe_allow_html=True)
         st.markdown("""
             <table class="my-table">
@@ -291,25 +289,25 @@ st.markdown('<div class="section-title">FUE License</div>', unsafe_allow_html=Tr
 cols_fue_row1 = st.columns([1, 1, 1, 1, 1, 1]) # 1+1+1+1+1+1 = 6단위. 마지막은 여백
 
 with cols_fue_row1[0]: # 1단위
-    with st.container(height=150, border=True):
+    with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
         st.markdown('<div class="big-number">500</div>', unsafe_allow_html=True)
 
 with cols_fue_row1[1]: # 1단위
-    with st.container(height=150, border=True):
+    with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">Active License</div>', unsafe_allow_html=True)
         st.markdown('<div class="big-number">292</div>', unsafe_allow_html=True)
 
 with cols_fue_row1[2]: # 1단위
-    with st.container(height=150, border=True):
+    with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">Remaining Licenses</div>', unsafe_allow_html=True)
         st.markdown('<div class="big-number">208</div>', unsafe_allow_html=True)
 
 with cols_fue_row1[3]: # 1단위
-    with st.container(height=150, border=True):
+    with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">License Utilization Rate</div>', unsafe_allow_html=True)
         # License Utilization Rate 그래프는 이미 막대 형태로 잘 맞으므로 그대로 유지
-        fig, ax = plt.subplots(figsize=(4, 0.5))
+        fig, ax = plt.subplots(figsize=(4, 0.5)) # 위젯 높이에 맞게 조정
         ax.barh(0, 58, color='#007BFF', height=0.4)
         ax.text(58/2, 0, '58%', va='center', ha='center', color='white', fontsize=16, fontweight='bold')
         ax.set_xlim(0, 100)
@@ -317,7 +315,7 @@ with cols_fue_row1[3]: # 1단위
         st.pyplot(fig, use_container_width=True)
 
 with cols_fue_row1[4]: # 1단위
-    with st.container(height=150, border=True):
+    with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">License Variance</div>', unsafe_allow_html=True)
         st.markdown('<div class="big-number">12 ▲</div>', unsafe_allow_html=True)
 
@@ -327,7 +325,7 @@ cols_fue_row2 = st.columns([2, 1, 1, 2]) # 2(위젯) + 1(위젯) + 1(위젯) + 2
 
 # Widget 6: Composition (2x1 크기)
 with cols_fue_row2[0]:
-    with st.container(height=150, border=True): # 1단위 높이
+    with st.container(height=180, border=True): # 2x1 비율 (가로:세로 = 2:1)
         st.markdown('<div class="widget-title">Composition ratio</div>', unsafe_allow_html=True)
         
         text_col, chart_col = st.columns([2, 1])
@@ -343,8 +341,8 @@ with cols_fue_row2[0]:
         with chart_col:
             sizes = [76, 10, 8, 6]
             labels = ['A', 'B', 'C', 'D']
-            # 그래프 figsize 조정 (2x1 위젯에 맞게 조정)
-            fig2, ax2 = plt.subplots(figsize=(1.5, 1.5)) # 2x1 위젯에 맞게 조정
+            # 그래프 figsize 조정
+            fig2, ax2 = plt.subplots(figsize=(1.5, 1.5)) # 위젯 높이에 맞게 조정
             colors_composition = ['#007BFF', '#ADD8E6', '#87CEEB', '#B0E0E6']
             ax2.pie(sizes, labels=labels, autopct='%1.0f%%', startangle=90, colors=colors_composition,
                     wedgeprops={'linewidth': 0, 'edgecolor': 'white'})
@@ -353,13 +351,13 @@ with cols_fue_row2[0]:
 
 # Widget 7: 부서별 현황 (1x1 크기)
 with cols_fue_row2[1]: # 두 번째 컬럼
-    with st.container(height=150, border=True): # 1단위 높이
+    with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">부서별 현황</div>', unsafe_allow_html=True)
         st.markdown('<div class="icon">🏢</div>', unsafe_allow_html=True)
 
 # Widget 8: 직무별 현황 (1x1 크기)
 with cols_fue_row2[2]: # 세 번째 컬럼
-    with st.container(height=150, border=True): # 1단위 높이
+    with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">직무별 현황</div>', unsafe_allow_html=True)
         st.markdown('<div class="icon">🛠️</div>', unsafe_allow_html=True)
 # HIGHLIGHT END
@@ -376,17 +374,17 @@ with col_left_widgets:
     cols_1x1_user = st.columns(3) # col_left_widgets의 3단위를 3등분 (각 1단위)
     
     with cols_1x1_user[0]:
-        with st.container(height=150, border=True): # 1x1 높이
+        with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
             st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
             st.markdown('<div class="big-number">902 <span style="color: green; font-size: 20px;">(+7)</span></div>', unsafe_allow_html=True)
 
     with cols_1x1_user[1]:
-        with st.container(height=150, border=True): # 1x1 높이
+        with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
             st.markdown('<div class="widget-title">User Variance</div>', unsafe_allow_html=True)
             st.markdown('<div class="big-number">7 ▲</div>', unsafe_allow_html=True)
 
     with cols_1x1_user[2]:
-        with st.container(height=150, border=True): # 1x1 높이
+        with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
             st.markdown('<div class="widget-title">Inactive Users</div>', unsafe_allow_html=True)
             st.markdown('<div class="big-number">19</div>', unsafe_allow_html=True)
 
@@ -394,10 +392,9 @@ with col_left_widgets:
     # col_left_widgets 내부에서 2단위 위젯 + 1단위 여백
     cols_user_license_type = st.columns([2, 1]) 
     with cols_user_license_type[0]:
-        with st.container(height=150, border=True): # 1x1 높이
+        with st.container(height=180, border=True): # 2x1 비율 (가로:세로 = 2:1)
             st.markdown('<div class="widget-title">User License Type</div>', unsafe_allow_html=True)
             
-            # HIGHLIGHT START: User License Type 그래프를 License Utilization Rate와 동일한 형태로 변경
             labels = ['Advance', 'Core', 'Self Service', 'Not Classified']
             values = [189, 84, 371, 42]
             max_value = max(values) * 1.1 # 막대 길이 조절을 위한 최대값
@@ -421,11 +418,10 @@ with col_left_widgets:
                     ax.set_xlim(0, max_value) # x축 범위 조정
                     ax.axis('off')
                     st.pyplot(fig, use_container_width=True)
-            # HIGHLIGHT END
 
 with col_right_recent_activity:
     # Recent User Activity (2x2)
-    with st.container(height=350, border=True): # 2x2 높이
+    with st.container(height=360, border=True): # 2x2 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">Recent User Activity</div>', unsafe_allow_html=True)
         users = [
             ("Kim Hwi-young", "GB Advanced User", "Expires 9999.12.30", "Active"),
