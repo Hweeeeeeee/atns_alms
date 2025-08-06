@@ -64,8 +64,9 @@ st.markdown("""
         }
         /* HIGHLIGHT START: 위젯 공통 스타일 - 그림자 적용 */
         /* st.container(border=True)가 생성하는 div에 그림자 적용 */
-        div[data-testid="stVerticalBlock"] > div.st-emotion-cache-ocqkzj { /* 이 클래스명은 Streamlit 버전업에 따라 변경될 수 있습니다. */
-            box-shadow: 0 3px 6px rgba(0,0,0,0.05) !important; /* 그림자 강제 적용 */
+        /* Streamlit 버전업에 따라 클래스명이 변경될 수 있으므로 주의가 필요합니다. */
+        div[data-testid="stVerticalBlock"] > div.st-emotion-cache-ocqkzj {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important; /* 그림자를 더 진하게 적용 */
         }
         .section-title {
             font-size: 24px;
@@ -398,13 +399,12 @@ with col_left_widgets:
             # HIGHLIGHT START: User License Type 그래프를 License Utilization Rate와 동일한 형태로 변경
             labels = ['Advance', 'Core', 'Self Service', 'Not Classified']
             values = [189, 84, 371, 42]
-            total_users = sum(values)
+            max_value = max(values) * 1.1 # 막대 길이 조절을 위한 최대값
 
             # 각 등급별로 작은 막대 그래프와 텍스트를 표시
             for i in range(len(labels)):
                 label = labels[i]
                 value = values[i]
-                percentage = (value / total_users) * 100
 
                 # 라벨과 그래프를 위한 컬럼 분할
                 label_col, bar_col = st.columns([1, 3]) # 라벨과 바의 비율 조정
@@ -415,9 +415,9 @@ with col_left_widgets:
                 with bar_col:
                     # 매우 작은 높이로 figsize 조정
                     fig, ax = plt.subplots(figsize=(4, 0.15)) # 높이를 더 줄임
-                    ax.barh(0, percentage, color='#007BFF', height=0.4)
-                    ax.text(percentage/2, 0, f'{percentage:.0f}%', va='center', ha='center', color='white', fontsize=10, fontweight='bold') # 폰트 크기 조정
-                    ax.set_xlim(0, 100)
+                    ax.barh(0, value, color='#007BFF', height=0.4) # 값을 직접 사용
+                    ax.text(value/2, 0, f'{value}', va='center', ha='center', color='white', fontsize=10, fontweight='bold') # 폰트 크기 조정
+                    ax.set_xlim(0, max_value) # x축 범위 조정
                     ax.axis('off')
                     st.pyplot(fig, use_container_width=True)
             # HIGHLIGHT END
