@@ -62,11 +62,12 @@ st.markdown("""
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        /* HIGHLIGHT START: 위젯 공통 스타일 - 그림자 적용 */
-        /* st.container(border=True)가 생성하는 div에 그림자 적용 */
+        /* HIGHLIGHT START: 위젯 공통 스타일 - 그림자 적용 및 스크롤 방지 */
+        /* st.container(border=True)가 생성하는 div에 그림자 및 overflow 적용 */
         /* Streamlit 버전업에 따라 클래스명이 변경될 수 있으므로 주의가 필요합니다. */
         div[data-testid="stVerticalBlock"] > div.st-emotion-cache-ocqkzj {
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important; /* 그림자를 더 진하게 적용 */
+            box-shadow: 0 6px 12px rgba(0,0,0,0.25) !important; /* 그림자를 더 진하게 적용 */
+            overflow: hidden !important; /* 내부 스크롤 방지 */
         }
         .section-title {
             font-size: 24px;
