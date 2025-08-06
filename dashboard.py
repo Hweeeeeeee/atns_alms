@@ -385,4 +385,82 @@ with cols_fue_row2[1]: # 두 번째 컬럼
 # Widget 8: 직무별 현황 (1x1 크기)
 with cols_fue_row2[2]: # 세 번째 컬럼
     st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
-    with st.container(height=150, border=False): # 1단위
+    with st.container(height=150, border=False): # 1단위 높이
+        st.markdown('<div class="widget-title">직무별 현황</div>', unsafe_allow_html=True)
+        st.markdown('<div class="icon">🛠️</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+# HIGHLIGHT END
+
+# HIGHLIGHT START: User 섹션 (순서 변경 및 크기/위치 조정)
+st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True)
+
+# 첫 번째 줄: Total (1x1), User Variance (1x1), Inactive Users (1x1), Recent User Activity (2x2)
+# 총 5단위 (1+1+1+2) + 1단위 여백
+cols_user_row1 = st.columns([1, 1, 1, 2, 1]) # 1+1+1+2+1 = 6단위
+
+with cols_user_row1[0]:
+    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
+    with st.container(height=150, border=False): # 1단위 높이
+        st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
+        st.markdown('<div class="big-number">902 <span style="color: green; font-size: 20px;">(+7)</span></div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+with cols_user_row1[1]:
+    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
+    with st.container(height=150, border=False): # 1단위 높이
+        st.markdown('<div class="widget-title">User Variance</div>', unsafe_allow_html=True)
+        st.markdown('<div class="big-number">7 ▲</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+with cols_user_row1[2]:
+    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
+    with st.container(height=150, border=False): # 1단위 높이
+        st.markdown('<div class="widget-title">Inactive Users</div>', unsafe_allow_html=True)
+        st.markdown('<div class="big-number">19</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# Recent User Activity (2x2 크기, 1번째 줄 4번째에 배치)
+with cols_user_row1[3]:
+    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
+    with st.container(height=350, border=False): # 2단위 높이
+        st.markdown('<div class="widget-title">Recent User Activity</div>', unsafe_allow_html=True)
+        users = [
+            ("Kim Hwi-young", "GB Advanced User", "Expires 9999.12.30", "Active"),
+            ("Lee Min", "GB Advanced User", "Expires 9999.12.30", "Active"),
+            ("Jung Ha-na", "GB Core User", "Expires 2026.11.03", "Expiring"),
+            ("Park Soo-bin", "GB Self Service", "Expires 2024.08.10", "Inactive"),
+            ("Yoon Tae", "GB Advanced User", "Expires 9999.12.30", "Active")
+        ]
+        for name, grade, expiry, status in users:
+            st.markdown(f"""
+                <div class="user-box">
+                    <div class="user-info">
+                        <strong>{name}</strong><br>
+                        {grade} | {expiry}
+                    </div>
+                    <div class="user-icon {status}">{status}</div>
+                </div>
+            """, unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# User License Type (2x1 크기, 2번째 줄에 배치)
+# HIGHLIGHT: User License Type이 Recent User Activity와 같은 높이에 오도록 컬럼 조정
+cols_user_row2 = st.columns([2, 4]) # 2(위젯) + 4(여백) = 6단위
+
+with cols_user_row2[0]:
+    st.markdown('<div class="st-emotion-cache-1r4qj8w e1f1d6gn1">', unsafe_allow_html=True)
+    with st.container(height=150, border=False): # 1단위 높이
+        st.markdown('<div class="widget-title">User License Type</div>', unsafe_allow_html=True)
+
+        labels = ['Advance', 'Core', 'Self Service', 'Not Classified']
+        values = [189, 84, 371, 42]
+        max_value = max(values) * 1.1
+
+        # HIGHLIGHT: 그래프 figsize 조정 (2x1 위젯에 맞게 조정)
+        fig, ax = plt.subplots(figsize=(3, 2)) # 2x1 위젯에 맞게 조정
+        ax.barh(labels, values, color='#007BFF')
+        ax.set_xlim(0, max_value)
+        ax.set_xlabel('Users')
+        st.pyplot(fig, use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+# HIGHLIGHT END
