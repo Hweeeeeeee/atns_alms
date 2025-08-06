@@ -142,30 +142,6 @@ st.markdown('<div class="section-title">Overview</div>', unsafe_allow_html=True)
 col1, col2, col3 = st.columns([2, 2, 2])
 
 with col1:
-    with st.container():
-        st.markdown("""
-            <div class="widget-box">
-                <div class="widget-title">FUE License Status</div>
-                <div class="stat-block">
-                    <div>
-                        <div class="stat-label">Active Licenses</div>
-                        <div class="stat-value">292</div>
-                    </div>
-                    <div>
-                        <div class="stat-label">Total License</div>
-                        <div class="stat-value">500</div>
-                    </div>
-                    <div>
-                        <div class="stat-label">Transaction based</div>
-                        <div class="stat-value">271</div>
-                    </div>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-
-
-
-with col1:
     st.markdown('<div class="widget-box">', unsafe_allow_html=True)
     st.markdown('<div class="widget-title">FUE License Status</div>', unsafe_allow_html=True)
     st.markdown("""
