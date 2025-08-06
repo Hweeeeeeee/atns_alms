@@ -392,7 +392,7 @@ with col6_fue:
                 """
                 <style>
                 .stPlotlyChart {
-                    margin-top: -30px; /* HIGHLIGHT: 차트를 위로 올리기 위한 음수 마진 */
+                    margin-top: -80px; /* HIGHLIGHT: 차트를 위로 올리기 위한 음수 마진 */
                 }
                 </style>
                 """, unsafe_allow_html=True
