@@ -71,7 +71,7 @@ st.markdown("""
         .section-title {
             font-size: 24px;
             font-weight: bold;
-            margin: 1rem 0;
+            margin: 2rem 0; /* HIGHLIGHT: 섹션 타이틀 상단 여백 2배 증가 */
         }
         .widget-title {
             font-weight: bold;
