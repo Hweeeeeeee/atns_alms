@@ -407,8 +407,8 @@ try:
 
     # HIGHLIGHT START: Calculate license_type_counts based on new formulas for FUE License section
     calculated_advanced = user_count * 1
-    calculated_core = user_count % 5
-    calculated_self_service = math.floor(user_count % 30)
+    calculated_core = user_count // 5 # Changed from % to // for integer division
+    calculated_self_service = user_count // 30 # Changed from % to // for integer division
     calculated_not_classified = 0
 
     license_type_counts = {
@@ -511,8 +511,8 @@ except FileNotFoundError:
     ]
     # Default calculated license type counts if file not found
     calculated_advanced = user_count * 1
-    calculated_core = user_count % 5
-    calculated_self_service = math.floor(user_count % 30)
+    calculated_core = user_count // 5
+    calculated_self_service = user_count // 30
     calculated_not_classified = 0
     license_type_counts = {
         'Advanced': calculated_advanced,
@@ -538,8 +538,8 @@ except Exception as e:
     ]
     # Default calculated license type counts if error
     calculated_advanced = user_count * 1
-    calculated_core = user_count % 5
-    calculated_self_service = math.floor(user_count % 30)
+    calculated_core = user_count // 5
+    calculated_self_service = user_count // 30
     calculated_not_classified = 0
     license_type_counts = {
         'Advanced': calculated_advanced,
