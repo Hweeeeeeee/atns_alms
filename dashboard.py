@@ -392,7 +392,10 @@ df_users = pd.DataFrame() # Initialize as empty DataFrame
 user_count = 0
 inactive_users_count = 0
 recent_users_data = []
-license_type_counts = {} # This will store the *calculated* license type counts for FUE and User sections
+
+# Initialize two separate dictionaries for license counts
+calculated_fue_license_counts = {} # For FUE License section calculations
+raw_user_license_counts = {}     # For User section's User License Type widget
 
 try:
     df_users = pd.read_csv('zalmt0020.csv', encoding='euc-kr') # Use euc-kr encoding
@@ -405,30 +408,37 @@ try:
         st.warning("No 'USERID' column in zalmt0020.csv. Using default value 902 for Total User Count.")
         user_count = 902 
 
-    # HIGHLIGHT START: Calculate license_type_counts based on new formulas for FUE License section
-    # Get raw counts from the CSV's ROLETYPID column
+    # Get raw counts from the CSV's ROLETYPID column for User section
     df_users['CLEANED_ROLETYPID'] = df_users['ROLETYPID'].astype(str).str.strip()
     
-    raw_advanced_count = df_users[df_users['CLEANED_ROLETYPID'] == 'GB Advanced Use']['USERID'].nunique()
-    raw_core_count = df_users[df_users['CLEANED_ROLETYPID'] == 'GC Core Use']['USERID'].nunique()
-    raw_self_service_count = df_users[df_users['CLEANED_ROLETYPID'] == 'GD Self-Service Use']['USERID'].nunique()
-    
-    # Apply the user's specific calculation rules
-    calculated_advanced = raw_advanced_count * 1
-    calculated_core = raw_core_count // 5
-    calculated_self_service = raw_self_service_count // 30
-    calculated_not_classified = 0 # As per user's explicit request
+    raw_advanced_count_user_section = df_users[df_users['CLEANED_ROLETYPID'] == 'GB Advanced Use']['USERID'].nunique()
+    raw_core_count_user_section = df_users[df_users['CLEANED_ROLETYPID'] == 'GC Core Use']['USERID'].nunique()
+    raw_self_service_count_user_section = df_users[df_users['CLEANED_ROLETYPID'] == 'GD Self-Service Use']['USERID'].nunique()
+    raw_not_classified_count_user_section = df_users[df_users['CLEANED_ROLETYPID'] == 'Not classified']['USERID'].nunique()
 
-    license_type_counts = {
-        'Advanced': calculated_advanced,
-        'Core': calculated_core,
-        'Self Service': calculated_self_service,
-        'Not Classified': calculated_not_classified
+    raw_user_license_counts = {
+        'Advanced': raw_advanced_count_user_section,
+        'Core': raw_core_count_user_section,
+        'Self Service': raw_self_service_count_user_section,
+        'Not Classified': raw_not_classified_count_user_section
     }
-    # HIGHLIGHT END
 
-    # (1) Active License - Sum of calculated values
-    active_license_count = sum(license_type_counts.values())
+    # Calculate license_type_counts based on new formulas for FUE License section
+    # Use the raw counts from the CSV for the base of these calculations
+    calculated_advanced_fue = raw_advanced_count_user_section * 1
+    calculated_core_fue = raw_core_count_user_section // 5
+    calculated_self_service_fue = raw_self_service_count_user_section // 30
+    calculated_not_classified_fue = 0 # As per user's explicit request
+
+    calculated_fue_license_counts = {
+        'Advanced': calculated_advanced_fue,
+        'Core': calculated_core_fue,
+        'Self Service': calculated_self_service_fue,
+        'Not Classified': calculated_not_classified_fue
+    }
+
+    # (1) Active License - Sum of calculated values for FUE section
+    active_license_count = sum(calculated_fue_license_counts.values())
     
     # (2) Remaining License - Total License (500) - Active License
     total_license_capacity = 500 # Assuming total capacity is 500
@@ -518,21 +528,30 @@ except FileNotFoundError:
         ("Yoon Tae", "GB Advanced User", "Expires 9999.12.30", "Active")
     ]
     # Default calculated license type counts if file not found
-    raw_advanced_count = 117 # Assuming 117 users are Advanced if file not found
-    raw_core_count = 2 # Assuming 2 core users if file not found
-    raw_self_service_count = 27 # Assuming 27 self-service users if file not found
+    raw_advanced_count_user_section = 117 # Assuming 117 users are Advanced if file not found
+    raw_core_count_user_section = 2 # Assuming 2 core users if file not found
+    raw_self_service_count_user_section = 27 # Assuming 27 self-service users if file not found
+    raw_not_classified_count_user_section = 42 # Assuming 42 not classified users if file not found
     
-    calculated_advanced = raw_advanced_count * 1
-    calculated_core = raw_core_count // 5
-    calculated_self_service = raw_self_service_count // 30
-    calculated_not_classified = 0
-    license_type_counts = {
-        'Advanced': calculated_advanced,
-        'Core': calculated_core,
-        'Self Service': calculated_self_service,
-        'Not Classified': calculated_not_classified
+    raw_user_license_counts = {
+        'Advanced': raw_advanced_count_user_section,
+        'Core': raw_core_count_user_section,
+        'Self Service': raw_self_service_count_user_section,
+        'Not Classified': raw_not_classified_count_user_section
     }
-    active_license_count = sum(license_type_counts.values())
+
+    calculated_advanced_fue = raw_advanced_count_user_section * 1
+    calculated_core_fue = raw_core_count_user_section // 5
+    calculated_self_service_fue = raw_self_service_count_user_section // 30
+    calculated_not_classified_fue = 0
+    calculated_fue_license_counts = {
+        'Advanced': calculated_advanced_fue,
+        'Core': calculated_core_fue,
+        'Self Service': calculated_self_service_fue,
+        'Not Classified': calculated_not_classified_fue
+    }
+
+    active_license_count = sum(calculated_fue_license_counts.values())
     total_license_capacity = 500
     remaining_license_count = total_license_capacity - active_license_count
     license_utilization_rate = (active_license_count / total_license_capacity) * 100 if total_license_capacity > 0 else 0
@@ -549,21 +568,29 @@ except Exception as e:
         ("Yoon Tae", "GB Advanced User", "Expires 9999.12.30", "Active")
     ]
     # Default calculated license type counts if error
-    raw_advanced_count = 117
-    raw_core_count = 2
-    raw_self_service_count = 27
+    raw_advanced_count_user_section = 117
+    raw_core_count_user_section = 2
+    raw_self_service_count_user_section = 27
+    raw_not_classified_count_user_section = 42
     
-    calculated_advanced = raw_advanced_count * 1
-    calculated_core = raw_core_count // 5
-    calculated_self_service = raw_self_service_count // 30
-    calculated_not_classified = 0
-    license_type_counts = {
-        'Advanced': calculated_advanced,
-        'Core': calculated_core,
-        'Self Service': calculated_self_service,
-        'Not Classified': calculated_not_classified
+    raw_user_license_counts = {
+        'Advanced': raw_advanced_count_user_section,
+        'Core': raw_core_count_user_section,
+        'Self Service': raw_self_service_count_user_section,
+        'Not Classified': raw_not_classified_count_user_section
     }
-    active_license_count = sum(license_type_counts.values())
+
+    calculated_advanced_fue = raw_advanced_count_user_section * 1
+    calculated_core_fue = raw_core_count_user_section // 5
+    calculated_self_service_fue = raw_self_service_count_user_section // 30
+    calculated_not_classified_fue = 0
+    calculated_fue_license_counts = {
+        'Advanced': calculated_advanced_fue,
+        'Core': calculated_core_fue,
+        'Self Service': calculated_self_service_fue,
+        'Not Classified': calculated_not_classified_fue
+    }
+    active_license_count = sum(calculated_fue_license_counts.values())
     total_license_capacity = 500
     remaining_license_count = total_license_capacity - active_license_count
     license_utilization_rate = (active_license_count / total_license_capacity) * 100 if total_license_capacity > 0 else 0
@@ -621,14 +648,14 @@ with cols_fue_row2[0]:
         st.markdown('<div class="widget-title">Composition ratio</div>', unsafe_allow_html=True)
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
         
-        # Use calculated license_type_counts for Composition Ratio
-        composition_data = [(label, license_type_counts.get(label, 0)) for label in ['Advanced', 'Core', 'Self Service', 'Not Classified']]
+        # Use calculated_fue_license_counts for Composition Ratio
+        composition_data = [(label, calculated_fue_license_counts.get(label, 0)) for label in ['Advanced', 'Core', 'Self Service', 'Not Classified']]
         composition_data.sort(key=lambda x: x[1], reverse=True) # Sort by value descending
 
         largest_label = composition_data[0][0] if composition_data else "N/A"
         largest_value = composition_data[0][1] if composition_data else 0
-        total_calculated_licenses = sum(val for _, val in composition_data)
-        largest_percentage = (largest_value / total_calculated_licenses * 100) if total_calculated_licenses > 0 else 0
+        total_calculated_licenses_for_composition = sum(val for _, val in composition_data)
+        largest_percentage = (largest_value / total_calculated_licenses_for_composition * 100) if total_calculated_licenses_for_composition > 0 else 0
 
         text_col, chart_col = st.columns([2, 1])
 
@@ -715,14 +742,16 @@ with col_left_widgets:
             
             labels_order = ['Advanced', 'Core', 'Self Service', 'Not Classified'] # Define order for consistency
             
+            # HIGHLIGHT START: Use raw_user_license_counts for User section
             for label in labels_order:
-                value = license_type_counts.get(label, 0) # Get count for the label, default to 0
+                value = raw_user_license_counts.get(label, 0) # Get raw count for the label
                 st.markdown(f"""
                     <div class="license-type-row">
                         <span class="license-type-label">{label}</span>
                         <span class="license-type-value">{value}</span>
                     </div>
                 """, unsafe_allow_html=True)
+            # HIGHLIGHT END
             st.markdown('</div>', unsafe_allow_html=True)
 
 with col_right_recent_activity:
