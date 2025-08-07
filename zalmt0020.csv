@@ -1,0 +1,133 @@
+USERID,ZDATE,ZTDATE,VERSION,LASTNAME,FIRSTNAME,FUNCTION,DEPARTMENT,COMPANY,USERTYPE,USERGROUP,LASTLOGONDATE,LASTLOGONTIME,EXPIRATIONSTARTDATE,EXPIRATIONENDDATE,USERLOCKSTATUS,ASSIGNEDROLE,TCDNUM,USEDTCD,ASSIGNEDTYPID,ROLETYPID,TCDTYPID
+AC_ADMIN,202508,,1.68,AC_ADMIN,,,,ATNS Group,A,,2025-01-08,오후 7:47:02,,,0,8,19,0,GB,GB Advanced Use,
+AC_AME_PRJ,202508,,,미주롤인2차프로젝트총괄,,,,ATNS Group,A,,,오전 12:00:00,,,0,1,19,0,,Not classified,
+AC_AME_SM,202508,,,미주권역운영총괄,,,,ATNS Group,A,,,오전 12:00:00,,,0,1,19,0,,Not classified,
+AC_APPROV01,202508,,1.68,AC_APPROV01,,,,ATNS Group,A,,2024-02-13,오후 7:37:49,,,0,1,6,0,,GB Advanced Use,
+AC_BATCH,202508,,1.68,Control,Active,,,ATNS Group,B,,,오전 12:00:00,,,0,3,39,0,,GB Advanced Use,
+AC_CONFIG01,202508,,1.68,AC_CONFIG01,,,,ATNS Group,A,,2024-02-07,오전 9:19:49,,,0,1,6,0,,GB Advanced Use,
+AC_DEVELOP01,202508,,1.68,AC_DEVELOP01,,,,ATNS Group,A,,2024-04-11,오후 7:50:04,,,0,5,50,0,,GB Advanced Use,
+AC_HQ_PRJ,202508,,,본사 프로젝트 총괄,,,,ATNS Group,A,,2024-04-08,오후 8:40:20,,,0,1,19,0,,Not classified,
+AC_PM_ALL,202508,,,총괄,,,,ATNS Group,A,,,오전 12:00:00,,,0,1,19,0,,Not classified,
+AC_RFC,202508,,1.68,AC_RFC,,,,ATNS Group,S,,2025-08-05,오후 4:25:00,,,0,3,49,0,,GB Advanced Use,
+AC_RFC2,202508,,1.68,AC_RFC2,,,,ATNS Group,S,,2025-07-04,오전 10:47:22,,,0,1,21,0,,GB Advanced Use,
+AC_TEST01,202508,,1.68,AC_TEST01,,,,ATNS Group,S,,2024-04-22,오후 1:29:19,,,0,1,6,0,,GB Advanced Use,
+ADMIN,202508,202504,1.68,ADMIN,,,,ATNS Group,A,,2025-07-31,오후 5:00:29,,,0,13,3,15,,GB Advanced Use,GB Advanced Use
+ADMIN,202508,202505,1.68,ADMIN,,,,ATNS Group,A,,2025-07-31,오후 5:00:29,,,0,13,3,6,,GB Advanced Use,GB Advanced Use
+ADMIN2,202508,,1.68,ADMIN2,,,,ATNS Group,A,,2024-04-18,오후 12:25:13,,,0,4,0,0,,GB Advanced Use,
+ATNSCON001,202508,,1.68,ATNSCON001,,,,ATNS Group,A,,2024-01-16,오전 10:07:27,,,0,29,20,0,GB,GB Advanced Use,
+ATNSCON002,202508,,1.68,ATNSCON002,,,,ATNS Group,A,,2023-07-25,오후 4:52:27,,,0,21,1,0,,GB Advanced Use,
+ATNSCON003,202508,,1.68,ATNSCON003,이응준,,,ATNS Group,A,,2025-08-05,오후 2:33:35,,,0,29,20,0,,GB Advanced Use,
+ATNSCON004,202508,,1.68,ATNSCON004,,,,ATNS Group,A,,2023-03-29,오후 10:09:23,,,0,21,1,0,,GB Advanced Use,
+ATNSDEV001,202508,202505,1.68,ATNSDEV001,,,,ATNS Group,A,,2025-05-10,오후 8:38:40,,,0,21,1,1,,GB Advanced Use,
+ATNSDEV002,202508,202505,1.68,ATNSDEV002,,,,ATNS Group,A,,2025-05-11,오후 8:26:57,,,0,21,1,4,,GB Advanced Use,GB Advanced Use
+ATNSDEV003,202508,,1.68,ATNSDEV003,,,,ATNS Group,A,,2023-03-24,오전 10:48:30,,,0,21,1,0,,GB Advanced Use,
+ATNSDEV004,202508,,1.68,ATNSDEV004,,,,ATNS Group,A,,2023-03-24,오전 12:00:00,,,0,21,1,0,,GB Advanced Use,
+ATNSDEV005,202508,202504,1.68,ATNSDEV005,,,,ATNS Group,A,,2025-07-17,오전 11:02:28,,,0,21,1,0,,GB Advanced Use,
+ATNSDEV005,202508,202505,1.68,ATNSDEV005,,,,ATNS Group,A,,2025-07-17,오전 11:02:28,,,0,21,1,1,,GB Advanced Use,GB Advanced Use
+ATNSDEV006,202508,,1.68,ATNSDEV006,,,,ATNS Group,A,,2025-01-03,오후 1:56:19,,,0,21,1,0,,GB Advanced Use,
+ATNSDEV007,202508,,1.68,ATNSDEV007,,,,ATNS Group,A,,2024-05-08,오전 1:12:45,,,0,21,1,0,,GB Advanced Use,
+ATNSDEV008,202508,,1.68,ATNSDEV008,,,,ATNS Group,A,,2025-06-26,오전 10:07:39,,,0,21,1,0,,GB Advanced Use,
+ATNSDEV009,202508,202504,1.68,ATNSDEV009,,,,ATNS Group,A,,2025-08-01,오후 2:28:15,,,0,21,1,3,,GB Advanced Use,GB Advanced Use
+ATNSDEV009,202508,202505,1.68,ATNSDEV009,,,,ATNS Group,A,,2025-08-01,오후 2:28:15,,,0,21,1,11,,GB Advanced Use,GB Advanced Use
+ATNSDEV010,202508,202504,1.68,ATNSDEV010,,,,ATNS Group,A,,2025-08-04,오후 3:01:41,,,0,22,3,14,,GB Advanced Use,GB Advanced Use
+ATNSDEV010,202508,202505,1.68,ATNSDEV010,,,,ATNS Group,A,,2025-08-04,오후 3:01:41,,,0,22,3,1,,GB Advanced Use,
+ATNSDEV011,202508,202504,1.68,ATNSDEV011,,,,ATNS Group,A,,2025-08-05,오후 4:25:40,,,0,21,1,25,,GB Advanced Use,GB Advanced Use
+ATNSDEV011,202508,202505,1.68,ATNSDEV011,,,,ATNS Group,A,,2025-08-05,오후 4:25:40,,,0,21,1,7,,GB Advanced Use,GB Advanced Use
+ATNSDEV012,202508,,1.68,ATNSDEV012,,,,ATNS Group,A,,2025-08-05,오후 4:21:00,,,0,21,1,0,,GB Advanced Use,
+ATNSDEV013,202508,,1.68,ATNSDEV013,,,,ATNS Group,A,,2025-07-15,오후 5:26:23,,,128,21,1,0,,GB Advanced Use,
+ATNSDEV014,202508,,1.68,ATNSDEV014,,,,ATNS Group,A,,2023-06-13,오후 1:45:52,,,0,21,1,0,,GB Advanced Use,
+ATNSDEV015,202508,,1.68,ATNSDEV015,,,,ATNS Group,A,,2023-11-28,오후 3:58:27,,,0,21,1,0,,GB Advanced Use,
+ATNSDEV016,202508,,1.68,ATNSDEV016,,,,ATNS Group,A,,2024-11-13,오후 8:56:41,,,0,21,1,0,,GB Advanced Use,
+ATPADM,202508,202504,1.68,atpadm,,BC,PTG,ATNS Group,A,,2025-08-05,오전 10:16:31,2025-01-01,2030-12-31,0,9,20,45,GB,GB Advanced Use,GB Advanced Use
+ATPADM,202508,202505,1.68,atpadm,,BC,PTG,ATNS Group,A,,2025-08-05,오전 10:16:31,2025-01-01,2030-12-31,0,9,20,34,GB,GB Advanced Use,GB Advanced Use
+BC001,202508,,1.68,JungSoo,Lee,,,ATNS Group,A,,2024-03-20,오전 9:39:11,,,0,0,0,0,,GB Advanced Use,
+BJCHO,202508,,1.68,조병직 파트장님,,,,ATNS Group,A,,2025-03-11,오후 1:52:47,,,0,0,0,0,,GB Advanced Use,
+CWLEE,202508,,1.68,CW LEE,,,,ATNS Group,A,,2024-08-13,오전 8:10:11,,,0,1,319,0,,GB Advanced Use,
+CYC,202508,202504,1.68,cyc,,,,ATNS Group,A,,2025-08-04,오후 3:45:54,,,0,11,80,12,,GB Advanced Use,GB Advanced Use
+CYC,202508,202505,1.68,cyc,,,,ATNS Group,A,,2025-08-04,오후 3:45:54,,,0,11,80,38,,GB Advanced Use,GB Advanced Use
+CYCMAIL,202508,,1.68,CYCMAIL,,,,ATNS Group,B,,,오전 12:00:00,,,0,6,51,0,,GB Advanced Use,
+DEV01,202508,,,DEV02,,,,ATNS Group,A,SUPER,,오전 12:00:00,2025-04-30,2025-05-01,0,0,0,0,GA,,
+DHL,202508,202504,1.68,Daehyun,Lim,업그레이드테스트,,ATNS Group,S,,2025-07-28,오후 5:31:36,,,0,0,0,15,,GB Advanced Use,GB Advanced Use
+DHL,202508,202505,1.68,Daehyun,Lim,업그레이드테스트,,ATNS Group,S,,2025-07-28,오후 5:31:36,,,0,0,0,8,,GB Advanced Use,GB Advanced Use
+GICSPP01,202508,,1.68,GICSPP01,,,,ATNS Group,S,,,오전 12:00:00,,,0,29,20,0,,GB Advanced Use,
+HMODI,202508,,1.68,HMODI,,,,ATNS Group,A,,2024-05-23,오후 6:47:37,,,0,5,6,0,,GB Advanced Use,
+HMODI_TEST2,202508,,1.68,HMODI_TEST2,,,,ATNS Group,A,,2024-04-11,오후 8:40:05,,,0,5,50,0,,GB Advanced Use,
+IC,202508,,1.68,유,인철,,,ATNS Group,A,,2025-07-28,오전 10:28:31,,,0,0,0,0,,GB Advanced Use,
+IDADMIN,202508,202504,1.68,SSANAI,LEE,,,ATNS Group,A,SUPER,2024-05-22,오전 10:23:24,,,0,0,0,3,,GB Advanced Use,GB Advanced Use
+JCHEONG,202508,202504,1.68,cheong,j,,,ATNS Group,A,,2025-08-05,오후 1:35:30,,,0,0,0,6,,GB Advanced Use,GB Advanced Use
+JENNYA,202508,,1.68,김,규민,,,ATNS Group,A,,2025-07-10,오후 4:24:07,,,0,0,0,0,,GB Advanced Use,
+JHKIM,202508,,1.68,KIM,JONG HWAN,,,ATNS Group,A,,2024-04-11,오후 3:28:45,,,0,8,19,0,,GB Advanced Use,
+JK0506,202508,202505,1.68,JAE,LEE,,,ATNS Group,A,,2025-05-13,오전 8:26:35,,,0,0,0,2,,GB Advanced Use,
+JUNGSOOLEE,202508,,1.68,JUNGSOOLEE,,,,ATNS Group,A,,2023-05-15,오후 8:36:04,,,0,26,1,0,,GB Advanced Use,
+KEH,202508,,1.68,국,은혜,,,Company address - please maintain,A,,2025-06-10,오전 10:13:53,,,0,0,0,0,,GB Advanced Use,
+KHY,202508,202504,1.68,김,휘영,,,Company address - please maintain,A,,2025-08-05,오후 2:01:27,,,0,0,0,26,,GB Advanced Use,GB Advanced Use
+KHY,202508,202505,1.68,김,휘영,,,Company address - please maintain,A,,2025-08-05,오후 2:01:27,,,0,0,0,8,,GB Advanced Use,GB Advanced Use
+LJH,202508,202505,1.68,이,지현,,,ATNS Group,A,,2025-08-05,오후 4:21:57,,,0,4,11,7,,GB Advanced Use,GB Advanced Use
+META01,202508,,1.68,송,민근,,,ATNS Group,A,,2025-01-14,오후 1:29:50,,,0,0,0,0,,GB Advanced Use,
+MGBLD001,202508,,1.68,MTGCON001,,,,Metanet Global,A,,2025-03-22,오전 12:00:00,,,0,21,1,0,,GB Advanced Use,
+MGBLD002,202508,,1.68,MGBLD002,,,,Metanet Global,A,,2024-01-18,오전 12:00:00,,,0,21,1,0,,GB Advanced Use,
+MGBLD003,202508,,1.68,MGBLD003,,,,Metanet Global,A,,2024-01-21,오후 10:57:23,,,0,21,1,0,,GB Advanced Use,
+MGBLD004,202508,202504,1.68,MGBLD004,,,,Metanet Global,A,,2025-04-11,오후 2:13:23,,,0,21,1,3,,GB Advanced Use,
+MGBLD005,202508,,1.68,MGBLD005,,,,Metanet Global,A,,2025-02-26,오후 1:41:24,,,0,21,1,0,,GB Advanced Use,
+MGBLD006,202508,202504,1.68,MGBLD006,,,,Metanet Global,A,,2025-04-07,오후 4:13:40,,,0,21,1,3,,GB Advanced Use,
+MGBLD007,202508,,1.68,MGBLD007,,,,Metanet Global,A,,2024-12-05,오후 3:13:42,,,0,21,1,0,,GB Advanced Use,
+MGBLD008,202508,202504,1.68,MGBLD008,,,,Metanet Global,A,,2025-07-29,오후 7:59:11,,,0,21,1,109,,GB Advanced Use,GB Advanced Use
+MGBLD008,202508,202505,1.68,MGBLD008,,,,Metanet Global,A,,2025-07-29,오후 7:59:11,,,0,21,1,72,,GB Advanced Use,GB Advanced Use
+MGBLD009,202508,202504,1.68,MGBLD009,,,,Metanet Global,A,,2025-06-09,오후 10:06:15,,,0,21,1,7,,GB Advanced Use,GB Advanced Use
+MGBLD009,202508,202505,1.68,MGBLD009,,,,Metanet Global,A,,2025-06-09,오후 10:06:15,,,0,21,1,3,,GB Advanced Use,GB Advanced Use
+MGBLD010,202508,,1.68,MGBLD010,,,,Metanet Global,A,,2024-09-02,오후 1:33:09,,,0,21,1,0,,GB Advanced Use,
+MGBLD011,202508,,1.68,MGBLD011,,,,Metanet Global,A,,2024-09-25,오후 3:08:35,,,0,21,1,0,,GB Advanced Use,
+MGBLD012,202508,,1.68,MGBLD012,,,,Metanet Global,A,,,오전 12:00:00,,,0,21,1,0,,GB Advanced Use,
+MGBLD013,202508,,1.68,MGBLD013,,,,Metanet Global,A,,,오전 12:00:00,,,0,21,1,0,,GB Advanced Use,
+MGBLD014,202508,,1.68,MGBLD014,,,,Metanet Global,A,,2024-07-25,오후 5:30:16,,,0,22,1,0,,GB Advanced Use,
+MGBLD015,202508,202504,1.68,MGBLD015,,,,Metanet Global,A,,2025-04-30,오후 3:18:37,,,0,21,1,0,,GB Advanced Use,
+MGBLD016,202508,202504,1.68,MGBLD016,,,,Metanet Global,A,,2025-05-13,오후 8:25:36,,,0,21,1,3,,GB Advanced Use,
+MGBLD016,202508,202505,1.68,MGBLD016,,,,Metanet Global,A,,2025-05-13,오후 8:25:36,,,0,21,1,15,,GB Advanced Use,GB Advanced Use
+MGBLD017,202508,202504,1.68,MGBLD017,,,,Metanet Global,A,,2025-06-24,오전 10:21:00,,,0,21,1,5,,GB Advanced Use,GB Advanced Use
+MGBLD018,202508,,1.68,MGBLD018,,,,Metanet Global,A,,,오전 12:00:00,,,0,21,1,0,,GB Advanced Use,
+MGBLD019,202508,,1.68,MGBLD019,,,,Metanet Global,A,,2025-03-22,오전 12:00:00,,,0,21,1,0,,GB Advanced Use,
+MGBLD020,202508,,1.68,MGBLD020,,,,Metanet Global,A,,2025-06-24,오전 11:39:21,,,0,21,1,0,,GB Advanced Use,
+MGBLD021,202508,,1.68,MGBLD021,,,,Metanet Global,A,,,오전 12:00:00,,,0,21,1,0,,GB Advanced Use,
+MGBLD022,202508,,1.68,MGBLD022,,,,Metanet Global,A,,2024-01-18,오전 12:00:00,,,64,21,1,0,,GB Advanced Use,
+MGBLD023,202508,,1.68,MGBLD023,,,,Metanet Global,A,,,오전 12:00:00,,,64,21,1,0,,GB Advanced Use,
+MGBLD024,202508,,1.68,MGBLD024,,,,Metanet Global,A,,,오전 12:00:00,,,64,21,1,0,,GB Advanced Use,
+MGBLD025,202508,,1.68,MGBLD025,,,,Metanet Global,A,,2024-04-16,오후 3:27:01,,,0,21,1,0,,GB Advanced Use,
+MTGCON001,202508,202504,1.68,MTGCON001,,,,ATNS Group,A,,2025-08-05,오후 2:32:44,,,0,21,1,8,,GB Advanced Use,GB Advanced Use
+MTGCON001,202508,202505,1.68,MTGCON001,,,,ATNS Group,A,,2025-08-05,오후 2:32:44,,,0,21,1,7,,GB Advanced Use,GB Advanced Use
+NEWJEANS,202508,202505,1.68,NEWJEANS,,,,ATNS Group,A,,2025-05-11,오전 5:54:47,,,0,0,0,2,,GB Advanced Use,GB Advanced Use
+NKH,202508,,1.68,kh,n,,,ATNS Group,A,,2024-12-08,오후 9:43:18,,,0,1,0,0,,GB Advanced Use,
+PICACHEUSER,202508,,,PICACHEUSER,,,,ATNS Group,B,,,오전 12:00:00,,,0,3,0,0,,Not classified,
+PUN,202508,,1.68,국,은혜,,,ATNS Group,A,,2024-07-18,오후 3:16:41,2019-06-24,2099-06-24,0,1,1,0,,GB Advanced Use,
+SAP_SATC_ADM,202508,,,SAP_SATC_ADM,,,,ATNS Group,A,,2025-03-27,오후 4:31:12,,,0,1,0,0,,Not classified,
+SBECK,202508,,1.68,SBECK,,,,ATNS Group,A,,2025-03-26,오후 5:29:08,,,0,8,19,0,,GB Advanced Use,
+SMTMSOL,202508,,1.68,SMTMSOL,SOLMAN,,,ATNS Group,B,,2024-12-28,오후 9:08:36,,,0,2,0,0,,GB Advanced Use,
+SM_SOL,202508,,1.68,SM_SOL,SOLMAN,,,ATNS Group,B,,2024-12-29,오전 7:27:13,,,0,1,0,0,,GD Self-Service Use,
+SNOW,202508,,1.68,Service Now,,,,ATNS Group,S,,2025-02-06,오전 11:36:00,,,0,3,39,0,,GB Advanced Use,
+SOHYUN,202508,202504,1.68,Sohyun,Jun,,,ATNS Group,A,SUPER,2025-08-04,오후 4:22:37,,,0,2,0,5,,GB Advanced Use,
+SOHYUN,202508,202505,1.68,Sohyun,Jun,,,ATNS Group,A,SUPER,2025-08-04,오후 4:22:37,,,0,2,0,5,,GB Advanced Use,GB Advanced Use
+SOHYUNJUN,202508,,1.68,jun,sohyun,,,ATNS Group,A,,,오전 12:00:00,,,0,2,0,0,,GB Advanced Use,
+SOLME,202508,,1.68,SOLME,,,,ATNS Group,A,,2025-08-01,오후 5:56:30,2025-01-01,2030-12-31,0,9,20,0,GB,GB Advanced Use,
+TESE_BC_IC,202508,,1.68,테스트,사용자,,,ATNS Group,A,,,오전 12:00:00,,,0,1,1,0,,GB Advanced Use,
+TEST01,202508,,1.68,01,,,,ATNS Group,A,,2024-07-01,오후 4:28:46,,,0,3,1,0,,GB Advanced Use,
+TESTS,202508,,1.68,das,,,,ATNS Group,A,,,오전 12:00:00,,,0,0,0,0,,GB Advanced Use,
+TEST_BC01,202508,,1.68,테스트,사용자,,,ATNS Group,A,,,오전 12:00:00,,,0,1,2,0,,GB Advanced Use,
+TEST_BC02,202508,,1.68,테스트,사용자,,,ATNS Group,A,,,오전 12:00:00,,,0,0,0,0,,GB Advanced Use,
+TEST_BC_IN,202508,,1.68,테스트1,,,,ATNS Group,A,,,오전 12:00:00,,,0,1,1,0,,GB Advanced Use,
+TEST_HMODI,202508,,1.68,TEST_HMODI,,,,ATNS Group,A,,2024-04-11,오후 10:38:53,,,0,8,19,0,,GB Advanced Use,
+TEST_USER,202508,,,K,,,,Company address - please maintain,A,,,오전 12:00:00,,,0,0,0,0,,,
+TEST_YOON,202508,,1.68,Yoo,,,,ATNS Group,A,,2024-06-11,오전 11:08:33,,,0,0,0,0,,GB Advanced Use,
+WHLEE,202508,,1.68,WHLEE,,,,ATNS Group,A,,2025-03-06,오전 10:25:15,,,0,21,50,0,,GB Advanced Use,
+WSKIM,202508,,1.68,woo sik,kim,,,ATNS Group,A,,2024-01-17,오전 11:45:33,,,0,0,0,0,,GB Advanced Use,
+XITING,202508,,1.68,Xiting,,,,ATNS Group,A,,2024-07-02,오후 12:14:41,,,0,21,522,0,,GB Advanced Use,
+YOON0991,202508,202504,1.68,yoon,,,,ATNS Group,A,,2025-07-29,오전 11:13:49,,,0,6,50,9,,GB Advanced Use,GB Advanced Use
+YOON0991,202508,202505,1.68,yoon,,,,ATNS Group,A,,2025-07-29,오전 11:13:49,,,0,6,50,4,,GB Advanced Use,
+YOON0991T,202508,,1.68,윤,성현,,,ATNS Group,A,,2024-07-04,오전 12:00:00,,,0,2,2,0,,GD Self-Service Use,
+YOON0992,202508,,1.68,yoon,,,,ATNS Group,S,,2024-01-11,오전 11:04:01,,,0,0,0,0,,GB Advanced Use,
+YSH,202508,202505,1.68,윤,승현,,,ATNS Group,A,,2025-07-31,오후 1:16:46,,,0,5,12,7,,GB Advanced Use,GB Advanced Use
+ZSU24_TEST,202508,202504,1.68,SU24,,,,ATNS Group,A,,2025-04-08,오후 3:12:32,,,0,1,1,2,,GD Self-Service Use,GB Advanced Use
+ZTESTCOMP,202508,,1.68,Test,,,,Company address - please maintain,A,,,오전 12:00:00,,,0,3,2,0,,GB Advanced Use,
+ZTEST_01,202508,,,피오리 테스트 생성,,,,ATNS Group,A,,,오전 12:00:00,,,0,0,0,0,,,
+ZTEST_02,202508,,,왜 생성?,,,,ATNS Group,A,,,오전 12:00:00,,,0,0,0,0,,,
+ZTEST_USR,202508,,,yon,,,,ATNS Group,A,,2024-03-26,오후 1:44:10,,,0,1,1,0,,Not classified,
+ZXITING_ATNS,202508,,1.68,Xiting AG,,,,ATNS Group,B,SUPER,2024-07-02,오후 4:28:54,,,0,1,0,0,,GB Advanced Use,
+ZXITING_REF,202508,,,Xiting Reference User,,,,ATNS Group,L,,,오전 12:00:00,,,0,0,0,0,,,
