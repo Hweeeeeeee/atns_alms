@@ -261,7 +261,7 @@ st.markdown("""
             color: #666;
             margin-top: 5px;
         }
-        /* HIGHLIGHT START: User License Type 항목 및 값 정렬을 위한 CSS 추가 */
+        /* User License Type 항목 및 값 정렬을 위한 CSS 추가 */
         .license-type-row {
             display: flex;
             justify-content: space-between; /* 라벨과 값을 양 끝으로 분산 */
@@ -282,7 +282,6 @@ st.markdown("""
             flex-shrink: 0; /* 값이 줄어들지 않도록 */
             color: #007BFF; /* 값 색상 */
         }
-        /* HIGHLIGHT END */
     </style>
 """, unsafe_allow_html=True)
 
@@ -646,13 +645,14 @@ with col_left_widgets:
     # User License Type (2x1) below the 1x1s.
     cols_user_license_type = st.columns([2, 1]) 
     with cols_user_license_type[0]:
-        with st.container(height=180, border=True): # 2x1 비율 (가로:세로 = 2:1)
+        # HIGHLIGHT START: User License Type 위젯 높이 조정 (210px로 늘림)
+        with st.container(height=210, border=True): # 2x1 비율 (가로:세로 = 2:1)
+        # HIGHLIGHT END
             st.markdown('<div class="widget-title">User License Type</div>', unsafe_allow_html=True)
             st.markdown('<div class="widget-content">', unsafe_allow_html=True)
             
             labels_order = ['Advanced', 'Core', 'Self Service', 'Not Classified'] # Define order for consistency
             
-            # HIGHLIGHT START: 그래프 대신 텍스트로 라벨과 값을 표시
             for label in labels_order:
                 value = license_type_counts.get(label, 0) # Get count for the label, default to 0
                 st.markdown(f"""
@@ -661,7 +661,6 @@ with col_left_widgets:
                         <span class="license-type-value">{value}</span>
                     </div>
                 """, unsafe_allow_html=True)
-            # HIGHLIGHT END
             st.markdown('</div>', unsafe_allow_html=True)
 
 with col_right_recent_activity:
