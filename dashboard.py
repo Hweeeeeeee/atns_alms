@@ -636,7 +636,7 @@ with cols_fue_row1[4]: # 1 unit
     with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
         st.markdown('<div class="widget-title">License Variance</div>', unsafe_allow_html=True)
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-        st.markdown('<div class="big-number">12 ▲</div>', unsafe_allow_html=True)
+        st.markdown('<div class="big-number">0</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
 # Second row: Composition Ratio (2x1), Department Status (1x1), Job Status (1x1)
