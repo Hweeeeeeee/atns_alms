@@ -2,6 +2,65 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd 
+from datetime import datetime, timedelta # Import datetime and timedelta
+
+# Helper functions for date parsing and status determination
+def parse_full_datetime(date_part, time_part):
+    """Parses date and time strings (including 오전/오후) into a datetime object."""
+    if pd.isna(date_part) or pd.isna(time_part):
+        return None
+    
+    full_str = f"{date_part} {time_part}"
+    try:
+        if '오전' in full_str:
+            return datetime.strptime(full_str.replace('오전 ', ''), '%Y-%m-%d %I:%M:%S')
+        elif '오후' in full_str:
+            return datetime.strptime(full_str.replace('오후 ', ''), '%Y-%m-%d %I:%M:%S')
+        else: # Assume 24-hour if no 오전/오후 marker
+            return datetime.strptime(full_str, '%Y-%m-%d %H:%M:%S')
+    except ValueError:
+        return None
+
+def parse_ymd_or_ym_date(date_str):
+    """Parses YYYYMMDD or YYYYMM date strings into a datetime object."""
+    if pd.isna(date_str) or date_str == '':
+        return None
+    s_date_str = str(date_str)
+    try:
+        if len(s_date_str) == 8: # YYYYMMDD
+            return datetime.strptime(s_date_str, '%Y%m%d')
+        elif len(s_date_str) == 6: # YYYYMM, default to first day of month
+            return datetime.strptime(s_date_str + '01', '%Y%m%d')
+    except ValueError:
+        pass
+    return None
+
+def get_user_status_for_recent_activity(row):
+    """Determines user status (Active, Expiring, Inactive) and expiry string."""
+    today = datetime.now()
+    
+    last_logon_dt = parse_full_datetime(row['LASTLOGONDATE'], row['LASTLOGONTIME'])
+    expiry_end_dt = parse_ymd_or_ym_date(row['EXPIRATIONENDDATE'])
+    
+    status_text = "Active"
+    expiry_display = "Expires 9999.12.30" # Default for no specific expiry in CSV or very long expiry
+
+    # Determine expiry display string
+    if pd.notna(row['EXPIRATIONENDDATE']):
+        if str(row['EXPIRATIONENDDATE']) == '99991230': # Special handling for "never expires"
+            expiry_display = "Expires 9999.12.30"
+        elif expiry_end_dt:
+            expiry_display = f"Expires {expiry_end_dt.strftime('%Y.%m.%d')}"
+    
+    # Determine status based on the provided logic
+    if expiry_end_dt and expiry_end_dt < today:
+        status_text = "Inactive" # Expired
+    elif last_logon_dt and last_logon_dt < today - timedelta(days=30):
+        status_text = "Inactive" # No recent login for 30+ days
+    elif expiry_end_dt and expiry_end_dt >= today and expiry_end_dt < today + timedelta(days=90):
+        status_text = "Expiring" # Expiring within 90 days
+
+    return status_text, expiry_display
 
 # 페이지 설정 (한 번만 선언)
 st.set_page_config(layout="wide")
@@ -65,7 +124,7 @@ st.markdown("""
         }
         /* 위젯 공통 스타일 - 그림자 적용 및 스크롤 방지 */
         div[data-testid="stVerticalBlock"] > div.st-emotion-cache-ocqkzj {
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4) !important; /* HIGHLIGHT: 그림자를 더 진하게 적용 */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4) !important; /* 그림자를 더 진하게 적용 */
             overflow: hidden !important; /* 내부 스크롤 방지 */
         }
         .section-title {
@@ -394,23 +453,148 @@ st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True)
 # Main columns for User section: col_left_widgets (for 1x1s and 2x1), col_right_recent_activity (for 2x2)
 col_left_widgets, col_right_recent_activity, _ = st.columns([3, 2, 1])
 
-# CSV 파일에서 USERID 수 계산
+# CSV 파일에서 데이터 로드 및 전처리
+df_users = pd.DataFrame() # Initialize as empty DataFrame
 user_count = 0
+inactive_users_count = 0
+recent_users_data = []
+license_type_counts = {}
+
 try:
-    # HIGHLIGHT: USERID 열의 공백 제거 및 문자열 타입 변환 추가
-    df_users = pd.read_csv('zalmt0020.csv', encoding='euc-kr')
+    df_users = pd.read_csv('zalmt0020.csv', encoding='euc-kr') # Use euc-kr encoding
+    
+    # Clean USERID for accurate unique count
     if 'USERID' in df_users.columns:
-        # 공백 제거 및 문자열 타입 변환 후 고유값 카운트
-        user_count = df_users['USERID'].astype(str).str.strip().nunique()
+        df_users['USERID'] = df_users['USERID'].astype(str).str.strip()
+        user_count = df_users['USERID'].nunique()
     else:
-        st.warning("zalmt0020.csv 파일에 'USERID' 열이 없습니다. 기본값 902를 사용합니다.")
+        st.warning("zalmt0020.csv 파일에 'USERID' 열이 없습니다. Total User Count 기본값 902를 사용합니다.")
         user_count = 902 
+
+    # (2) Inactive Users - LASTLOGONDATE 기준으로 -30일 보다 큰 사용자의 수를 Count
+    if 'LASTLOGONDATE' in df_users.columns and 'LASTLOGONTIME' in df_users.columns:
+        today = datetime.now()
+        thirty_days_ago = today - timedelta(days=30)
+        
+        # Parse LASTLOGONDATE and LASTLOGONTIME
+        df_users['LAST_LOGON_DATETIME'] = df_users.apply(
+            lambda row: parse_full_datetime(row['LASTLOGONDATE'], row['LASTLOGONTIME']), axis=1
+        )
+        
+        # Count inactive users (last logon older than 30 days)
+        inactive_users_df = df_users[
+            (df_users['LAST_LOGON_DATETIME'].notna()) & 
+            (df_users['LAST_LOGON_DATETIME'] < thirty_days_ago)
+        ]
+        inactive_users_count = inactive_users_df['USERID'].nunique()
+    else:
+        st.warning("LASTLOGONDATE 또는 LASTLOGONTIME 열이 없어 Inactive Users 계산에 문제가 있습니다. 기본값 19를 사용합니다.")
+        inactive_users_count = 19 # Default if columns are missing
+
+    # (3) Recent User Activity - EXPIRATIONENDDATE가 종료되었거나, Inactive Users가 되었거나, EXPIRATIONSTARTDATE 값이 존재하는 사람 중 최근 5개의 사용자 정보
+    if 'EXPIRATIONENDDATE' in df_users.columns and 'EXPIRATIONSTARTDATE' in df_users.columns and 'LASTLOGONDATE' in df_users.columns and 'LASTLOGONTIME' in df_users.columns and 'LASTNAME' in df_users.columns and 'FIRSTNAME' in df_users.columns and 'ROLETYPID' in df_users.columns:
+        
+        # Filter users based on conditions
+        df_users['EXPIRY_END_DATETIME'] = df_users['EXPIRATIONENDDATE'].apply(parse_ymd_or_ym_date)
+        df_users['EXPIRY_START_DATETIME'] = df_users['EXPIRATIONSTARTDATE'].apply(parse_ymd_or_ym_date)
+
+        # Condition 1: EXPIRATIONENDDATE is in the past
+        cond_expired = (df_users['EXPIRY_END_DATETIME'].notna()) & (df_users['EXPIRY_END_DATETIME'] < today)
+
+        # Condition 2: User is "Inactive" (last logon older than 30 days)
+        cond_inactive_by_logon = (df_users['LAST_LOGON_DATETIME'].notna()) & (df_users['LAST_LOGON_DATETIME'] < today - timedelta(days=30))
+
+        # Condition 3: EXPIRATIONSTARTDATE exists
+        cond_has_start_date = df_users['EXPIRY_START_DATETIME'].notna()
+        
+        # Combine unique USERIDs from all conditions
+        # Ensure we only consider unique users for the recent activity list
+        relevant_users_df = df_users[cond_expired | cond_inactive_by_logon | cond_has_start_date].copy()
+        
+        # Sort by LAST_LOGON_DATETIME (descending) and take top 5 unique users
+        # Fill NA datetimes with a very old date so they sort last if no logon date
+        relevant_users_df['LAST_LOGON_DATETIME_SORT'] = relevant_users_df['LAST_LOGON_DATETIME'].fillna(datetime(1900, 1, 1))
+        relevant_users_df.sort_values(by='LAST_LOGON_DATETIME_SORT', ascending=False, inplace=True)
+        
+        # Get top 5 unique users based on USERID
+        recent_unique_users = relevant_users_df.drop_duplicates(subset=['USERID']).head(5)
+
+        # Prepare data for display
+        recent_users_data = [] # Clear previous data
+        for index, row in recent_unique_users.iterrows():
+            name_part = str(row['LASTNAME']).strip()
+            first_name_part = str(row['FIRSTNAME']).strip()
+            full_name = f"{name_part}{first_name_part}" if name_part and first_name_part else name_part or first_name_part or row['USERID']
+            
+            status_text, expiry_display = get_user_status_for_recent_activity(row)
+            
+            recent_users_data.append((full_name, row['ROLETYPID'], expiry_display, status_text)) # Use ROLETYPID for grade
+    else:
+        st.warning("Recent User Activity 계산에 필요한 열이 부족합니다. 하드코딩된 데이터를 사용합니다.")
+        recent_users_data = [
+            ("Kim Hwi-young", "GB Advanced User", "Expires 9999.12.30", "Active"),
+            ("Lee Min", "GB Advanced User", "Expires 9999.12.30", "Active"),
+            ("Jung Ha-na", "GB Core User", "Expires 2026.11.03", "Expiring"),
+            ("Park Soo-bin", "GB Self Service", "Expires 2024.08.10", "Inactive"),
+            ("Yoon Tae", "GB Advanced User", "Expires 9999.12.30", "Active")
+        ]
+
+    # (4) User License Type - ROLETYPID 컬럼 값 분류 및 Count
+    if 'ROLETYPID' in df_users.columns:
+        def classify_role_type(roletype):
+            s_roletype = str(roletype).strip()
+            if s_roletype == 'GB Advanced Use':
+                return 'Advanced'
+            elif s_roletype == 'GC Core Use':
+                return 'Core'
+            elif s_roletype == 'GD Self-Service Use':
+                return 'Self Service'
+            elif pd.isna(roletype) or s_roletype == '' or s_roletype == 'Not classified':
+                return 'Not Classified'
+            return 'Not Classified' # Default for unknown values
+
+        df_users['CLASSIFIED_ROLETYPE'] = df_users['ROLETYPID'].apply(classify_role_type)
+        license_type_counts = df_users['CLASSIFIED_ROLETYPE'].value_counts().to_dict()
+        
+        # Ensure all 4 categories are present, even if count is 0
+        for cat in ['Advanced', 'Core', 'Self Service', 'Not Classified']:
+            if cat not in license_type_counts:
+                license_type_counts[cat] = 0
+    else:
+        st.warning("ROLETYPID 열이 없어 User License Type 계산에 문제가 있습니다. 기본값들을 사용합니다.")
+        license_type_counts = {'Advanced': 189, 'Core': 84, 'Self Service': 371, 'Not Classified': 42}
+
 except FileNotFoundError:
-    st.error("zalmt0020.csv 파일을 찾을 수 없습니다. 기본값 902를 사용합니다.")
-    user_count = 902 
+    st.error("zalmt0020.csv 파일을 찾을 수 없습니다. 일부 위젯에 기본값을 사용합니다.")
+    user_count = 902
+    inactive_users_count = 19
+    recent_users_data = [
+        ("Kim Hwi-young", "GB Advanced User", "Expires 9999.12.30", "Active"),
+        ("Lee Min", "GB Advanced User", "Expires 9999.12.30", "Active"),
+        ("Jung Ha-na", "GB Core User", "Expires 2026.11.03", "Expiring"),
+        ("Park Soo-bin", "GB Self Service", "Expires 2024.08.10", "Inactive"),
+        ("Yoon Tae", "GB Advanced User", "Expires 9999.12.30", "Active")
+    ]
+    license_type_counts = {'Advanced': 189, 'Core': 84, 'Self Service': 371, 'Not Classified': 42}
 except Exception as e:
-    st.error(f"CSV 파일을 읽는 중 오류가 발생했습니다: {e}. 기본값 902를 사용합니다.")
-    user_count = 902 
+    st.error(f"CSV 파일을 읽거나 처리하는 중 오류가 발생했습니다: {e}. 일부 위젯에 기본값을 사용합니다.")
+    user_count = 902
+    inactive_users_count = 19
+    recent_users_data = [
+        ("Kim Hwi-young", "GB Advanced User", "Expires 9999.12.30", "Active"),
+        ("Lee Min", "GB Advanced User", "Expires 9999.12.30", "Active"),
+        ("Jung Ha-na", "GB Core User", "Expires 2026.11.03", "Expiring"),
+        ("Park Soo-bin", "GB Self Service", "Expires 2024.08.10", "Inactive"),
+        ("Yoon Tae", "GB Advanced User", "Expires 9999.12.30", "Active")
+    ]
+    license_type_counts = {'Advanced': 189, 'Core': 84, 'Self Service': 371, 'Not Classified': 42}
+
+
+# User 섹션 (순서 변경 및 크기/위치 조정)
+st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True)
+
+# Main columns for User section: col_left_widgets (for 1x1s and 2x1), col_right_recent_activity (for 2x2)
+col_left_widgets, col_right_recent_activity, _ = st.columns([3, 2, 1])
 
 with col_left_widgets:
     # Row for Total, User Variance, Inactive Users (1x1 each)
@@ -420,7 +604,6 @@ with col_left_widgets:
         with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
             st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
             st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-            # HIGHLIGHT: (+7) 부분 삭제
             st.markdown(f'<div class="big-number">{user_count}</div>', unsafe_allow_html=True) 
             st.markdown('</div>', unsafe_allow_html=True)
 
@@ -428,14 +611,14 @@ with col_left_widgets:
         with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
             st.markdown('<div class="widget-title">User Variance</div>', unsafe_allow_html=True)
             st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-            st.markdown('<div class="big-number">7 ▲</div>', unsafe_allow_html=True)
+            st.markdown('<div class="big-number">0</div>', unsafe_allow_html=True) # 0으로 지정
             st.markdown('</div>', unsafe_allow_html=True)
 
     with cols_1x1_user[2]:
         with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
             st.markdown('<div class="widget-title">Inactive Users</div>', unsafe_allow_html=True)
             st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-            st.markdown('<div class="big-number">19</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="big-number">{inactive_users_count}</div>', unsafe_allow_html=True) # 계산된 값 출력
             st.markdown('</div>', unsafe_allow_html=True)
 
     # User License Type (2x1) below the 1x1s.
@@ -445,13 +628,12 @@ with col_left_widgets:
             st.markdown('<div class="widget-title">User License Type</div>', unsafe_allow_html=True)
             st.markdown('<div class="widget-content">', unsafe_allow_html=True)
             
-            labels = ['Advance', 'Core', 'Self Service', 'Not Classified']
-            values = [189, 84, 371, 42]
-            max_value = max(values) * 1.1 
+            labels_order = ['Advanced', 'Core', 'Self Service', 'Not Classified'] # Define order for consistency
+            # Calculate max_value based on actual counts, default to 100 if no data
+            max_value = max(license_type_counts.values()) * 1.1 if license_type_counts else 100 
 
-            for i in range(len(labels)):
-                label = labels[i]
-                value = values[i]
+            for label in labels_order:
+                value = license_type_counts.get(label, 0) # Get count for the label, default to 0
 
                 label_col, bar_col = st.columns([1, 3]) 
 
@@ -472,14 +654,8 @@ with col_right_recent_activity:
     with st.container(height=360, border=True): # 2x2 비율 (가로:세로 = 1:1)
         st.markdown('<div class="widget-title">Recent User Activity</div>', unsafe_allow_html=True)
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-        users = [
-            ("Kim Hwi-young", "GB Advanced User", "Expires 9999.12.30", "Active"),
-            ("Lee Min", "GB Advanced User", "Expires 9999.12.30", "Active"),
-            ("Jung Ha-na", "GB Core User", "Expires 2026.11.03", "Expiring"),
-            ("Park Soo-bin", "GB Self Service", "Expires 2024.08.10", "Inactive"),
-            ("Yoon Tae", "GB Advanced User", "Expires 9999.12.30", "Active")
-        ]
-        for name, grade, expiry, status in users:
+        # 동적으로 생성된 recent_users_data 사용
+        for name, grade, expiry, status in recent_users_data:
             st.markdown(f"""
                 <div class="user-box">
                     <div class="user-info">
