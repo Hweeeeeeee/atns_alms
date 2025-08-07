@@ -2,7 +2,15 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd 
-from datetime import datetime, timedelta # Import datetime and timedelta
+from datetime import datetime, timedelta
+
+# HIGHLIGHT START: Matplotlib font setting for Korean characters
+plt.rcParams['font.family'] = 'Malgun Gothic' # For Windows
+plt.rcParams['axes.unicode_minus'] = False # To prevent minus sign from breaking
+# For macOS, you might use 'AppleGothic' or 'NanumGothic' if installed:
+# plt.rcParams['font.family'] = 'AppleGothic'
+# For Linux, you might need to install a font like 'NanumGothic' and configure it.
+# HIGHLIGHT END
 
 # Helper functions for date parsing and status determination
 def parse_full_datetime(date_part, time_part):
@@ -68,14 +76,14 @@ st.set_page_config(layout="wide")
 # 헤더 및 메뉴바 스타일 정의
 st.markdown("""
     <style>
-        /* 전체 페이지 기본 폰트 설정 */
+        /* Overall page font setting */
         body {
             font-family: 'Inter', sans-serif;
         }
-        /* 컨텐츠 영역 배경색 변경 */
+        /* Content area background color change */
         .stApp {
             padding-top: 0px;
-            background-color: #FFFFFF; /* 컨텐츠 영역 배경색 흰색으로 지정 */
+            background-color: #FFFFFF; /* Set content area background to white */
         }
         .header {
             background-color: white;
@@ -114,7 +122,7 @@ st.markdown("""
             color: #666;
         }
         .menu-item.active {
-            color: #007BFF; /* SAP Blue 계열 */
+            color: #007BFF; /* SAP Blue */
             border-bottom: 2px solid #007BFF;
         }
         .search-box {
@@ -122,37 +130,37 @@ st.markdown("""
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        /* 위젯 공통 스타일 - 그림자 적용 및 스크롤 방지 */
+        /* Widget common style - shadow and scroll prevention */
         div[data-testid="stVerticalBlock"] > div.st-emotion-cache-ocqkzj {
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4) !important; /* 그림자를 더 진하게 적용 */
-            overflow: hidden !important; /* 내부 스크롤 방지 */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4) !important; /* Apply stronger shadow */
+            overflow: hidden !important; /* Prevent internal scroll */
         }
         .section-title {
             font-size: 24px;
             font-weight: bold;
-            margin: 2rem 0; /* 섹션 타이틀 상단 여백 2배 증가 */
+            margin: 2rem 0; /* Double top margin for section titles */
         }
         .widget-title {
             font-weight: bold;
             font-size: 18px;
             color: black;
-            margin-bottom: 0.5rem; /* HIGHLIGHT: 타이틀 하단 여백 감소 */
+            margin-bottom: 0.5rem; /* Reduced bottom margin for titles */
         }
-        /* 위젯 내부 콘텐츠를 감싸는 div 스타일 */
+        /* Style for div wrapping widget content */
         .widget-content {
-            flex-grow: 1; /* 남은 공간을 모두 차지 */
+            flex-grow: 1; /* Occupy remaining space */
             display: flex;
             flex-direction: column;
-            justify-content: center; /* 수직 중앙 정렬 */
-            align-items: flex-start; /* 좌측 정렬 */
-            padding-bottom: 0.5rem; /* HIGHLIGHT: 하단 여백 감소 */
+            justify-content: center; /* Vertically center */
+            align-items: flex-start; /* Left align */
+            padding-bottom: 0.5rem; /* Reduced bottom padding */
         }
         .stat-block {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             text-align: left;
             margin-bottom: 1rem;
-            width: 100%; /* stat-block이 전체 너비를 사용하도록 */
+            width: 100%; /* Ensure stat-block uses full width */
         }
         .stat-block > div {
             text-align: left;
@@ -176,12 +184,12 @@ st.markdown("""
             font-size: 32px;
             font-weight: bold;
             text-align: left;
-            margin-top: 0; /* Flexbox가 정렬하므로 마진 초기화 */
+            margin-top: 0; /* Reset margin as Flexbox handles alignment */
         }
         .icon {
             font-size: 36px;
             text-align: left;
-            margin-top: 0; /* Flexbox가 정렬하므로 마진 초기화 */
+            margin-top: 0; /* Reset margin as Flexbox handles alignment */
         }
         .user-box {
             border: 1px solid #d9d9d9;
@@ -195,7 +203,7 @@ st.markdown("""
         }
         .user-icon {
             border: 1px solid;
-            background-color: rgba(0,0,0,0.05); /* 투명한 배경 */
+            background-color: rgba(0,0,0,0.05); /* Transparent background */
             padding: 0.25rem 0.5rem;
             border-radius: 4px;
             font-size: 12px;
@@ -213,20 +221,20 @@ st.markdown("""
             color: #808080; /* Grey */
             border-color: #808080;
         }
-        /* Matplotlib 차트 컨테이너 스타일 */
+        /* Matplotlib chart container style */
         .chart-container {
-            flex-grow: 1; /* 남은 공간을 채우도록 설정 */
+            flex-grow: 1; /* Set to fill remaining space */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
-        /* 막대 그래프 위에 텍스트를 위한 스타일 추가 */
+        /* Add style for text above bar graph */
         .bar-container {
             position: relative;
             width: 100%;
-            height: 20px; /* 막대 그래프 높이와 유사하게 설정 */
-            margin-top: 10px; /* 막대 그래프와의 간격 조절 */
+            height: 20px; /* Set similar to bar graph height */
+            margin-top: 10px; /* Adjust spacing from bar graph */
         }
         .bar-text {
             position: absolute;
@@ -235,24 +243,24 @@ st.markdown("""
             transform: translate(-50%, -50%);
             color: white;
             font-weight: bold;
-            font-size: 16px; /* 텍스트 크기 조절 */
-            z-index: 1; /* 막대 그래프 위에 오도록 설정 */
+            font-size: 16px; /* Adjust text size */
+            z-index: 1; /* Ensure it's above the bar graph */
         }
-        /* Composition 위젯의 텍스트와 차트 정렬을 위한 CSS 수정 */
+        /* CSS modification for text and chart alignment in Composition widget */
         .composition-content {
             display: flex;
             align-items: center;
-            justify-content: space-between; /* 텍스트와 차트 사이 공간 분배 */
-            flex-grow: 1; /* 남은 공간을 채우도록 설정 */
-            padding-top: 10px; /* 상단 여백 추가 */
+            justify-content: space-between; /* Distribute space between text and chart */
+            flex-grow: 1; /* Set to fill remaining space */
+            padding-top: 10px; /* Add top padding */
         }
         .composition-text {
             text-align: left;
-            flex-shrink: 0; /* 텍스트가 줄어들지 않도록 */
-            margin-right: 10px; /* 텍스트와 차트 사이 간격 */
+            flex-shrink: 0; /* Prevent text from shrinking */
+            margin-right: 10px; /* Spacing between text and chart */
         }
         .composition-text .percentage {
-            font-size: 40px; /* 76% 글자 크기 */
+            font-size: 40px; /* 76% font size */
             font-weight: bold;
             color: #007BFF; /* SAP Blue */
         }
@@ -261,26 +269,26 @@ st.markdown("""
             color: #666;
             margin-top: 5px;
         }
-        /* User License Type 항목 및 값 정렬을 위한 CSS 추가 */
+        /* CSS for User License Type items and value alignment */
         .license-type-row {
             display: flex;
-            justify-content: space-between; /* 라벨과 값을 양 끝으로 분산 */
+            justify-content: space-between; /* Distribute label and value to ends */
             align-items: center;
             width: 100%;
-            margin-bottom: 0.5rem; /* 각 항목 간 간격 */
+            margin-bottom: 0.2rem; /* HIGHLIGHT: Reduced spacing between items */
         }
         .license-type-label {
             font-size: 16px;
             font-weight: bold;
-            text-align: left; /* 라벨 좌측 정렬 */
-            flex-grow: 1; /* 라벨이 공간을 차지하도록 */
+            text-align: left; /* Left align label */
+            flex-grow: 1; /* Label occupies space */
         }
         .license-type-value {
             font-size: 16px;
             font-weight: bold;
-            text-align: right; /* 값 우측 정렬 */
-            flex-shrink: 0; /* 값이 줄어들지 않도록 */
-            color: #007BFF; /* 값 색상 */
+            text-align: right; /* Right align value */
+            flex-shrink: 0; /* Prevent value from shrinking */
+            color: #007BFF; /* Value color */
         }
     </style>
 """, unsafe_allow_html=True)
@@ -303,7 +311,7 @@ st.markdown("""
 
 # ---------- MENU BAR ----------
 menu_items = ["Home", "FUE License", "User", "My Account"]
-active = "Home"  # 현재 선택된 메뉴
+active = "Home"  # Currently selected menu
 
 menu_html = '<div class="menu-bar">'
 for item in menu_items:
@@ -312,15 +320,15 @@ for item in menu_items:
 menu_html += '</div>'
 st.markdown(menu_html, unsafe_allow_html=True)
 
-# 섹션 타이틀
+# Section title
 st.markdown('<div class="section-title">Overview</div>', unsafe_allow_html=True)
 
-# Overview 섹션 위젯 배치 및 크기 조정
+# Overview Section Widget Placement and Sizing
 cols_overview_row1 = st.columns([2, 2, 2]) 
 
-# 위젯 1: FUE License Status (2x2 크기)
+# Widget 1: FUE License Status (2x2 size)
 with cols_overview_row1[0]:
-    with st.container(height=360, border=True): # 2x2 비율 (가로:세로 = 1:1)
+    with st.container(height=360, border=True): # 2x2 ratio (width:height = 1:1)
         st.markdown('<div class="widget-title">FUE License Status</div>', unsafe_allow_html=True)
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
         st.markdown("""
@@ -333,37 +341,37 @@ with cols_overview_row1[0]:
         """, unsafe_allow_html=True)
 
         active_pct = 292 / 500 * 100
-        fig1, ax1 = plt.subplots(figsize=(3, 3)) # 1:1 비율 유지
+        fig1, ax1 = plt.subplots(figsize=(3, 3)) # Maintain 1:1 ratio
         colors = ['#007BFF', '#FFA500']
         ax1.pie([active_pct, 100 - active_pct], labels=[f'Active ({active_pct:.1f}%)', 'Remaining'], autopct='%1.1f%%', startangle=90, colors=colors)
         ax1.set_aspect('equal')
         st.pyplot(fig1, use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-# 위젯 2: FUE Active License Variance (2x2 크기)
+# Widget 2: FUE Active License Variance (2x2 size)
 with cols_overview_row1[1]:
-    with st.container(height=360, border=True): # 2x2 비율 (가로:세로 = 1:1)
+    with st.container(height=360, border=True): # 2x2 ratio (width:height = 1:1)
         st.markdown('<div class="widget-title">FUE Active License Variance</div>', unsafe_allow_html=True)
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
 
         base = 292
-        months = ['4월', '5월', '6월', '7월']
+        months = ['Apr', 'May', 'Jun', 'Jul'] # HIGHLIGHT: Months in English
         values = [base]
         for _ in range(3):
             base *= np.random.uniform(0.85, 0.95)
             values.insert(0, int(base))
 
-        fig3, ax3 = plt.subplots(figsize=(4, 3)) # 1:1 비율에 가깝게 조정
+        fig3, ax3 = plt.subplots(figsize=(4, 3)) # Adjust to near 1:1 ratio
         bar_colors = ['#D3D3D3'] * (len(months) - 1) + ['#007BFF']
         ax3.bar(months, values, color=bar_colors)
         ax3.set_ylabel("Licenses")
-        ax3.set_title("최근 4개월 Active License 수")
+        ax3.set_title("Active Licenses in Last 4 Months") # HIGHLIGHT: Title in English
         st.pyplot(fig3, use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-# 위젯 3: My Account (2x1 크기) - 첫 번째 줄에 배치
+# Widget 3: My Account (2x1 size) - Placed in the first row
 with cols_overview_row1[2]:
-    with st.container(height=180, border=True): # 2x1 비율 (가로:세로 = 2:1)
+    with st.container(height=180, border=True): # 2x1 ratio (width:height = 2:1)
         st.markdown('<div class="widget-title">My Account</div>', unsafe_allow_html=True)
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
         st.markdown("""
@@ -376,38 +384,38 @@ with cols_overview_row1[2]:
         st.markdown('</div>', unsafe_allow_html=True)
 
 
-# FUE License 섹션 (순서 변경 및 크기/위치 조정)
+# FUE License Section (Order change and size/position adjustment)
 st.markdown('<div class="section-title">FUE License</div>', unsafe_allow_html=True)
 
-# 첫 번째 줄: 1x1 위젯 5개 (총 5단위) + 1단위 여백
-cols_fue_row1 = st.columns([1, 1, 1, 1, 1, 1]) # 1+1+1+1+1+1 = 6단위. 마지막은 여백
+# First row: 5 1x1 widgets (total 5 units) + 1 unit spacing
+cols_fue_row1 = st.columns([1, 1, 1, 1, 1, 1]) # 1+1+1+1+1+1 = 6 units. Last is spacing
 
-with cols_fue_row1[0]: # 1단위
-    with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
+with cols_fue_row1[0]: # 1 unit
+    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
         st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
         st.markdown('<div class="big-number">500</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-with cols_fue_row1[1]: # 1단위
-    with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
+with cols_fue_row1[1]: # 1 unit
+    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
         st.markdown('<div class="widget-title">Active License</div>', unsafe_allow_html=True)
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
         st.markdown('<div class="big-number">292</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-with cols_fue_row1[2]: # 1단위
-    with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
+with cols_fue_row1[2]: # 1 unit
+    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
         st.markdown('<div class="widget-title">Remaining Licenses</div>', unsafe_allow_html=True)
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
         st.markdown('<div class="big-number">208</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-with cols_fue_row1[3]: # 1단위
-    with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
+with cols_fue_row1[3]: # 1 unit
+    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
         st.markdown('<div class="widget-title">License Utilization Rate</div>', unsafe_allow_html=True)
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-        fig, ax = plt.subplots(figsize=(4, 0.5)) # 위젯 높이에 맞게 조정
+        fig, ax = plt.subplots(figsize=(4, 0.5)) # Adjust to widget height
         ax.barh(0, 58, color='#007BFF', height=0.4)
         ax.text(58/2, 0, '58%', va='center', ha='center', color='white', fontsize=16, fontweight='bold')
         ax.set_xlim(0, 100)
@@ -415,19 +423,19 @@ with cols_fue_row1[3]: # 1단위
         st.pyplot(fig, use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-with cols_fue_row1[4]: # 1단위
-    with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
+with cols_fue_row1[4]: # 1 unit
+    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
         st.markdown('<div class="widget-title">License Variance</div>', unsafe_allow_html=True)
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
         st.markdown('<div class="big-number">12 ▲</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-# 두 번째 줄: Composition Ratio (2x1), 부서별 현황 (1x1), 직무별 현황 (1x1)
-cols_fue_row2 = st.columns([2, 1, 1, 2]) # 2(위젯) + 1(위젯) + 1(위젯) + 2(여백) = 6단위
+# Second row: Composition Ratio (2x1), Department Status (1x1), Job Status (1x1)
+cols_fue_row2 = st.columns([2, 1, 1, 2]) # 2(widget) + 1(widget) + 1(widget) + 2(spacing) = 6 units
 
-# Widget 6: Composition (2x1 크기)
+# Widget 6: Composition (2x1 size)
 with cols_fue_row2[0]:
-    with st.container(height=180, border=True): # 2x1 비율 (가로:세로 = 2:1)
+    with st.container(height=180, border=True): # 2x1 ratio (width:height = 2:1)
         st.markdown('<div class="widget-title">Composition ratio</div>', unsafe_allow_html=True)
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
         
@@ -444,7 +452,7 @@ with cols_fue_row2[0]:
         with chart_col:
             sizes = [76, 10, 8, 6]
             labels = ['A', 'B', 'C', 'D']
-            fig2, ax2 = plt.subplots(figsize=(1.5, 1.5)) # 위젯 높이에 맞게 조정
+            fig2, ax2 = plt.subplots(figsize=(1.5, 1.5)) # Adjust to widget height
             colors_composition = ['#007BFF', '#ADD8E6', '#87CEEB', '#B0E0E6']
             ax2.pie(sizes, labels=labels, autopct='%1.0f%%', startangle=90, colors=colors_composition,
                     wedgeprops={'linewidth': 0, 'edgecolor': 'white'})
@@ -452,31 +460,29 @@ with cols_fue_row2[0]:
             st.pyplot(fig2, use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-# Widget 7: 부서별 현황 (1x1 크기)
-with cols_fue_row2[1]: # 두 번째 컬럼
-    with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
-        st.markdown('<div class="widget-title">부서별 현황</div>', unsafe_allow_html=True)
+# Widget 7: Department Status (1x1 size)
+with cols_fue_row2[1]: # Second column
+    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
+        st.markdown('<div class="widget-title">Department Status</div>', unsafe_allow_html=True) # HIGHLIGHT: Title in English
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
         st.markdown('<div class="icon">🏢</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-# Widget 8: 직무별 현황 (1x1 크기)
-with cols_fue_row2[2]: # 세 번째 컬럼
-    with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
-        st.markdown('<div class="widget-title">직무별 현황</div>', unsafe_allow_html=True)
+# Widget 8: Job Status (1x1 size)
+with cols_fue_row2[2]: # Third column
+    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
+        st.markdown('<div class="widget-title">Job Status</div>', unsafe_allow_html=True) # HIGHLIGHT: Title in English
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
         st.markdown('<div class="icon">🛠️</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-# User 섹션 (순서 변경 및 크기/위치 조정)
-# HIGHLIGHT START: User 섹션 타이틀 중복 제거
-# st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True) 
-# HIGHLIGHT END
+# User Section (Order change and size/position adjustment)
+st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True) 
 
 # Main columns for User section: col_left_widgets (for 1x1s and 2x1), col_right_recent_activity (for 2x2)
 col_left_widgets, col_right_recent_activity, _ = st.columns([3, 2, 1])
 
-# CSV 파일에서 데이터 로드 및 전처리
+# CSV file data loading and preprocessing
 df_users = pd.DataFrame() # Initialize as empty DataFrame
 user_count = 0
 inactive_users_count = 0
@@ -491,10 +497,10 @@ try:
         df_users['USERID'] = df_users['USERID'].astype(str).str.strip()
         user_count = df_users['USERID'].nunique()
     else:
-        st.warning("zalmt0020.csv 파일에 'USERID' 열이 없습니다. Total User Count 기본값 902를 사용합니다.")
+        st.warning("No 'USERID' column in zalmt0020.csv. Using default value 902 for Total User Count.") # HIGHLIGHT: Warning in English
         user_count = 902 
 
-    # (2) Inactive Users - LASTLOGONDATE 기준으로 -30일 보다 큰 사용자의 수를 Count
+    # (2) Inactive Users - Count users whose LASTLOGONDATE is older than 30 days from today
     if 'LASTLOGONDATE' in df_users.columns and 'LASTLOGONTIME' in df_users.columns:
         today = datetime.now()
         thirty_days_ago = today - timedelta(days=30)
@@ -511,10 +517,10 @@ try:
         ]
         inactive_users_count = inactive_users_df['USERID'].nunique()
     else:
-        st.warning("LASTLOGONDATE 또는 LASTLOGONTIME 열이 없어 Inactive Users 계산에 문제가 있습니다. 기본값 19를 사용합니다.")
+        st.warning("Missing 'LASTLOGONDATE' or 'LASTLOGONTIME' columns for Inactive Users calculation. Using default value 19.") # HIGHLIGHT: Warning in English
         inactive_users_count = 19 # Default if columns are missing
 
-    # (3) Recent User Activity - EXPIRATIONENDDATE가 종료되었거나, Inactive Users가 되었거나, EXPIRATIONSTARTDATE 값이 존재하는 사람 중 최근 5개의 사용자 정보
+    # (3) Recent User Activity - Top 5 users whose EXPIRATIONENDDATE has passed, or are Inactive, or have EXPIRATIONSTARTDATE
     if 'EXPIRATIONENDDATE' in df_users.columns and 'EXPIRATIONSTARTDATE' in df_users.columns and 'LASTLOGONDATE' in df_users.columns and 'LASTLOGONTIME' in df_users.columns and 'LASTNAME' in df_users.columns and 'FIRSTNAME' in df_users.columns and 'ROLETYPID' in df_users.columns:
         
         # Filter users based on conditions
@@ -553,7 +559,7 @@ try:
             
             recent_users_data.append((full_name, row['ROLETYPID'], expiry_display, status_text)) # Use ROLETYPID for grade
     else:
-        st.warning("Recent User Activity 계산에 필요한 열이 부족합니다. 하드코딩된 데이터를 사용합니다.")
+        st.warning("Missing columns for Recent User Activity calculation. Using hardcoded data.") # HIGHLIGHT: Warning in English
         recent_users_data = [
             ("Kim Hwi-young", "GB Advanced User", "Expires 9999.12.30", "Active"),
             ("Lee Min", "GB Advanced User", "Expires 9999.12.30", "Active"),
@@ -562,7 +568,7 @@ try:
             ("Yoon Tae", "GB Advanced User", "Expires 9999.12.30", "Active")
         ]
 
-    # (4) User License Type - ROLETYPID 컬럼 값 분류 및 Count
+    # (4) User License Type - Classify and Count ROLETYPID column values
     if 'ROLETYPID' in df_users.columns:
         def classify_role_type(roletype):
             s_roletype = str(roletype).strip()
@@ -584,11 +590,11 @@ try:
             if cat not in license_type_counts:
                 license_type_counts[cat] = 0
     else:
-        st.warning("ROLETYPID 열이 없어 User License Type 계산에 문제가 있습니다. 기본값들을 사용합니다.")
+        st.warning("Missing 'ROLETYPID' column for User License Type calculation. Using default values.") # HIGHLIGHT: Warning in English
         license_type_counts = {'Advanced': 189, 'Core': 84, 'Self Service': 371, 'Not Classified': 42}
 
 except FileNotFoundError:
-    st.error("zalmt0020.csv 파일을 찾을 수 없습니다. 일부 위젯에 기본값을 사용합니다.")
+    st.error("zalmt0020.csv file not found. Using default values for some widgets.") # HIGHLIGHT: Error in English
     user_count = 902
     inactive_users_count = 19
     recent_users_data = [
@@ -600,7 +606,7 @@ except FileNotFoundError:
     ]
     license_type_counts = {'Advanced': 189, 'Core': 84, 'Self Service': 371, 'Not Classified': 42}
 except Exception as e:
-    st.error(f"CSV 파일을 읽거나 처리하는 중 오류가 발생했습니다: {e}. 일부 위젯에 기본값을 사용합니다.")
+    st.error(f"An error occurred while reading or processing the CSV file: {e}. Using default values for some widgets.") # HIGHLIGHT: Error in English
     user_count = 902
     inactive_users_count = 19
     recent_users_data = [
@@ -613,8 +619,8 @@ except Exception as e:
     license_type_counts = {'Advanced': 189, 'Core': 84, 'Self Service': 371, 'Not Classified': 42}
 
 
-# User 섹션 (순서 변경 및 크기/위치 조정)
-st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True) # HIGHLIGHT: User 섹션 타이틀 유지
+# User Section (Order change and size/position adjustment)
+st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True) 
 
 # Main columns for User section: col_left_widgets (for 1x1s and 2x1), col_right_recent_activity (for 2x2)
 col_left_widgets, col_right_recent_activity, _ = st.columns([3, 2, 1])
@@ -624,35 +630,34 @@ with col_left_widgets:
     cols_1x1_user = st.columns(3) 
     
     with cols_1x1_user[0]:
-        with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
+        with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
             st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
             st.markdown('<div class="widget-content">', unsafe_allow_html=True)
             st.markdown(f'<div class="big-number">{user_count}</div>', unsafe_allow_html=True) 
             st.markdown('</div>', unsafe_allow_html=True)
 
     with cols_1x1_user[1]:
-        with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
+        with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
             st.markdown('<div class="widget-title">User Variance</div>', unsafe_allow_html=True)
             st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-            st.markdown('<div class="big-number">0</div>', unsafe_allow_html=True) # 0으로 지정
+            st.markdown('<div class="big-number">0</div>', unsafe_allow_html=True) # Set to 0
             st.markdown('</div>', unsafe_allow_html=True)
 
     with cols_1x1_user[2]:
-        with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
+        with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
             st.markdown('<div class="widget-title">Inactive Users</div>', unsafe_allow_html=True)
             st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-            st.markdown(f'<div class="big-number">{inactive_users_count}</div>', unsafe_allow_html=True) # 계산된 값 출력
+            st.markdown(f'<div class="big-number">{inactive_users_count}</div>', unsafe_allow_html=True) # Display calculated value
             st.markdown('</div>', unsafe_allow_html=True)
 
     # User License Type (2x1) below the 1x1s.
     cols_user_license_type = st.columns([2, 1]) 
     with cols_user_license_type[0]:
-        # HIGHLIGHT START: User License Type 위젯 높이를 180px로 되돌림
-        with st.container(height=180, border=True): # 2x1 비율 (가로:세로 = 2:1)
-        # HIGHLIGHT END
+        with st.container(height=180, border=True): # 2x1 ratio (width:height = 2:1)
             st.markdown('<div class="widget-title">User License Type</div>', unsafe_allow_html=True)
-            st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-            
+            # HIGHLIGHT START: Removed padding-top from widget-content to move items up
+            st.markdown('<div class="widget-content" style="padding-top: 0;">', unsafe_allow_html=True) 
+            # HIGHLIGHT END
             labels_order = ['Advanced', 'Core', 'Self Service', 'Not Classified'] # Define order for consistency
             
             for label in labels_order:
@@ -667,10 +672,10 @@ with col_left_widgets:
 
 with col_right_recent_activity:
     # Recent User Activity (2x2)
-    with st.container(height=360, border=True): # 2x2 비율 (가로:세로 = 1:1)
+    with st.container(height=360, border=True): # 2x2 ratio (width:height = 1:1)
         st.markdown('<div class="widget-title">Recent User Activity</div>', unsafe_allow_html=True)
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-        # 동적으로 생성된 recent_users_data 사용
+        # Use dynamically generated recent_users_data
         for name, grade, expiry, status in recent_users_data:
             st.markdown(f"""
                 <div class="user-box">
