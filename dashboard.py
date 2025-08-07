@@ -261,6 +261,28 @@ st.markdown("""
             color: #666;
             margin-top: 5px;
         }
+        /* HIGHLIGHT START: User License Type 항목 및 값 정렬을 위한 CSS 추가 */
+        .license-type-row {
+            display: flex;
+            justify-content: space-between; /* 라벨과 값을 양 끝으로 분산 */
+            align-items: center;
+            width: 100%;
+            margin-bottom: 0.5rem; /* 각 항목 간 간격 */
+        }
+        .license-type-label {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: left; /* 라벨 좌측 정렬 */
+            flex-grow: 1; /* 라벨이 공간을 차지하도록 */
+        }
+        .license-type-value {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: right; /* 값 우측 정렬 */
+            flex-shrink: 0; /* 값이 줄어들지 않도록 */
+            color: #007BFF; /* 값 색상 */
+        }
+        /* HIGHLIGHT END */
     </style>
 """, unsafe_allow_html=True)
 
@@ -629,24 +651,17 @@ with col_left_widgets:
             st.markdown('<div class="widget-content">', unsafe_allow_html=True)
             
             labels_order = ['Advanced', 'Core', 'Self Service', 'Not Classified'] # Define order for consistency
-            # Calculate max_value based on actual counts, default to 100 if no data
-            max_value = max(license_type_counts.values()) * 1.1 if license_type_counts else 100 
-
+            
+            # HIGHLIGHT START: 그래프 대신 텍스트로 라벨과 값을 표시
             for label in labels_order:
                 value = license_type_counts.get(label, 0) # Get count for the label, default to 0
-
-                label_col, bar_col = st.columns([1, 3]) 
-
-                with label_col:
-                    st.markdown(f'<div style="font-size: 14px; margin-top: 8px;"><strong>{label}</strong></div>', unsafe_allow_html=True)
-
-                with bar_col:
-                    fig, ax = plt.subplots(figsize=(4, 0.15)) 
-                    ax.barh(0, value, color='#007BFF', height=0.4) 
-                    ax.text(value/2, 0, f'{value}', va='center', ha='center', color='white', fontsize=10, fontweight='bold') 
-                    ax.set_xlim(0, max_value) 
-                    ax.axis('off')
-                    st.pyplot(fig, use_container_width=True)
+                st.markdown(f"""
+                    <div class="license-type-row">
+                        <span class="license-type-label">{label}</span>
+                        <span class="license-type-value">{value}</span>
+                    </div>
+                """, unsafe_allow_html=True)
+            # HIGHLIGHT END
             st.markdown('</div>', unsafe_allow_html=True)
 
 with col_right_recent_activity:
