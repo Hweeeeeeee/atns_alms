@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd 
 from datetime import datetime, timedelta
-import math # HIGHLIGHT: Import math for floor division
+import math # Import math for floor division
 
 # Matplotlib font setting for Korean characters
 plt.rcParams['font.family'] = 'Malgun Gothic' # For Windows
@@ -406,10 +406,18 @@ try:
         user_count = 902 
 
     # HIGHLIGHT START: Calculate license_type_counts based on new formulas for FUE License section
-    calculated_advanced = user_count * 1
-    calculated_core = user_count // 5 # Changed from % to // for integer division
-    calculated_self_service = user_count // 30 # Changed from % to // for integer division
-    calculated_not_classified = 0
+    # Get raw counts from the CSV's ROLETYPID column
+    df_users['CLEANED_ROLETYPID'] = df_users['ROLETYPID'].astype(str).str.strip()
+    
+    raw_advanced_count = df_users[df_users['CLEANED_ROLETYPID'] == 'GB Advanced Use']['USERID'].nunique()
+    raw_core_count = df_users[df_users['CLEANED_ROLETYPID'] == 'GC Core Use']['USERID'].nunique()
+    raw_self_service_count = df_users[df_users['CLEANED_ROLETYPID'] == 'GD Self-Service Use']['USERID'].nunique()
+    
+    # Apply the user's specific calculation rules
+    calculated_advanced = raw_advanced_count * 1
+    calculated_core = raw_core_count // 5
+    calculated_self_service = raw_self_service_count // 30
+    calculated_not_classified = 0 # As per user's explicit request
 
     license_type_counts = {
         'Advanced': calculated_advanced,
@@ -510,9 +518,13 @@ except FileNotFoundError:
         ("Yoon Tae", "GB Advanced User", "Expires 9999.12.30", "Active")
     ]
     # Default calculated license type counts if file not found
-    calculated_advanced = user_count * 1
-    calculated_core = user_count // 5
-    calculated_self_service = user_count // 30
+    raw_advanced_count = 117 # Assuming 117 users are Advanced if file not found
+    raw_core_count = 2 # Assuming 2 core users if file not found
+    raw_self_service_count = 27 # Assuming 27 self-service users if file not found
+    
+    calculated_advanced = raw_advanced_count * 1
+    calculated_core = raw_core_count // 5
+    calculated_self_service = raw_self_service_count // 30
     calculated_not_classified = 0
     license_type_counts = {
         'Advanced': calculated_advanced,
@@ -537,9 +549,13 @@ except Exception as e:
         ("Yoon Tae", "GB Advanced User", "Expires 9999.12.30", "Active")
     ]
     # Default calculated license type counts if error
-    calculated_advanced = user_count * 1
-    calculated_core = user_count // 5
-    calculated_self_service = user_count // 30
+    raw_advanced_count = 117
+    raw_core_count = 2
+    raw_self_service_count = 27
+    
+    calculated_advanced = raw_advanced_count * 1
+    calculated_core = raw_core_count // 5
+    calculated_self_service = raw_self_service_count // 30
     calculated_not_classified = 0
     license_type_counts = {
         'Advanced': calculated_advanced,
@@ -560,21 +576,21 @@ with cols_fue_row1[0]: # 1 unit
     with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
         st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-        st.markdown(f'<div class="big-number">{total_license_capacity}</div>', unsafe_allow_html=True) # HIGHLIGHT: Use total_license_capacity
+        st.markdown(f'<div class="big-number">{total_license_capacity}</div>', unsafe_allow_html=True) # Use total_license_capacity
         st.markdown('</div>', unsafe_allow_html=True)
 
 with cols_fue_row1[1]: # 1 unit
     with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
         st.markdown('<div class="widget-title">Active License</div>', unsafe_allow_html=True)
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-        st.markdown(f'<div class="big-number">{active_license_count}</div>', unsafe_allow_html=True) # HIGHLIGHT: Use calculated active_license_count
+        st.markdown(f'<div class="big-number">{active_license_count}</div>', unsafe_allow_html=True) # Use calculated active_license_count
         st.markdown('</div>', unsafe_allow_html=True)
 
 with cols_fue_row1[2]: # 1 unit
     with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
         st.markdown('<div class="widget-title">Remaining Licenses</div>', unsafe_allow_html=True)
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-        st.markdown(f'<div class="big-number">{remaining_license_count}</div>', unsafe_allow_html=True) # HIGHLIGHT: Use calculated remaining_license_count
+        st.markdown(f'<div class="big-number">{remaining_license_count}</div>', unsafe_allow_html=True) # Use calculated remaining_license_count
         st.markdown('</div>', unsafe_allow_html=True)
 
 with cols_fue_row1[3]: # 1 unit
@@ -582,8 +598,8 @@ with cols_fue_row1[3]: # 1 unit
         st.markdown('<div class="widget-title">License Utilization Rate</div>', unsafe_allow_html=True)
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
         fig, ax = plt.subplots(figsize=(4, 0.5)) # Adjust to widget height
-        ax.barh(0, license_utilization_rate, color='#007BFF', height=0.4) # HIGHLIGHT: Use calculated license_utilization_rate
-        ax.text(license_utilization_rate/2, 0, f'{license_utilization_rate:.1f}%', va='center', ha='center', color='white', fontsize=16, fontweight='bold') # HIGHLIGHT: Display calculated rate
+        ax.barh(0, license_utilization_rate, color='#007BFF', height=0.4) # Use calculated license_utilization_rate
+        ax.text(license_utilization_rate/2, 0, f'{license_utilization_rate:.1f}%', va='center', ha='center', color='white', fontsize=16, fontweight='bold') # Display calculated rate
         ax.set_xlim(0, 100)
         ax.axis('off')
         st.pyplot(fig, use_container_width=True)
@@ -605,7 +621,7 @@ with cols_fue_row2[0]:
         st.markdown('<div class="widget-title">Composition ratio</div>', unsafe_allow_html=True)
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
         
-        # HIGHLIGHT START: Use calculated license_type_counts for Composition Ratio
+        # Use calculated license_type_counts for Composition Ratio
         composition_data = [(label, license_type_counts.get(label, 0)) for label in ['Advanced', 'Core', 'Self Service', 'Not Classified']]
         composition_data.sort(key=lambda x: x[1], reverse=True) # Sort by value descending
 
@@ -641,7 +657,6 @@ with cols_fue_row2[0]:
                 st.pyplot(fig2, use_container_width=True)
             else:
                 st.markdown("No data for composition ratio.")
-        # HIGHLIGHT END
         st.markdown('</div>', unsafe_allow_html=True)
 
 # Widget 7: Department Status (1x1 size)
