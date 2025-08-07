@@ -3,14 +3,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd 
 from datetime import datetime, timedelta
+import math # HIGHLIGHT: Import math for floor division
 
-# HIGHLIGHT START: Matplotlib font setting for Korean characters
+# Matplotlib font setting for Korean characters
 plt.rcParams['font.family'] = 'Malgun Gothic' # For Windows
 plt.rcParams['axes.unicode_minus'] = False # To prevent minus sign from breaking
 # For macOS, you might use 'AppleGothic' or 'NanumGothic' if installed:
 # plt.rcParams['font.family'] = 'AppleGothic'
 # For Linux, you might need to install a font like 'NanumGothic' and configure it.
-# HIGHLIGHT END
 
 # Helper functions for date parsing and status determination
 def parse_full_datetime(date_part, time_part):
@@ -275,7 +275,7 @@ st.markdown("""
             justify-content: space-between; /* Distribute label and value to ends */
             align-items: center;
             width: 100%;
-            margin-bottom: 0.2rem; /* HIGHLIGHT: Reduced spacing between items */
+            margin-bottom: 0.2rem; /* Reduced spacing between items */
         }
         .license-type-label {
             font-size: 16px;
@@ -355,7 +355,7 @@ with cols_overview_row1[1]:
         st.markdown('<div class="widget-content">', unsafe_allow_html=True)
 
         base = 292
-        months = ['Apr', 'May', 'Jun', 'Jul'] # HIGHLIGHT: Months in English
+        months = ['Apr', 'May', 'Jun', 'Jul'] # Months in English
         values = [base]
         for _ in range(3):
             base *= np.random.uniform(0.85, 0.95)
@@ -365,7 +365,7 @@ with cols_overview_row1[1]:
         bar_colors = ['#D3D3D3'] * (len(months) - 1) + ['#007BFF']
         ax3.bar(months, values, color=bar_colors)
         ax3.set_ylabel("Licenses")
-        ax3.set_title("Active Licenses in Last 4 Months") # HIGHLIGHT: Title in English
+        ax3.set_title("Active Licenses in Last 4 Months") # Title in English
         st.pyplot(fig3, use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
@@ -387,107 +387,12 @@ with cols_overview_row1[2]:
 # FUE License Section (Order change and size/position adjustment)
 st.markdown('<div class="section-title">FUE License</div>', unsafe_allow_html=True)
 
-# First row: 5 1x1 widgets (total 5 units) + 1 unit spacing
-cols_fue_row1 = st.columns([1, 1, 1, 1, 1, 1]) # 1+1+1+1+1+1 = 6 units. Last is spacing
-
-with cols_fue_row1[0]: # 1 unit
-    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
-        st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
-        st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-        st.markdown('<div class="big-number">500</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-
-with cols_fue_row1[1]: # 1 unit
-    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
-        st.markdown('<div class="widget-title">Active License</div>', unsafe_allow_html=True)
-        st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-        st.markdown('<div class="big-number">292</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-
-with cols_fue_row1[2]: # 1 unit
-    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
-        st.markdown('<div class="widget-title">Remaining Licenses</div>', unsafe_allow_html=True)
-        st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-        st.markdown('<div class="big-number">208</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-
-with cols_fue_row1[3]: # 1 unit
-    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
-        st.markdown('<div class="widget-title">License Utilization Rate</div>', unsafe_allow_html=True)
-        st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-        fig, ax = plt.subplots(figsize=(4, 0.5)) # Adjust to widget height
-        ax.barh(0, 58, color='#007BFF', height=0.4)
-        ax.text(58/2, 0, '58%', va='center', ha='center', color='white', fontsize=16, fontweight='bold')
-        ax.set_xlim(0, 100)
-        ax.axis('off')
-        st.pyplot(fig, use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-
-with cols_fue_row1[4]: # 1 unit
-    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
-        st.markdown('<div class="widget-title">License Variance</div>', unsafe_allow_html=True)
-        st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-        st.markdown('<div class="big-number">12 ▲</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-
-# Second row: Composition Ratio (2x1), Department Status (1x1), Job Status (1x1)
-cols_fue_row2 = st.columns([2, 1, 1, 2]) # 2(widget) + 1(widget) + 1(widget) + 2(spacing) = 6 units
-
-# Widget 6: Composition (2x1 size)
-with cols_fue_row2[0]:
-    with st.container(height=180, border=True): # 2x1 ratio (width:height = 2:1)
-        st.markdown('<div class="widget-title">Composition ratio</div>', unsafe_allow_html=True)
-        st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-        
-        text_col, chart_col = st.columns([2, 1])
-
-        with text_col:
-            st.markdown("""
-                <div class="composition-text">
-                    <div class="percentage">76%</div>
-                    <div class="description">GB Advanced use</div>
-                </div>
-            """, unsafe_allow_html=True)
-
-        with chart_col:
-            sizes = [76, 10, 8, 6]
-            labels = ['A', 'B', 'C', 'D']
-            fig2, ax2 = plt.subplots(figsize=(1.5, 1.5)) # Adjust to widget height
-            colors_composition = ['#007BFF', '#ADD8E6', '#87CEEB', '#B0E0E6']
-            ax2.pie(sizes, labels=labels, autopct='%1.0f%%', startangle=90, colors=colors_composition,
-                    wedgeprops={'linewidth': 0, 'edgecolor': 'white'})
-            ax2.axis('equal')
-            st.pyplot(fig2, use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-
-# Widget 7: Department Status (1x1 size)
-with cols_fue_row2[1]: # Second column
-    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
-        st.markdown('<div class="widget-title">Department Status</div>', unsafe_allow_html=True) # HIGHLIGHT: Title in English
-        st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-        st.markdown('<div class="icon">🏢</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-
-# Widget 8: Job Status (1x1 size)
-with cols_fue_row2[2]: # Third column
-    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
-        st.markdown('<div class="widget-title">Job Status</div>', unsafe_allow_html=True) # HIGHLIGHT: Title in English
-        st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-        st.markdown('<div class="icon">🛠️</div>', unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-
-# User Section (Order change and size/position adjustment)
-st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True) 
-
-# Main columns for User section: col_left_widgets (for 1x1s and 2x1), col_right_recent_activity (for 2x2)
-col_left_widgets, col_right_recent_activity, _ = st.columns([3, 2, 1])
-
-# CSV file data loading and preprocessing
+# CSV file data loading and preprocessing for user_count
 df_users = pd.DataFrame() # Initialize as empty DataFrame
 user_count = 0
 inactive_users_count = 0
 recent_users_data = []
-license_type_counts = {}
+license_type_counts = {} # This will store the *calculated* license type counts for FUE and User sections
 
 try:
     df_users = pd.read_csv('zalmt0020.csv', encoding='euc-kr') # Use euc-kr encoding
@@ -497,8 +402,33 @@ try:
         df_users['USERID'] = df_users['USERID'].astype(str).str.strip()
         user_count = df_users['USERID'].nunique()
     else:
-        st.warning("No 'USERID' column in zalmt0020.csv. Using default value 902 for Total User Count.") # HIGHLIGHT: Warning in English
+        st.warning("No 'USERID' column in zalmt0020.csv. Using default value 902 for Total User Count.")
         user_count = 902 
+
+    # HIGHLIGHT START: Calculate license_type_counts based on new formulas for FUE License section
+    calculated_advanced = user_count * 1
+    calculated_core = user_count % 5
+    calculated_self_service = math.floor(user_count % 30)
+    calculated_not_classified = 0
+
+    license_type_counts = {
+        'Advanced': calculated_advanced,
+        'Core': calculated_core,
+        'Self Service': calculated_self_service,
+        'Not Classified': calculated_not_classified
+    }
+    # HIGHLIGHT END
+
+    # (1) Active License - Sum of calculated values
+    active_license_count = sum(license_type_counts.values())
+    
+    # (2) Remaining License - Total License (500) - Active License
+    total_license_capacity = 500 # Assuming total capacity is 500
+    remaining_license_count = total_license_capacity - active_license_count
+
+    # (3) License Utilization Rate - Active License / Total License
+    license_utilization_rate = (active_license_count / total_license_capacity) * 100 if total_license_capacity > 0 else 0
+
 
     # (2) Inactive Users - Count users whose LASTLOGONDATE is older than 30 days from today
     if 'LASTLOGONDATE' in df_users.columns and 'LASTLOGONTIME' in df_users.columns:
@@ -517,7 +447,7 @@ try:
         ]
         inactive_users_count = inactive_users_df['USERID'].nunique()
     else:
-        st.warning("Missing 'LASTLOGONDATE' or 'LASTLOGONTIME' columns for Inactive Users calculation. Using default value 19.") # HIGHLIGHT: Warning in English
+        st.warning("Missing 'LASTLOGONDATE' or 'LASTLOGONTIME' columns for Inactive Users calculation. Using default value 19.")
         inactive_users_count = 19 # Default if columns are missing
 
     # (3) Recent User Activity - Top 5 users whose EXPIRATIONENDDATE has passed, or are Inactive, or have EXPIRATIONSTARTDATE
@@ -559,7 +489,7 @@ try:
             
             recent_users_data.append((full_name, row['ROLETYPID'], expiry_display, status_text)) # Use ROLETYPID for grade
     else:
-        st.warning("Missing columns for Recent User Activity calculation. Using hardcoded data.") # HIGHLIGHT: Warning in English
+        st.warning("Missing columns for Recent User Activity calculation. Using hardcoded data.")
         recent_users_data = [
             ("Kim Hwi-young", "GB Advanced User", "Expires 9999.12.30", "Active"),
             ("Lee Min", "GB Advanced User", "Expires 9999.12.30", "Active"),
@@ -568,33 +498,8 @@ try:
             ("Yoon Tae", "GB Advanced User", "Expires 9999.12.30", "Active")
         ]
 
-    # (4) User License Type - Classify and Count ROLETYPID column values
-    if 'ROLETYPID' in df_users.columns:
-        def classify_role_type(roletype):
-            s_roletype = str(roletype).strip()
-            if s_roletype == 'GB Advanced Use':
-                return 'Advanced'
-            elif s_roletype == 'GC Core Use':
-                return 'Core'
-            elif s_roletype == 'GD Self-Service Use':
-                return 'Self Service'
-            elif pd.isna(roletype) or s_roletype == '' or s_roletype == 'Not classified':
-                return 'Not Classified'
-            return 'Not Classified' # Default for unknown values
-
-        df_users['CLASSIFIED_ROLETYPE'] = df_users['ROLETYPID'].apply(classify_role_type)
-        license_type_counts = df_users['CLASSIFIED_ROLETYPE'].value_counts().to_dict()
-        
-        # Ensure all 4 categories are present, even if count is 0
-        for cat in ['Advanced', 'Core', 'Self Service', 'Not Classified']:
-            if cat not in license_type_counts:
-                license_type_counts[cat] = 0
-    else:
-        st.warning("Missing 'ROLETYPID' column for User License Type calculation. Using default values.") # HIGHLIGHT: Warning in English
-        license_type_counts = {'Advanced': 189, 'Core': 84, 'Self Service': 371, 'Not Classified': 42}
-
 except FileNotFoundError:
-    st.error("zalmt0020.csv file not found. Using default values for some widgets.") # HIGHLIGHT: Error in English
+    st.error("zalmt0020.csv file not found. Using default values for some widgets.")
     user_count = 902
     inactive_users_count = 19
     recent_users_data = [
@@ -604,20 +509,156 @@ except FileNotFoundError:
         ("Park Soo-bin", "GB Self Service", "Expires 2024.08.10", "Inactive"),
         ("Yoon Tae", "GB Advanced User", "Expires 9999.12.30", "Active")
     ]
-    license_type_counts = {'Advanced': 189, 'Core': 84, 'Self Service': 371, 'Not Classified': 42}
-except Exception as e:
-    st.error(f"An error occurred while reading or processing the CSV file: {e}. Using default values for some widgets.") # HIGHLIGHT: Error in English
-    user_count = 902
-    inactive_users_count = 19
-    recent_users_data = [
-        ("Kim Hwi-young", "GB Advanced User", "Expires 9999.12.30", "Active"),
-        ("Lee Min", "GB Advanced User", "Expires 9999.12.30", "Active"),
-        ("Jung Ha-na", "GB Core User", "Expires 2026.11.03", "Expiring"),
-        ("Park Soo-bin", "GB Self Service", "Expires 2024.08.10", "Inactive"),
-        ("Yoon Tae", "GB Advanced User", "Expires 9999.12.30", "Active")
-    ]
-    license_type_counts = {'Advanced': 189, 'Core': 84, 'Self Service': 371, 'Not Classified': 42}
+    # Default calculated license type counts if file not found
+    calculated_advanced = user_count * 1
+    calculated_core = user_count % 5
+    calculated_self_service = math.floor(user_count % 30)
+    calculated_not_classified = 0
+    license_type_counts = {
+        'Advanced': calculated_advanced,
+        'Core': calculated_core,
+        'Self Service': calculated_self_service,
+        'Not Classified': calculated_not_classified
+    }
+    active_license_count = sum(license_type_counts.values())
+    total_license_capacity = 500
+    remaining_license_count = total_license_capacity - active_license_count
+    license_utilization_rate = (active_license_count / total_license_capacity) * 100 if total_license_capacity > 0 else 0
 
+except Exception as e:
+    st.error(f"An error occurred while reading or processing the CSV file: {e}. Using default values for some widgets.")
+    user_count = 902
+    inactive_users_count = 19
+    recent_users_data = [
+        ("Kim Hwi-young", "GB Advanced User", "Expires 9999.12.30", "Active"),
+        ("Lee Min", "GB Advanced User", "Expires 9999.12.30", "Active"),
+        ("Jung Ha-na", "GB Core User", "Expires 2026.11.03", "Expiring"),
+        ("Park Soo-bin", "GB Self Service", "Expires 2024.08.10", "Inactive"),
+        ("Yoon Tae", "GB Advanced User", "Expires 9999.12.30", "Active")
+    ]
+    # Default calculated license type counts if error
+    calculated_advanced = user_count * 1
+    calculated_core = user_count % 5
+    calculated_self_service = math.floor(user_count % 30)
+    calculated_not_classified = 0
+    license_type_counts = {
+        'Advanced': calculated_advanced,
+        'Core': calculated_core,
+        'Self Service': calculated_self_service,
+        'Not Classified': calculated_not_classified
+    }
+    active_license_count = sum(license_type_counts.values())
+    total_license_capacity = 500
+    remaining_license_count = total_license_capacity - active_license_count
+    license_utilization_rate = (active_license_count / total_license_capacity) * 100 if total_license_capacity > 0 else 0
+
+
+# First row: 5 1x1 widgets (total 5 units) + 1 unit spacing
+cols_fue_row1 = st.columns([1, 1, 1, 1, 1, 1]) # 1+1+1+1+1+1 = 6 units. Last is spacing
+
+with cols_fue_row1[0]: # 1 unit
+    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
+        st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
+        st.markdown('<div class="widget-content">', unsafe_allow_html=True)
+        st.markdown(f'<div class="big-number">{total_license_capacity}</div>', unsafe_allow_html=True) # HIGHLIGHT: Use total_license_capacity
+        st.markdown('</div>', unsafe_allow_html=True)
+
+with cols_fue_row1[1]: # 1 unit
+    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
+        st.markdown('<div class="widget-title">Active License</div>', unsafe_allow_html=True)
+        st.markdown('<div class="widget-content">', unsafe_allow_html=True)
+        st.markdown(f'<div class="big-number">{active_license_count}</div>', unsafe_allow_html=True) # HIGHLIGHT: Use calculated active_license_count
+        st.markdown('</div>', unsafe_allow_html=True)
+
+with cols_fue_row1[2]: # 1 unit
+    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
+        st.markdown('<div class="widget-title">Remaining Licenses</div>', unsafe_allow_html=True)
+        st.markdown('<div class="widget-content">', unsafe_allow_html=True)
+        st.markdown(f'<div class="big-number">{remaining_license_count}</div>', unsafe_allow_html=True) # HIGHLIGHT: Use calculated remaining_license_count
+        st.markdown('</div>', unsafe_allow_html=True)
+
+with cols_fue_row1[3]: # 1 unit
+    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
+        st.markdown('<div class="widget-title">License Utilization Rate</div>', unsafe_allow_html=True)
+        st.markdown('<div class="widget-content">', unsafe_allow_html=True)
+        fig, ax = plt.subplots(figsize=(4, 0.5)) # Adjust to widget height
+        ax.barh(0, license_utilization_rate, color='#007BFF', height=0.4) # HIGHLIGHT: Use calculated license_utilization_rate
+        ax.text(license_utilization_rate/2, 0, f'{license_utilization_rate:.1f}%', va='center', ha='center', color='white', fontsize=16, fontweight='bold') # HIGHLIGHT: Display calculated rate
+        ax.set_xlim(0, 100)
+        ax.axis('off')
+        st.pyplot(fig, use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+with cols_fue_row1[4]: # 1 unit
+    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
+        st.markdown('<div class="widget-title">License Variance</div>', unsafe_allow_html=True)
+        st.markdown('<div class="widget-content">', unsafe_allow_html=True)
+        st.markdown('<div class="big-number">12 ▲</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+# Second row: Composition Ratio (2x1), Department Status (1x1), Job Status (1x1)
+cols_fue_row2 = st.columns([2, 1, 1, 2]) # 2(widget) + 1(widget) + 1(widget) + 2(spacing) = 6 units
+
+# Widget 6: Composition (2x1 size)
+with cols_fue_row2[0]:
+    with st.container(height=180, border=True): # 2x1 ratio (width:height = 2:1)
+        st.markdown('<div class="widget-title">Composition ratio</div>', unsafe_allow_html=True)
+        st.markdown('<div class="widget-content">', unsafe_allow_html=True)
+        
+        # HIGHLIGHT START: Use calculated license_type_counts for Composition Ratio
+        composition_data = [(label, license_type_counts.get(label, 0)) for label in ['Advanced', 'Core', 'Self Service', 'Not Classified']]
+        composition_data.sort(key=lambda x: x[1], reverse=True) # Sort by value descending
+
+        largest_label = composition_data[0][0] if composition_data else "N/A"
+        largest_value = composition_data[0][1] if composition_data else 0
+        total_calculated_licenses = sum(val for _, val in composition_data)
+        largest_percentage = (largest_value / total_calculated_licenses * 100) if total_calculated_licenses > 0 else 0
+
+        text_col, chart_col = st.columns([2, 1])
+
+        with text_col:
+            st.markdown(f"""
+                <div class="composition-text">
+                    <div class="percentage">{largest_percentage:.0f}%</div>
+                    <div class="description">{largest_label}</div>
+                </div>
+            """, unsafe_allow_html=True)
+
+        with chart_col:
+            sizes_for_pie = [val for _, val in composition_data]
+            labels_for_pie = [label for label, _ in composition_data]
+            
+            # Filter out zero values for pie chart to prevent errors
+            non_zero_sizes = [s for s in sizes_for_pie if s > 0]
+            non_zero_labels = [labels_for_pie[i] for i, s in enumerate(sizes_for_pie) if s > 0]
+
+            if non_zero_sizes:
+                fig2, ax2 = plt.subplots(figsize=(1.5, 1.5)) # Adjust to widget height
+                colors_composition = ['#007BFF', '#ADD8E6', '#87CEEB', '#B0E0E6'][:len(non_zero_sizes)]
+                ax2.pie(non_zero_sizes, labels=non_zero_labels, autopct='%1.0f%%', startangle=90, colors=colors_composition,
+                        wedgeprops={'linewidth': 0, 'edgecolor': 'white'})
+                ax2.axis('equal')
+                st.pyplot(fig2, use_container_width=True)
+            else:
+                st.markdown("No data for composition ratio.")
+        # HIGHLIGHT END
+        st.markdown('</div>', unsafe_allow_html=True)
+
+# Widget 7: Department Status (1x1 size)
+with cols_fue_row2[1]: # Second column
+    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
+        st.markdown('<div class="widget-title">Department Status</div>', unsafe_allow_html=True)
+        st.markdown('<div class="widget-content">', unsafe_allow_html=True)
+        st.markdown('<div class="icon">🏢</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+# Widget 8: Job Status (1x1 size)
+with cols_fue_row2[2]: # Third column
+    with st.container(height=180, border=True): # 1x1 ratio (width:height = 1:1)
+        st.markdown('<div class="widget-title">Job Status</div>', unsafe_allow_html=True)
+        st.markdown('<div class="widget-content">', unsafe_allow_html=True)
+        st.markdown('<div class="icon">🛠️</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
 # User Section (Order change and size/position adjustment)
 st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True) 
@@ -655,9 +696,8 @@ with col_left_widgets:
     with cols_user_license_type[0]:
         with st.container(height=180, border=True): # 2x1 ratio (width:height = 2:1)
             st.markdown('<div class="widget-title">User License Type</div>', unsafe_allow_html=True)
-            # HIGHLIGHT START: Removed padding-top from widget-content to move items up
             st.markdown('<div class="widget-content" style="padding-top: 0;">', unsafe_allow_html=True) 
-            # HIGHLIGHT END
+            
             labels_order = ['Advanced', 'Core', 'Self Service', 'Not Classified'] # Define order for consistency
             
             for label in labels_order:
