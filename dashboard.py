@@ -3,6 +3,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd # HIGHLIGHT: pandas 라이브러리 임포트
 
+# 대체 인코딩으로 시도
+try:
+    df = pd.read_csv("https://raw.githubusercontent.com/Hweeeeeeee/atns_alms/main/zalmt0020.csv", encoding='cp949')
+except UnicodeDecodeError:
+    df = pd.read_csv("https://raw.githubusercontent.com/yHweeeeeeee/atns_alms/main/zalmt0020.csv", encoding='iso-8859-1')
+
+
 # 페이지 설정 (한 번만 선언)
 st.set_page_config(layout="wide")
 
