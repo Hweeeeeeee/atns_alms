@@ -1,14 +1,7 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd # HIGHLIGHT: pandas 라이브러리 임포트
-
-# 대체 인코딩으로 시도
-try:
-    df = pd.read_csv("https://raw.githubusercontent.com/Hweeeeeeee/atns_alms/main/zalmt0020.csv", encoding='cp949')
-except UnicodeDecodeError:
-    df = pd.read_csv("https://raw.githubusercontent.com/yHweeeeeeee/atns_alms/main/zalmt0020.csv", encoding='iso-8859-1')
-
+import pandas as pd 
 
 # 페이지 설정 (한 번만 선언)
 st.set_page_config(layout="wide")
@@ -401,32 +394,31 @@ st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True)
 # Main columns for User section: col_left_widgets (for 1x1s and 2x1), col_right_recent_activity (for 2x2)
 col_left_widgets, col_right_recent_activity, _ = st.columns([3, 2, 1])
 
-# HIGHLIGHT START: CSV 파일에서 USERID 수 계산
+# CSV 파일에서 USERID 수 계산
 user_count = 0
 try:
-    df_users = pd.read_csv('zalmt0020.csv')
+    # HIGHLIGHT: 인코딩을 'euc-kr'로 지정
+    df_users = pd.read_csv('zalmt0020.csv', encoding='euc-kr')
     if 'USERID' in df_users.columns:
         user_count = df_users['USERID'].nunique()
     else:
         st.warning("zalmt0020.csv 파일에 'USERID' 열이 없습니다. 기본값 902를 사용합니다.")
-        user_count = 902 # 기본값
+        user_count = 902 
 except FileNotFoundError:
     st.error("zalmt0020.csv 파일을 찾을 수 없습니다. 기본값 902를 사용합니다.")
-    user_count = 902 # 기본값
+    user_count = 902 
 except Exception as e:
     st.error(f"CSV 파일을 읽는 중 오류가 발생했습니다: {e}. 기본값 902를 사용합니다.")
-    user_count = 902 # 기본값
-# HIGHLIGHT END
+    user_count = 902 
 
 with col_left_widgets:
     # Row for Total, User Variance, Inactive Users (1x1 each)
-    cols_1x1_user = st.columns(3) # col_left_widgets의 3단위를 3등분 (각 1단위)
+    cols_1x1_user = st.columns(3) 
     
     with cols_1x1_user[0]:
         with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
             st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
             st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-            # HIGHLIGHT: user_count 값 동적 전달
             st.markdown(f'<div class="big-number">{user_count} <span style="color: green; font-size: 20px;">(+7)</span></div>', unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
 
@@ -453,7 +445,7 @@ with col_left_widgets:
             
             labels = ['Advance', 'Core', 'Self Service', 'Not Classified']
             values = [189, 84, 371, 42]
-            max_value = max(values) * 1.1 # 막대 길이 조절을 위한 최대값
+            max_value = max(values) * 1.1 
 
             for i in range(len(labels)):
                 label = labels[i]
