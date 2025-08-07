@@ -65,7 +65,7 @@ st.markdown("""
         }
         /* 위젯 공통 스타일 - 그림자 적용 및 스크롤 방지 */
         div[data-testid="stVerticalBlock"] > div.st-emotion-cache-ocqkzj {
-            box-shadow: 0 8px 16px rgba(0,0,0,0.35) !important; /* 그림자를 더 진하게 적용 */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4) !important; /* HIGHLIGHT: 그림자를 더 진하게 적용 */
             overflow: hidden !important; /* 내부 스크롤 방지 */
         }
         .section-title {
@@ -397,10 +397,11 @@ col_left_widgets, col_right_recent_activity, _ = st.columns([3, 2, 1])
 # CSV 파일에서 USERID 수 계산
 user_count = 0
 try:
-    # HIGHLIGHT: 인코딩을 'euc-kr'로 지정
+    # HIGHLIGHT: USERID 열의 공백 제거 및 문자열 타입 변환 추가
     df_users = pd.read_csv('zalmt0020.csv', encoding='euc-kr')
     if 'USERID' in df_users.columns:
-        user_count = df_users['USERID'].nunique()
+        # 공백 제거 및 문자열 타입 변환 후 고유값 카운트
+        user_count = df_users['USERID'].astype(str).str.strip().nunique()
     else:
         st.warning("zalmt0020.csv 파일에 'USERID' 열이 없습니다. 기본값 902를 사용합니다.")
         user_count = 902 
@@ -419,7 +420,8 @@ with col_left_widgets:
         with st.container(height=180, border=True): # 1x1 비율 (가로:세로 = 1:1)
             st.markdown('<div class="widget-title">Total</div>', unsafe_allow_html=True)
             st.markdown('<div class="widget-content">', unsafe_allow_html=True)
-            st.markdown(f'<div class="big-number">{user_count} <span style="color: green; font-size: 20px;">(+7)</span></div>', unsafe_allow_html=True)
+            # HIGHLIGHT: (+7) 부분 삭제
+            st.markdown(f'<div class="big-number">{user_count}</div>', unsafe_allow_html=True) 
             st.markdown('</div>', unsafe_allow_html=True)
 
     with cols_1x1_user[1]:
