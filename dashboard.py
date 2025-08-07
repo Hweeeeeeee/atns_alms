@@ -136,7 +136,7 @@ st.markdown("""
             font-weight: bold;
             font-size: 18px;
             color: black;
-            margin-bottom: 1.5rem; /* 타이틀 하단 여백 증가 */
+            margin-bottom: 0.5rem; /* HIGHLIGHT: 타이틀 하단 여백 감소 */
         }
         /* 위젯 내부 콘텐츠를 감싸는 div 스타일 */
         .widget-content {
@@ -145,7 +145,7 @@ st.markdown("""
             flex-direction: column;
             justify-content: center; /* 수직 중앙 정렬 */
             align-items: flex-start; /* 좌측 정렬 */
-            padding-bottom: 1.5rem; /* 하단 여백 추가 */
+            padding-bottom: 0.5rem; /* HIGHLIGHT: 하단 여백 감소 */
         }
         .stat-block {
             display: grid;
@@ -469,7 +469,9 @@ with cols_fue_row2[2]: # 세 번째 컬럼
         st.markdown('</div>', unsafe_allow_html=True)
 
 # User 섹션 (순서 변경 및 크기/위치 조정)
-st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True)
+# HIGHLIGHT START: User 섹션 타이틀 중복 제거
+# st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True) 
+# HIGHLIGHT END
 
 # Main columns for User section: col_left_widgets (for 1x1s and 2x1), col_right_recent_activity (for 2x2)
 col_left_widgets, col_right_recent_activity, _ = st.columns([3, 2, 1])
@@ -612,7 +614,7 @@ except Exception as e:
 
 
 # User 섹션 (순서 변경 및 크기/위치 조정)
-st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-title">User</div>', unsafe_allow_html=True) # HIGHLIGHT: User 섹션 타이틀 유지
 
 # Main columns for User section: col_left_widgets (for 1x1s and 2x1), col_right_recent_activity (for 2x2)
 col_left_widgets, col_right_recent_activity, _ = st.columns([3, 2, 1])
@@ -645,8 +647,8 @@ with col_left_widgets:
     # User License Type (2x1) below the 1x1s.
     cols_user_license_type = st.columns([2, 1]) 
     with cols_user_license_type[0]:
-        # HIGHLIGHT START: User License Type 위젯 높이 조정 (210px로 늘림)
-        with st.container(height=210, border=True): # 2x1 비율 (가로:세로 = 2:1)
+        # HIGHLIGHT START: User License Type 위젯 높이를 180px로 되돌림
+        with st.container(height=180, border=True): # 2x1 비율 (가로:세로 = 2:1)
         # HIGHLIGHT END
             st.markdown('<div class="widget-title">User License Type</div>', unsafe_allow_html=True)
             st.markdown('<div class="widget-content">', unsafe_allow_html=True)
